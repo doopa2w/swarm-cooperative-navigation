@@ -7,12 +7,15 @@
 1. controllers
    - footbot_foraging.cpp
    - footbot_foraging.h
-   - footbot_foraging_nr.cpp
-   - footbot_foraging_nr.h
    - ground.h
    - state.h
    - trace_message.cpp
    - trace_message.h
+2. loop_functions
+   * foraging_loop_functions.cpp
+   * foraging_loop_functions.h
+   * foraging_qt_user_functions.cpp
+   * foraging_qt_user_functions.h
 
 ### state.h
 
@@ -259,4 +262,58 @@ This header contains enumerate which allows certain integers to represent one of
 A single log message.
 
 * class CTraceMessage 
-  * 
+  * virtual EState GetMessageType() = 0; // what type of message is this?
+  * virtual std::string Format(UInt32 time); // the string should be written to the trace output
+  * std::string GetRobotId(); // the Id of the robot as string
+  * CTraceMessage(UInt32 robotId); virtual ~CTraceMessage(); // constructor and destructor
+  * UInt32 RobotId; // Id of the robot doing the logging
+* class CExploreTrace : public CTraceMessage
+  * Estate GetMessageType(); CExploreTrace(UInt 32 robotId);
+* class CPickUpItemTrace : public CTraceMessage // same thing as usual inside the CExploreTrace
+* class CReturnTrace : public CTraceMessage
+* class CDropItemTrace : public CTraceMessage
+* class CSearchRestingPlaceTrace : public CTraceMessage
+* class CRestTrace : public CTraceMessage
+* class CCollisionTrace : public CTraceMessage
+
+### trace_message.cpp
+
+* CTraceMessage::CTraceMessage(UInt32 robotId) : RobotId(robotId) {}
+* std::string CTraceMessage::Format(UInt32 time)
+  * time, RobotId, GetMessageType();
+* std::string CTraceMessage::GetRobotId()
+* CExploreTrace::CExploreTrace(UInt32 robotId) : CTraceMessage(robotId) {}
+* EState CExploreTrace::GetMessageType() returns EXPLORING
+* same thing for CPickUpItemTrace, CReturnTrace, CDropItemTrace, CSearchRestingPlaceTrace, CRestTrace, CCollisionTrace
+
+
+
+## loop functions
+
+### foraging_loop_functions.h
+
+* includes:
+  * <simulator/dynamic_linking/loop_functions.h>
+  * <simulator/space/entities/floor_entity.h>
+  * <common/utility/math.range.h>
+  * <common/utility/argos_random.h>
+  * <controllers/footbot_foraging/state.h>
+  * <controllers/footbot_foraging/footbot_foraging.h>
+* class CForagingLoopFunctions : public CLoopFunctions
+  * CForagingLoopFunctions(); virtual ~CForagingLoopFunctions()
+  * inline CSpace& Space() returns m_cSpace;
+  * Real FoodSquareRadius; Crange<Real> ForagingArenaSideX, CRange<Real> ForagingArenaSideY;
+  * std::vector<CVector2> FoodPos; CFloorEntity* Floor; CARGoSRandom::CRNG* RNG;
+  * strTraceOutput; TraceOutput; // the trace output files and streams
+  * writeTraceMessages(CFootBotEntity *footBot, CFootBotForaging *controller);
+  * UInt32 IdForCollisionOutput; // the id for robot which we are tracing collisions
+  * strCollisionOutput; CollisionOutput; // collision output files and streams
+  * WriteCollisionMessages(CFootBotEntity *footBot, CFootBotForaging *controller);
+  * strSummaryOutput; SummaryOutput; // the output file and stream for aggregated results
+  * InitializeSummaryData(); AddSummaryData(); writeSummaryOutput();
+  * ClearAllMessages(*controller); FlushOutputStream()'
+  * UInt32 InitialFoodItems; // the number of food items in the arena at the start of the experiment
+  * UInt32 NextFoodDrop; // the time when the next food item should be dropped
+  * Real FoodDropMean; // th emean value for the experimential distributions between food drops
+  * std::vector<UInt32> AggregatedEvents; // summary of all events occured.
+  * FindFoodItem(CFootBotForaging::SfoodData& foodData, CVector2 pos);

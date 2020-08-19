@@ -228,4 +228,35 @@ This header contains enumerate which allows certain integers to represent one of
   * Real restingTime = RNG -> Exponential(StateData.RestToExploreMean) // RNG
   * StateData.SetNewWakeUpTime(restingTime) // set the wakup time as resting time (sort of like countdown)
 * CFootBotForaging::Explore()
+  * This should be implemented differently; Check whether we are on a food item, if so, pick it up.
+  * if robot is over food item and not carrying any food then PickUpItem() and return. // exit out of the function
+  * else:
+    * bool collision // Get the diffusion vector to perform obstacle avoidance
+    * CVector2 diffusion = DiffusionVector(collision) // perform if collision == true
+    * If we are in the nest, we combine antiphototaxis with obstalce avoidance. Outside the nest, we just use the diffusion vector instead.
+    * if the robot is over the nest:
+      * if collision is true, then change wheel speed.
+        * The vector calculated by CalculateVectorToLight() points to the light. Thus the minus sign used in the SetWheelsSpeedFromVector() will led the robot steer away from the light.
+      * else do the same thing but with different parameter for SetWheelSpeedFromVector(). The minus sign for vector calcualted in CalculateVectorToLight() still stay true in here.
+    * else: // if not over the nest
+      * SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * diffusion) // use the diffusion vector only.
+* CFootBotForaging::ReturnToNest()
+  * Check if the robot is over the nest; if so, drop item if there is any.
+  * else // not over the nest
+    * bool collision; CVector2 diffusion = DiffusionVector(collision); // calculate diffusion vector
+    * if collision == true then call SetWheelSpeedsFromVector() with different argument. This time no minus sign for CalculateVectorToLight() since we want to steer towards the light which represents nest.
+    * else call CalculateVectorToLight() with different argument as well.
+* CFootBotForaging::SearchForRestingPlace()
+  * Check whether the robot has took to long to search for a place in nest
+  * if StateData.TimeSearchingForPlaceInNest > StateData.MinimumSearchForPlaceInNestTime, then StartResting()
+  * else ++StateData.TimeSearchingForPlaceInNest; // keep looking
+* CFootBotForaging::Rest()
+  * if StateData.RestingPeriodIsOver() == true, then StartExploring() // go work lazy bum
+  * else ++StateData.TimeRested // keep resting you deserved it
+
+### trace_message.h
+
+A single log message.
+
+* class CTraceMessage 
   * 

@@ -4,6 +4,8 @@
 #include <argos3/core/utility/configuration/argos_configuration.h>
 /* 2D vector definition */
 #include <argos3/core/utility/math/vector2.h>
+/* Logging */
+#include <argos3/core/utility/logging/argos_log.h>
 
 /****************************************/
 /****************************************/
@@ -11,6 +13,8 @@
 CFootBotDiffusion::CFootBotDiffusion() :
    m_pcWheels(NULL),
    m_pcProximity(NULL),
+   m_pcRABA(NULL),
+   m_pcRABS(NULL),
    m_cAlpha(10.0f),
    m_fDelta(0.5f),
    m_fWheelVelocity(2.5f),
@@ -45,6 +49,8 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
     */
    m_pcWheels    = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
    m_pcProximity = GetSensor  <CCI_FootBotProximitySensor      >("footbot_proximity"    );
+   m_pcRABA      = GetActuator<CCI_RangeAndBearingActuator     >("range_and_bearing"    );
+   m_pcRABS      = GetSensor  <CCI_RangeAndBearingSensor       >("range_and_bearing"    );
    /*
     * Parse the configuration file
     *
@@ -88,6 +94,17 @@ void CFootBotDiffusion::ControlStep() {
          m_pcWheels->SetLinearVelocity(0.0f, m_fWheelVelocity);
       }
    }
+
+   // broadcast and receive message
+   m_pcRABA->SetData(0, 69);
+   const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
+   for (size_t i = 0; i < tPackets.size(); i++)
+   {
+      LOG << "Receive Message: " << tPackets[i].Data << std::endl << "Received at: " 
+         << tPackets[i].VerticalBearing << ", " << tPackets[i].HorizontalBearing << std::endl << "Apart by: " << tPackets[i].Range
+         << "cm" << std::endl;
+   }
+
 }
 
 /****************************************/

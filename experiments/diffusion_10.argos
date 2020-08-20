@@ -20,9 +20,11 @@
                                   library="build/controllers/footbot_diffusion/libfootbot_diffusion.so">
       <actuators>
         <differential_steering implementation="default" />
+        <range_and_bearing implementation="default" />
       </actuators>
       <sensors>
         <footbot_proximity implementation="default" show_rays="true" />
+        <range_and_bearing implementation="medium" medium="rab" />
       </sensors>
       <params alpha="7.5" delta="0.1" velocity="5" />
     </footbot_diffusion_controller>
@@ -102,7 +104,10 @@
   <!-- ********* -->
   <!-- * Media * -->
   <!-- ********* -->
-  <media />
+  <media>
+    <range_and_bearing id="rab" />
+    <led id="leds" />
+  </media>
 
   <!-- ****************** -->
   <!-- * Visualization * -->

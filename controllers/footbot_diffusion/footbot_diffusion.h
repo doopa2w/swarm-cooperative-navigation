@@ -28,6 +28,10 @@
 #include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h>
 /* Definition of the foot-bot proximity sensor */
 #include <argos3/plugins/robots/foot-bot/control_interface/ci_footbot_proximity_sensor.h>
+/* Definition of the range and bearing actuator */
+#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_actuator.h>
+/* Definition of the range and bearing sensor */
+#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
 
 /*
  * All the ARGoS stuff in the 'argos' namespace.
@@ -85,6 +89,10 @@ private:
    CCI_DifferentialSteeringActuator* m_pcWheels;
    /* Pointer to the foot-bot proximity sensor */
    CCI_FootBotProximitySensor* m_pcProximity;
+   /* Pointer to the range and bearing actuator */
+   CCI_RangeAndBearingActuator*  m_pcRABA;
+   /* Pointer to the range and bearing sensor */
+   CCI_RangeAndBearingSensor* m_pcRABS;
 
    /*
     * The following variables are used as parameters for the

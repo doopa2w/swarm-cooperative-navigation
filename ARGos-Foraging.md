@@ -317,3 +317,63 @@ A single log message.
   * Real FoodDropMean; // th emean value for the experimential distributions between food drops
   * std::vector<UInt32> AggregatedEvents; // summary of all events occured.
   * FindFoodItem(CFootBotForaging::SfoodData& foodData, CVector2 pos);
+
+### foraging_loop_functions.cpp
+
+* includes:
+  * "foraging_loop_functions.h"
+  * <simulator/simulator.h>
+  * <common/utility/configuration/argos_configuration.h>
+  * <common/utitlity/datatypes/any.h>
+  * <simulator/space/entities/footbot_entity.h>
+  * <controllers/footbot_foraging/trace_message.h>
+* CForagingLoopFunctions::CForagingLoopFunctions() : 
+  * ForagingArenaSideX, ..SideY, Floor, RNG, AggregratedEvents
+* CForagingLoopFunctions::Init()
+  * try
+    * Get a pointer to the floor entity
+    * Get the number of food items we want to be scattered from the XML
+    * Create a new RNG and distribute the food tiems uniformly in the environement
+    * Get the mean time for food drops from XML as well and initializes the next food drop
+    * Get the trace output file name from XML; Open the file and erase any existing contents
+    * Get the collision output file name from XML; Open the file and erase its contents as well
+    * Get the ID for the robot for which we are logging collisions
+    * Get the summary output file name from XML; Open the file and erase its contents as well
+  * catch
+    * "Error parsing loop functions!"
+* CForagingLoopFunctions::Reset()
+  * NextFoodDrop =  RNG -> Exponential(FoodDropMean) // reset the next drop time
+  * InitializeSummaryData() // zero the counters
+  * Close th eoutput streams for TraceOutput, CollisionOutput, SummaryOutput
+  * Open the output streams and erases their contents
+  * FoodPos.clear() // reset the food position and distribute the items uniformly in the environment
+* CForagingLoopFunctions::Destroy()
+  * Close the TraceOutput file
+* CColor CForagingLoopFunctions::GetFloorColor(const CVector2& positionOnPlane)
+  * returns GRAY, BLACK, WHITE depending on positionOnPlane.GetX(), FoodPos, FoodSquareRadius
+* CForagingLoopFunctions::WriteTraceMessage(*footBot, *controller)
+  * Get TraceMessage
+  * Trace message were gathered in the previous loop
+* CForagingLoopFunctions::WriteCollisionMessages(*footbot, *conroller)
+  * Get CollisoinMessages
+  * CollisionMessages were gathered in the previous loop
+* CForagingLoopFunctions::ClearAllMessages(*controller)
+  * clear all TraceMessage and CollisionMessages
+* CForagingLoopFunctions::InitializeSummaryData()
+  * zero all AggregatedEvents
+* CForagingLoopFunctions::AddSummaryData(*footbot, *controller)
+  * ++AggregatedEvents[controller->GetState()] // get state
+* CForagingLoopFunctions::WriteSummaryOutput()
+  * Get Space().GetSimulationClock()
+  * Write all AggregatedEvents, FoodPos.size()
+* CForagingLoopFunctions::FlushOutputStreams()
+  * flush TraceOutput, CollisionOutput, SummaryOutput
+* CForagingLoopFunctions::FindFoodItems(foodData, pos)
+  * delate food item if foot-bot pick it up; must also update the floor texture
+  * LOG if can't find the food item
+* CForagingLoopFunctions::PrePhysicsEngineStep()
+  * Contains logic to pick and drop food items
+  * If the time has come to drop a new food item, do so
+  * If a robot is in the nest, drop the food item
+  * If a robot is on a food item, pick it
+  * Each robot can only carry one food at a time

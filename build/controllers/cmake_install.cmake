@@ -44,12 +44,12 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/dev/swarm-cooperative-navigation/build/controllers/footbot_flocking/cmake_install.cmake")
   include("/home/dev/swarm-cooperative-navigation/build/controllers/footbot_gripping/cmake_install.cmake")
   include("/home/dev/swarm-cooperative-navigation/build/controllers/footbot_foraging/cmake_install.cmake")
+  include("/home/dev/swarm-cooperative-navigation/build/controllers/footbot_dg/cmake_install.cmake")
   include("/home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol/cmake_install.cmake")
   include("/home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/cmake_install.cmake")
   include("/home/dev/swarm-cooperative-navigation/build/controllers/eyebot_circle/cmake_install.cmake")
   include("/home/dev/swarm-cooperative-navigation/build/controllers/eyebot_flocking/cmake_install.cmake")
   include("/home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/cmake_install.cmake")
-  include("/home/dev/swarm-cooperative-navigation/build/controllers/footbot_dg/cmake_install.cmake")
 
 endif()
 

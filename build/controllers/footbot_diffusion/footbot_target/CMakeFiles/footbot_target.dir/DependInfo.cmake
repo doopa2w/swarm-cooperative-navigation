@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_diffusion.cpp" "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o"
-  "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_diffusion_autogen/mocs_compilation.cpp" "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o"
+  "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_target/footbot_static.cpp" "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/footbot_static.cpp.o"
+  "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_target/footbot_target_autogen/mocs_compilation.cpp" "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/footbot_target_autogen/mocs_compilation.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -18,9 +18,9 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "controllers/footbot_diffusion"
-  "../controllers/footbot_diffusion"
-  "controllers/footbot_diffusion/footbot_diffusion_autogen/include"
+  "controllers/footbot_diffusion/footbot_target"
+  "../controllers/footbot_diffusion/footbot_target"
+  "controllers/footbot_diffusion/footbot_target/footbot_target_autogen/include"
   "/home/dev/anaconda3/include/qt"
   "/home/dev/anaconda3/include/qt/QtWidgets"
   "/home/dev/anaconda3/include/qt/QtGui"

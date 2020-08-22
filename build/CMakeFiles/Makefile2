@@ -68,12 +68,12 @@ controllers/all: controllers/footbot_synchronization/all
 controllers/all: controllers/footbot_flocking/all
 controllers/all: controllers/footbot_gripping/all
 controllers/all: controllers/footbot_foraging/all
+controllers/all: controllers/footbot_dg/all
 controllers/all: controllers/footbot_manualcontrol/all
 controllers/all: controllers/footbot_nn/all
 controllers/all: controllers/eyebot_circle/all
 controllers/all: controllers/eyebot_flocking/all
 controllers/all: controllers/epuck_obstacleavoidance/all
-controllers/all: controllers/footbot_dg/all
 
 .PHONY : controllers/all
 
@@ -83,12 +83,12 @@ controllers/clean: controllers/footbot_synchronization/clean
 controllers/clean: controllers/footbot_flocking/clean
 controllers/clean: controllers/footbot_gripping/clean
 controllers/clean: controllers/footbot_foraging/clean
+controllers/clean: controllers/footbot_dg/clean
 controllers/clean: controllers/footbot_manualcontrol/clean
 controllers/clean: controllers/footbot_nn/clean
 controllers/clean: controllers/eyebot_circle/clean
 controllers/clean: controllers/eyebot_flocking/clean
 controllers/clean: controllers/epuck_obstacleavoidance/clean
-controllers/clean: controllers/footbot_dg/clean
 
 .PHONY : controllers/clean
 
@@ -98,12 +98,12 @@ controllers/preinstall: controllers/footbot_synchronization/preinstall
 controllers/preinstall: controllers/footbot_flocking/preinstall
 controllers/preinstall: controllers/footbot_gripping/preinstall
 controllers/preinstall: controllers/footbot_foraging/preinstall
+controllers/preinstall: controllers/footbot_dg/preinstall
 controllers/preinstall: controllers/footbot_manualcontrol/preinstall
 controllers/preinstall: controllers/footbot_nn/preinstall
 controllers/preinstall: controllers/eyebot_circle/preinstall
 controllers/preinstall: controllers/eyebot_flocking/preinstall
 controllers/preinstall: controllers/epuck_obstacleavoidance/preinstall
-controllers/preinstall: controllers/footbot_dg/preinstall
 
 .PHONY : controllers/preinstall
 
@@ -111,87 +111,196 @@ controllers/preinstall: controllers/footbot_dg/preinstall
 # Directory level rules for directory controllers/footbot_diffusion
 
 # Convenience name for "all" pass in the directory.
-controllers/footbot_diffusion/all: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/all
+controllers/footbot_diffusion/all: controllers/footbot_diffusion/footbot_explorer/all
+controllers/footbot_diffusion/all: controllers/footbot_diffusion/footbot_target/all
 
 .PHONY : controllers/footbot_diffusion/all
 
 # Convenience name for "clean" pass in the directory.
-controllers/footbot_diffusion/clean: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/clean
-controllers/footbot_diffusion/clean: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/clean
+controllers/footbot_diffusion/clean: controllers/footbot_diffusion/footbot_explorer/clean
+controllers/footbot_diffusion/clean: controllers/footbot_diffusion/footbot_target/clean
 
 .PHONY : controllers/footbot_diffusion/clean
 
 # Convenience name for "preinstall" pass in the directory.
-controllers/footbot_diffusion/preinstall:
+controllers/footbot_diffusion/preinstall: controllers/footbot_diffusion/footbot_explorer/preinstall
+controllers/footbot_diffusion/preinstall: controllers/footbot_diffusion/footbot_target/preinstall
 
 .PHONY : controllers/footbot_diffusion/preinstall
 
 #=============================================================================
-# Target rules for target controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir
+# Directory level rules for directory controllers/footbot_diffusion/footbot_explorer
+
+# Convenience name for "all" pass in the directory.
+controllers/footbot_diffusion/footbot_explorer/all: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/all
+
+.PHONY : controllers/footbot_diffusion/footbot_explorer/all
+
+# Convenience name for "clean" pass in the directory.
+controllers/footbot_diffusion/footbot_explorer/clean: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/clean
+controllers/footbot_diffusion/footbot_explorer/clean: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/clean
+
+.PHONY : controllers/footbot_diffusion/footbot_explorer/clean
+
+# Convenience name for "preinstall" pass in the directory.
+controllers/footbot_diffusion/footbot_explorer/preinstall:
+
+.PHONY : controllers/footbot_diffusion/footbot_explorer/preinstall
+
+#=============================================================================
+# Target rules for target controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir
 
 # All Build rule for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/all: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/all
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/depend
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/all: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/all
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/depend
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=22,23,24 "Built target footbot_diffusion"
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/all
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/all
 
 # Include target in all.
-all: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/all
+all: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/rule: cmake_check_build_system
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/rule
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/rule
 
 # Convenience name for target.
-footbot_diffusion: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/rule
+footbot_diffusion: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/rule
 
 .PHONY : footbot_diffusion
 
 # clean rule for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/clean:
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/clean
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/clean
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/clean:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/clean
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/clean
 
 # clean rule for target.
-clean: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/clean
+clean: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir
+# Target rules for target controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir
 
 # All Build rule for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/all:
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/depend
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/all:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/depend
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=25 "Built target footbot_diffusion_autogen"
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/all
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/all
 
 # Build rule for subdir invocation for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/rule: cmake_check_build_system
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/rule
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/rule
 
 # Convenience name for target.
-footbot_diffusion_autogen: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/rule
+footbot_diffusion_autogen: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/rule
 
 .PHONY : footbot_diffusion_autogen
 
 # clean rule for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/clean:
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/clean
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/clean
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/clean:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/clean
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/clean
 
 # clean rule for target.
-clean: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/clean
+clean: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory controllers/footbot_diffusion/footbot_target
+
+# Convenience name for "all" pass in the directory.
+controllers/footbot_diffusion/footbot_target/all: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/all
+
+.PHONY : controllers/footbot_diffusion/footbot_target/all
+
+# Convenience name for "clean" pass in the directory.
+controllers/footbot_diffusion/footbot_target/clean: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/clean
+controllers/footbot_diffusion/footbot_target/clean: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/clean
+
+.PHONY : controllers/footbot_diffusion/footbot_target/clean
+
+# Convenience name for "preinstall" pass in the directory.
+controllers/footbot_diffusion/footbot_target/preinstall:
+
+.PHONY : controllers/footbot_diffusion/footbot_target/preinstall
+
+#=============================================================================
+# Target rules for target controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir
+
+# All Build rule for target.
+controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/all: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/all
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/depend
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=53,54,55 "Built target footbot_target"
+.PHONY : controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/all
+
+# Include target in all.
+all: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
+.PHONY : controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/rule
+
+# Convenience name for target.
+footbot_target: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/rule
+
+.PHONY : footbot_target
+
+# clean rule for target.
+controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/clean:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/clean
+.PHONY : controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/clean
+
+# clean rule for target.
+clean: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir
+
+# All Build rule for target.
+controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/all:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/depend
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=56 "Built target footbot_target_autogen"
+.PHONY : controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/all
+
+# Build rule for subdir invocation for target.
+controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
+.PHONY : controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/rule
+
+# Convenience name for target.
+footbot_target_autogen: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/rule
+
+.PHONY : footbot_target_autogen
+
+# clean rule for target.
+controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/clean:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/clean
+.PHONY : controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/clean
+
+# clean rule for target.
+clean: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/clean
 
 .PHONY : clean
 
@@ -544,6 +653,94 @@ controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir/clean:
 
 # clean rule for target.
 clean: controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory controllers/footbot_dg
+
+# Convenience name for "all" pass in the directory.
+controllers/footbot_dg/all: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
+
+.PHONY : controllers/footbot_dg/all
+
+# Convenience name for "clean" pass in the directory.
+controllers/footbot_dg/clean: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
+controllers/footbot_dg/clean: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
+
+.PHONY : controllers/footbot_dg/clean
+
+# Convenience name for "preinstall" pass in the directory.
+controllers/footbot_dg/preinstall:
+
+.PHONY : controllers/footbot_dg/preinstall
+
+#=============================================================================
+# Target rules for target controllers/footbot_dg/CMakeFiles/footbot_dg.dir
+
+# All Build rule for target.
+controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/depend
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=18,19,20 "Built target footbot_dg"
+.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
+
+# Include target in all.
+all: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+controllers/footbot_dg/CMakeFiles/footbot_dg.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
+.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg.dir/rule
+
+# Convenience name for target.
+footbot_dg: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/rule
+
+.PHONY : footbot_dg
+
+# clean rule for target.
+controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean:
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
+.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
+
+# clean rule for target.
+clean: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir
+
+# All Build rule for target.
+controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all:
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/depend
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=21 "Built target footbot_dg_autogen"
+.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all
+
+# Build rule for subdir invocation for target.
+controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
+.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/rule
+
+# Convenience name for target.
+footbot_dg_autogen: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/rule
+
+.PHONY : footbot_dg_autogen
+
+# clean rule for target.
+controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean:
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
+.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
+
+# clean rule for target.
+clean: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
 
 .PHONY : clean
 
@@ -988,94 +1185,6 @@ clean: controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_au
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory controllers/footbot_dg
-
-# Convenience name for "all" pass in the directory.
-controllers/footbot_dg/all: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
-
-.PHONY : controllers/footbot_dg/all
-
-# Convenience name for "clean" pass in the directory.
-controllers/footbot_dg/clean: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
-controllers/footbot_dg/clean: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
-
-.PHONY : controllers/footbot_dg/clean
-
-# Convenience name for "preinstall" pass in the directory.
-controllers/footbot_dg/preinstall:
-
-.PHONY : controllers/footbot_dg/preinstall
-
-#=============================================================================
-# Target rules for target controllers/footbot_dg/CMakeFiles/footbot_dg.dir
-
-# All Build rule for target.
-controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/depend
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=18,19,20 "Built target footbot_dg"
-.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
-
-# Include target in all.
-all: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-controllers/footbot_dg/CMakeFiles/footbot_dg.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_dg/CMakeFiles/footbot_dg.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
-.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg.dir/rule
-
-# Convenience name for target.
-footbot_dg: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/rule
-
-.PHONY : footbot_dg
-
-# clean rule for target.
-controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean:
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
-.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
-
-# clean rule for target.
-clean: controllers/footbot_dg/CMakeFiles/footbot_dg.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir
-
-# All Build rule for target.
-controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all:
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/depend
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=21 "Built target footbot_dg_autogen"
-.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all
-
-# Build rule for subdir invocation for target.
-controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dev/swarm-cooperative-navigation/build/CMakeFiles 0
-.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/rule
-
-# Convenience name for target.
-footbot_dg_autogen: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/rule
-
-.PHONY : footbot_dg_autogen
-
-# clean rule for target.
-controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean:
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
-.PHONY : controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
-
-# clean rule for target.
-clean: controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Directory level rules for directory loop_functions
 
 # Convenience name for "all" pass in the directory.
@@ -1138,7 +1247,7 @@ loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions.dir/al
 loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions.dir/all: loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_autogen.dir/all
 	$(MAKE) -f loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions.dir/build.make loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions.dir/depend
 	$(MAKE) -f loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions.dir/build.make loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=53,54,55,56 "Built target foraging_loop_functions"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=57,58,59,60 "Built target foraging_loop_functions"
 .PHONY : loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions.dir/all
 
 # Include target in all.
@@ -1175,7 +1284,7 @@ clean: loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions
 loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_autogen.dir/all: controllers/footbot_foraging/CMakeFiles/footbot_foraging.dir/all
 	$(MAKE) -f loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_autogen.dir/build.make loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_autogen.dir/depend
 	$(MAKE) -f loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_autogen.dir/build.make loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=57 "Built target foraging_loop_functions_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=61 "Built target foraging_loop_functions_autogen"
 .PHONY : loop_functions/foraging_loop_functions/CMakeFiles/foraging_loop_functions_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1229,7 +1338,7 @@ loop_functions/mpga_loop_functions/preinstall:
 loop_functions/mpga_loop_functions/CMakeFiles/mpga.dir/all: loop_functions/mpga_loop_functions/CMakeFiles/mpga_autogen.dir/all
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga.dir/depend
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=74,75,76,77 "Built target mpga"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=78,79,80,81 "Built target mpga"
 .PHONY : loop_functions/mpga_loop_functions/CMakeFiles/mpga.dir/all
 
 # Include target in all.
@@ -1268,7 +1377,7 @@ loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir
 loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir/all: loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_autogen.dir/all
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir/depend
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=83,84,85 "Built target mpga_phototaxis_loop_functions"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=87,88,89 "Built target mpga_phototaxis_loop_functions"
 .PHONY : loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir/all
 
 # Include target in all.
@@ -1305,7 +1414,7 @@ clean: loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functi
 loop_functions/mpga_loop_functions/CMakeFiles/mpga_autogen.dir/all:
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga_autogen.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga_autogen.dir/depend
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga_autogen.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=78 "Built target mpga_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=82 "Built target mpga_autogen"
 .PHONY : loop_functions/mpga_loop_functions/CMakeFiles/mpga_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1338,7 +1447,7 @@ loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_aut
 loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_autogen.dir/all: loop_functions/mpga_loop_functions/CMakeFiles/mpga.dir/all
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_autogen.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_autogen.dir/depend
 	$(MAKE) -f loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_autogen.dir/build.make loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=86 "Built target mpga_phototaxis_loop_functions_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=90 "Built target mpga_phototaxis_loop_functions_autogen"
 .PHONY : loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1477,7 +1586,7 @@ loop_functions/trajectory_loop_functions/preinstall:
 loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions.dir/all: loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions_autogen.dir/all
 	$(MAKE) -f loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions.dir/build.make loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions.dir/depend
 	$(MAKE) -f loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions.dir/build.make loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=87,88,89,90 "Built target trajectory_loop_functions"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=91,92,93,94 "Built target trajectory_loop_functions"
 .PHONY : loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions.dir/all
 
 # Include target in all.
@@ -1514,7 +1623,7 @@ clean: loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_funct
 loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions_autogen.dir/all:
 	$(MAKE) -f loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions_autogen.dir/build.make loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions_autogen.dir/depend
 	$(MAKE) -f loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions_autogen.dir/build.make loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=91 "Built target trajectory_loop_functions_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=95 "Built target trajectory_loop_functions_autogen"
 .PHONY : loop_functions/trajectory_loop_functions/CMakeFiles/trajectory_loop_functions_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1565,7 +1674,7 @@ loop_functions/id_loop_functions/preinstall:
 loop_functions/id_loop_functions/CMakeFiles/id_loop_functions.dir/all: loop_functions/id_loop_functions/CMakeFiles/id_loop_functions_autogen.dir/all
 	$(MAKE) -f loop_functions/id_loop_functions/CMakeFiles/id_loop_functions.dir/build.make loop_functions/id_loop_functions/CMakeFiles/id_loop_functions.dir/depend
 	$(MAKE) -f loop_functions/id_loop_functions/CMakeFiles/id_loop_functions.dir/build.make loop_functions/id_loop_functions/CMakeFiles/id_loop_functions.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=66,67,68 "Built target id_loop_functions"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=70,71,72 "Built target id_loop_functions"
 .PHONY : loop_functions/id_loop_functions/CMakeFiles/id_loop_functions.dir/all
 
 # Include target in all.
@@ -1602,7 +1711,7 @@ clean: loop_functions/id_loop_functions/CMakeFiles/id_loop_functions.dir/clean
 loop_functions/id_loop_functions/CMakeFiles/id_loop_functions_autogen.dir/all:
 	$(MAKE) -f loop_functions/id_loop_functions/CMakeFiles/id_loop_functions_autogen.dir/build.make loop_functions/id_loop_functions/CMakeFiles/id_loop_functions_autogen.dir/depend
 	$(MAKE) -f loop_functions/id_loop_functions/CMakeFiles/id_loop_functions_autogen.dir/build.make loop_functions/id_loop_functions/CMakeFiles/id_loop_functions_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=69 "Built target id_loop_functions_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=73 "Built target id_loop_functions_autogen"
 .PHONY : loop_functions/id_loop_functions/CMakeFiles/id_loop_functions_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1654,7 +1763,7 @@ loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functi
 loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions.dir/all: loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/all
 	$(MAKE) -f loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions.dir/build.make loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions.dir/depend
 	$(MAKE) -f loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions.dir/build.make loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=70,71,72 "Built target manualcontrol_loop_functions"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=74,75,76 "Built target manualcontrol_loop_functions"
 .PHONY : loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions.dir/all
 
 # Include target in all.
@@ -1691,7 +1800,7 @@ clean: loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop
 loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/all: controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/all
 	$(MAKE) -f loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/build.make loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/depend
 	$(MAKE) -f loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/build.make loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=73 "Built target manualcontrol_loop_functions_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=77 "Built target manualcontrol_loop_functions_autogen"
 .PHONY : loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1743,7 +1852,7 @@ loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_
 loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/all: loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_autogen.dir/all
 	$(MAKE) -f loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/build.make loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/depend
 	$(MAKE) -f loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/build.make loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=62,63,64 "Built target galib_phototaxis_loop_functions"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=66,67,68 "Built target galib_phototaxis_loop_functions"
 .PHONY : loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/all
 
 # Include target in all.
@@ -1780,7 +1889,7 @@ clean: loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxi
 loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_autogen.dir/all: controllers/footbot_nn/CMakeFiles/footbot_nn.dir/all
 	$(MAKE) -f loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_autogen.dir/build.make loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_autogen.dir/depend
 	$(MAKE) -f loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_autogen.dir/build.make loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=65 "Built target galib_phototaxis_loop_functions_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=69 "Built target galib_phototaxis_loop_functions_autogen"
 .PHONY : loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1855,7 +1964,7 @@ embedding/mpga/CMakeFiles/mpga_phototaxis.dir/all: loop_functions/mpga_loop_func
 embedding/mpga/CMakeFiles/mpga_phototaxis.dir/all: embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/all
 	$(MAKE) -f embedding/mpga/CMakeFiles/mpga_phototaxis.dir/build.make embedding/mpga/CMakeFiles/mpga_phototaxis.dir/depend
 	$(MAKE) -f embedding/mpga/CMakeFiles/mpga_phototaxis.dir/build.make embedding/mpga/CMakeFiles/mpga_phototaxis.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=79,80,81 "Built target mpga_phototaxis"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=83,84,85 "Built target mpga_phototaxis"
 .PHONY : embedding/mpga/CMakeFiles/mpga_phototaxis.dir/all
 
 # Include target in all.
@@ -1893,7 +2002,7 @@ embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/all: controllers/footbot_n
 embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/all: loop_functions/mpga_loop_functions/CMakeFiles/mpga_phototaxis_loop_functions.dir/all
 	$(MAKE) -f embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/build.make embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/depend
 	$(MAKE) -f embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/build.make embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=82 "Built target mpga_phototaxis_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=86 "Built target mpga_phototaxis_autogen"
 .PHONY : embedding/mpga/CMakeFiles/mpga_phototaxis_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1946,7 +2055,7 @@ embedding/galib/CMakeFiles/galib_phototaxis.dir/all: loop_functions/galib_photot
 embedding/galib/CMakeFiles/galib_phototaxis.dir/all: embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/all
 	$(MAKE) -f embedding/galib/CMakeFiles/galib_phototaxis.dir/build.make embedding/galib/CMakeFiles/galib_phototaxis.dir/depend
 	$(MAKE) -f embedding/galib/CMakeFiles/galib_phototaxis.dir/build.make embedding/galib/CMakeFiles/galib_phototaxis.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=58,59,60 "Built target galib_phototaxis"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=62,63,64 "Built target galib_phototaxis"
 .PHONY : embedding/galib/CMakeFiles/galib_phototaxis.dir/all
 
 # Include target in all.
@@ -1984,7 +2093,7 @@ embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/all: controllers/footbot
 embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/all: loop_functions/galib_phototaxis_loop_functions/CMakeFiles/galib_phototaxis_loop_functions.dir/all
 	$(MAKE) -f embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/build.make embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/depend
 	$(MAKE) -f embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/build.make embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=61 "Built target galib_phototaxis_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=65 "Built target galib_phototaxis_autogen"
 .PHONY : embedding/galib/CMakeFiles/galib_phototaxis_autogen.dir/all
 
 # Build rule for subdir invocation for target.

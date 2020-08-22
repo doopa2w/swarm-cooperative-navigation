@@ -110,90 +110,6 @@ depend:
 	cd /home/dev/swarm-cooperative-navigation/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/rule:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/rule
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/rule
-
-# Convenience name for target.
-footbot_diffusion: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/rule
-
-.PHONY : footbot_diffusion
-
-# fast build rule for target.
-footbot_diffusion/fast:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build
-.PHONY : footbot_diffusion/fast
-
-# Convenience name for target.
-controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/rule:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f CMakeFiles/Makefile2 controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/rule
-.PHONY : controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/rule
-
-# Convenience name for target.
-footbot_diffusion_autogen: controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/rule
-
-.PHONY : footbot_diffusion_autogen
-
-# fast build rule for target.
-footbot_diffusion_autogen/fast:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build
-.PHONY : footbot_diffusion_autogen/fast
-
-footbot_diffusion.o: footbot_diffusion.cpp.o
-
-.PHONY : footbot_diffusion.o
-
-# target to build an object file
-footbot_diffusion.cpp.o:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o
-.PHONY : footbot_diffusion.cpp.o
-
-footbot_diffusion.i: footbot_diffusion.cpp.i
-
-.PHONY : footbot_diffusion.i
-
-# target to preprocess a source file
-footbot_diffusion.cpp.i:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.i
-.PHONY : footbot_diffusion.cpp.i
-
-footbot_diffusion.s: footbot_diffusion.cpp.s
-
-.PHONY : footbot_diffusion.s
-
-# target to generate assembly for a file
-footbot_diffusion.cpp.s:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.s
-.PHONY : footbot_diffusion.cpp.s
-
-footbot_diffusion_autogen/mocs_compilation.o: footbot_diffusion_autogen/mocs_compilation.cpp.o
-
-.PHONY : footbot_diffusion_autogen/mocs_compilation.o
-
-# target to build an object file
-footbot_diffusion_autogen/mocs_compilation.cpp.o:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o
-.PHONY : footbot_diffusion_autogen/mocs_compilation.cpp.o
-
-footbot_diffusion_autogen/mocs_compilation.i: footbot_diffusion_autogen/mocs_compilation.cpp.i
-
-.PHONY : footbot_diffusion_autogen/mocs_compilation.i
-
-# target to preprocess a source file
-footbot_diffusion_autogen/mocs_compilation.cpp.i:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.i
-.PHONY : footbot_diffusion_autogen/mocs_compilation.cpp.i
-
-footbot_diffusion_autogen/mocs_compilation.s: footbot_diffusion_autogen/mocs_compilation.cpp.s
-
-.PHONY : footbot_diffusion_autogen/mocs_compilation.s
-
-# target to generate assembly for a file
-footbot_diffusion_autogen/mocs_compilation.cpp.s:
-	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.s
-.PHONY : footbot_diffusion_autogen/mocs_compilation.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -201,15 +117,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... footbot_diffusion"
 	@echo "... edit_cache"
-	@echo "... footbot_diffusion_autogen"
-	@echo "... footbot_diffusion.o"
-	@echo "... footbot_diffusion.i"
-	@echo "... footbot_diffusion.s"
-	@echo "... footbot_diffusion_autogen/mocs_compilation.o"
-	@echo "... footbot_diffusion_autogen/mocs_compilation.i"
-	@echo "... footbot_diffusion_autogen/mocs_compilation.s"
 .PHONY : help
 
 

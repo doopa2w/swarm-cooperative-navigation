@@ -300,6 +300,9 @@ footbot_nn_LIB_DEPENDS:STATIC=general;argos3core_simulator;general;argos3plugin_
 footbot_synchronization_LIB_DEPENDS:STATIC=general;argos3core_simulator;general;argos3plugin_simulator_footbot;general;argos3plugin_simulator_genericrobot;
 
 //Dependencies for the target
+footbot_target_LIB_DEPENDS:STATIC=general;argos3core_simulator;general;argos3plugin_simulator_footbot;general;argos3plugin_simulator_genericrobot;
+
+//Dependencies for the target
 foraging_loop_functions_LIB_DEPENDS:STATIC=general;footbot_foraging;general;argos3core_simulator;general;argos3plugin_simulator_dynamics2d;general;argos3plugin_simulator_entities;general;argos3plugin_simulator_footbot;general;argos3plugin_simulator_genericrobot;general;argos3plugin_simulator_media;general;argos3plugin_simulator_qtopengl;
 
 //Dependencies for the target
@@ -453,7 +456,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=24
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=26
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

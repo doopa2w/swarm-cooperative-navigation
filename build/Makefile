@@ -120,7 +120,7 @@ footbot_diffusion: cmake_check_build_system
 
 # fast build rule for target.
 footbot_diffusion/fast:
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion.dir/build
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build
 .PHONY : footbot_diffusion/fast
 
 #=============================================================================
@@ -133,8 +133,34 @@ footbot_diffusion_autogen: cmake_check_build_system
 
 # fast build rule for target.
 footbot_diffusion_autogen/fast:
-	$(MAKE) -f controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/CMakeFiles/footbot_diffusion_autogen.dir/build
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion_autogen.dir/build
 .PHONY : footbot_diffusion_autogen/fast
+
+#=============================================================================
+# Target rules for targets named footbot_target
+
+# Build rule for target.
+footbot_target: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_target
+.PHONY : footbot_target
+
+# fast build rule for target.
+footbot_target/fast:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target.dir/build
+.PHONY : footbot_target/fast
+
+#=============================================================================
+# Target rules for targets named footbot_target_autogen
+
+# Build rule for target.
+footbot_target_autogen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_target_autogen
+.PHONY : footbot_target_autogen
+
+# fast build rule for target.
+footbot_target_autogen/fast:
+	$(MAKE) -f controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/build.make controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/build
+.PHONY : footbot_target_autogen/fast
 
 #=============================================================================
 # Target rules for targets named footbot_synchronization
@@ -239,6 +265,32 @@ footbot_foraging_autogen: cmake_check_build_system
 footbot_foraging_autogen/fast:
 	$(MAKE) -f controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir/build.make controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir/build
 .PHONY : footbot_foraging_autogen/fast
+
+#=============================================================================
+# Target rules for targets named footbot_dg
+
+# Build rule for target.
+footbot_dg: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_dg
+.PHONY : footbot_dg
+
+# fast build rule for target.
+footbot_dg/fast:
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build
+.PHONY : footbot_dg/fast
+
+#=============================================================================
+# Target rules for targets named footbot_dg_autogen
+
+# Build rule for target.
+footbot_dg_autogen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 footbot_dg_autogen
+.PHONY : footbot_dg_autogen
+
+# fast build rule for target.
+footbot_dg_autogen/fast:
+	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build
+.PHONY : footbot_dg_autogen/fast
 
 #=============================================================================
 # Target rules for targets named footbot_manualcontrol
@@ -369,32 +421,6 @@ epuck_obstacleavoidance_autogen: cmake_check_build_system
 epuck_obstacleavoidance_autogen/fast:
 	$(MAKE) -f controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_autogen.dir/build.make controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_autogen.dir/build
 .PHONY : epuck_obstacleavoidance_autogen/fast
-
-#=============================================================================
-# Target rules for targets named footbot_dg
-
-# Build rule for target.
-footbot_dg: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 footbot_dg
-.PHONY : footbot_dg
-
-# fast build rule for target.
-footbot_dg/fast:
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg.dir/build
-.PHONY : footbot_dg/fast
-
-#=============================================================================
-# Target rules for targets named footbot_dg_autogen
-
-# Build rule for target.
-footbot_dg_autogen: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 footbot_dg_autogen
-.PHONY : footbot_dg_autogen
-
-# fast build rule for target.
-footbot_dg_autogen/fast:
-	$(MAKE) -f controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build.make controllers/footbot_dg/CMakeFiles/footbot_dg_autogen.dir/build
-.PHONY : footbot_dg_autogen/fast
 
 #=============================================================================
 # Target rules for targets named foraging_loop_functions
@@ -666,6 +692,8 @@ help:
 	@echo "... edit_cache"
 	@echo "... footbot_diffusion"
 	@echo "... footbot_diffusion_autogen"
+	@echo "... footbot_target"
+	@echo "... footbot_target_autogen"
 	@echo "... footbot_synchronization"
 	@echo "... footbot_synchronization_autogen"
 	@echo "... footbot_flocking"
@@ -674,6 +702,8 @@ help:
 	@echo "... footbot_gripping_autogen"
 	@echo "... footbot_foraging"
 	@echo "... footbot_foraging_autogen"
+	@echo "... footbot_dg"
+	@echo "... footbot_dg_autogen"
 	@echo "... footbot_manualcontrol"
 	@echo "... footbot_manualcontrol_autogen"
 	@echo "... footbot_nn"
@@ -684,8 +714,6 @@ help:
 	@echo "... eyebot_flocking_autogen"
 	@echo "... epuck_obstacleavoidance"
 	@echo "... epuck_obstacleavoidance_autogen"
-	@echo "... footbot_dg"
-	@echo "... footbot_dg_autogen"
 	@echo "... foraging_loop_functions"
 	@echo "... foraging_loop_functions_autogen"
 	@echo "... mpga"

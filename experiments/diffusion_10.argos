@@ -17,15 +17,29 @@
   <controllers>
 
     <footbot_diffusion_controller id="fdc"
-                                  library="build/controllers/footbot_diffusion/libfootbot_diffusion.so">
+                                  library="build/controllers/footbot_diffusion/footbot_explorer/libfootbot_diffusion.so">
       <actuators>
         <differential_steering implementation="default" />
+        <range_and_bearing implementation="default" />
       </actuators>
       <sensors>
         <footbot_proximity implementation="default" show_rays="true" />
+        <range_and_bearing implementation="medium" medium="rab" show_rays="true" />
       </sensors>
       <params alpha="7.5" delta="0.1" velocity="5" />
     </footbot_diffusion_controller>
+
+    <footbot_static_controller id="fpc"
+                              library="build/controllers/footbot_diffusion/footbot_target/libfootbot_target.so">
+      <actuators>
+        <leds implementation="default" medium="leds" />
+        <range_and_bearing implementation="default" />
+      </actuators>
+      <sensors>
+        <range_and_bearing implementation="medium" medium="rab" />
+      </sensors>
+      <params colorid="4"/> <!-- RED -->
+    </footbot_static_controller>
 
   </controllers>
 
@@ -47,6 +61,8 @@
       <body position="-2,0,0" orientation="0,0,0" />
     </box>
 
+
+
     <!--
         You can distribute entities randomly. Here, we distribute
         10 foot-bots in this way:
@@ -59,9 +75,20 @@
     <distribute>
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="10" max_trials="100">
-        <foot-bot id="fb">
+      <entity quantity="5" max_trials="100">
+        <foot-bot id="fb" >
           <controller config="fdc" />
+        </foot-bot>
+      </entity>
+    </distribute>
+
+
+    <distribute>
+      <position method="uniform" min="-2, -2, 0" max="2, 2, 0" />
+      <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+      <entity quantity="2" max_trials="100">
+        <foot-bot id="target">
+          <controller config="fpc"/>
         </foot-bot>
       </entity>
     </distribute>
@@ -102,7 +129,10 @@
   <!-- ********* -->
   <!-- * Media * -->
   <!-- ********* -->
-  <media />
+  <media>
+    <range_and_bearing id="rab" />
+    <led id="leds" />
+  </media>
 
   <!-- ****************** -->
   <!-- * Visualization * -->

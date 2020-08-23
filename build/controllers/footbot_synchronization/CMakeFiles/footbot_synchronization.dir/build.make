@@ -60,15 +60,15 @@ include controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.d
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.o: controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/flags.make
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.o: ../controllers/footbot_synchronization/footbot_synchronization.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_synchronization/footbot_synchronization.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_synchronization/footbot_synchronization.cpp
 
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_synchronization/footbot_synchronization.cpp > CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_synchronization/footbot_synchronization.cpp > CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.i
 
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_synchronization/footbot_synchronization.cpp -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_synchronization/footbot_synchronization.cpp -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.s
 
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization.cpp.o.requires:
 
@@ -84,15 +84,15 @@ controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footb
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.o: controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/flags.make
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.o: controllers/footbot_synchronization/footbot_synchronization_autogen/mocs_compilation.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization/footbot_synchronization_autogen/mocs_compilation.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization/footbot_synchronization_autogen/mocs_compilation.cpp
 
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization/footbot_synchronization_autogen/mocs_compilation.cpp > CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization/footbot_synchronization_autogen/mocs_compilation.cpp > CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.i
 
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization/footbot_synchronization_autogen/mocs_compilation.cpp -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/footbot_synchronization/footbot_synchronization_autogen/mocs_compilation.cpp -o CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.s
 
 controllers/footbot_synchronization/CMakeFiles/footbot_synchronization.dir/footbot_synchronization_autogen/mocs_compilation.cpp.o.requires:
 

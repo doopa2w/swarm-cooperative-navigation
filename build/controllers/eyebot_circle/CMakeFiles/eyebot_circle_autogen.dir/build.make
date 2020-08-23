@@ -55,7 +55,7 @@ include controllers/eyebot_circle/CMakeFiles/eyebot_circle_autogen.dir/progress.
 
 controllers/eyebot_circle/CMakeFiles/eyebot_circle_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target eyebot_circle"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/eyebot_circle && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/eyebot_circle/CMakeFiles/eyebot_circle_autogen.dir Debug
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/eyebot_circle && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/eyebot_circle/CMakeFiles/eyebot_circle_autogen.dir ""
 
 eyebot_circle_autogen: controllers/eyebot_circle/CMakeFiles/eyebot_circle_autogen
 eyebot_circle_autogen: controllers/eyebot_circle/CMakeFiles/eyebot_circle_autogen.dir/build.make

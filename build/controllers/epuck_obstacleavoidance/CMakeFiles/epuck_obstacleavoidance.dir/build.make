@@ -60,15 +60,15 @@ include controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.d
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.o: controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/flags.make
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.o: ../controllers/epuck_obstacleavoidance/epuck_obstacleavoidance.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance.cpp
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance.cpp > CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance.cpp > CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.i
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance.cpp -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance.cpp -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.s
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance.cpp.o.requires:
 
@@ -84,15 +84,15 @@ controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.o: controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/flags.make
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.o: controllers/epuck_obstacleavoidance/epuck_obstacleavoidance_autogen/mocs_compilation.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance_autogen/mocs_compilation.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance_autogen/mocs_compilation.cpp
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance_autogen/mocs_compilation.cpp > CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance_autogen/mocs_compilation.cpp > CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.i
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance_autogen/mocs_compilation.cpp -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/epuck_obstacleavoidance_autogen/mocs_compilation.cpp -o CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.s
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance.dir/epuck_obstacleavoidance_autogen/mocs_compilation.cpp.o.requires:
 

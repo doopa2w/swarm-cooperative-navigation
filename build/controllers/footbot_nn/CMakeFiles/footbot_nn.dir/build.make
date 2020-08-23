@@ -60,15 +60,15 @@ include controllers/footbot_nn/CMakeFiles/footbot_nn.dir/flags.make
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.o: controllers/footbot_nn/CMakeFiles/footbot_nn.dir/flags.make
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.o: ../controllers/footbot_nn/nn/neural_network.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/neural_network.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/neural_network.cpp
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/neural_network.cpp > CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/neural_network.cpp > CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.i
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/neural_network.cpp -o CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/neural_network.cpp -o CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.s
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.o.requires:
 
@@ -84,15 +84,15 @@ controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/neural_network.cpp.o.provide
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.o: controllers/footbot_nn/CMakeFiles/footbot_nn.dir/flags.make
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.o: ../controllers/footbot_nn/nn/perceptron.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/perceptron.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/perceptron.cpp
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/perceptron.cpp > CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/perceptron.cpp > CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.i
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/perceptron.cpp -o CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/perceptron.cpp -o CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.s
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.o.requires:
 
@@ -108,15 +108,15 @@ controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/perceptron.cpp.o.provides.bu
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.o: controllers/footbot_nn/CMakeFiles/footbot_nn.dir/flags.make
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.o: ../controllers/footbot_nn/nn/ctrnn_multilayer.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/ctrnn_multilayer.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/ctrnn_multilayer.cpp
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/ctrnn_multilayer.cpp > CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/ctrnn_multilayer.cpp > CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.i
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/ctrnn_multilayer.cpp -o CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/nn/ctrnn_multilayer.cpp -o CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.s
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.o.requires:
 
@@ -132,15 +132,15 @@ controllers/footbot_nn/CMakeFiles/footbot_nn.dir/nn/ctrnn_multilayer.cpp.o.provi
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.o: controllers/footbot_nn/CMakeFiles/footbot_nn.dir/flags.make
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.o: ../controllers/footbot_nn/footbot_nn_controller.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/footbot_nn_controller.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/footbot_nn_controller.cpp
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/footbot_nn_controller.cpp > CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/footbot_nn_controller.cpp > CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.i
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/footbot_nn_controller.cpp -o CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_nn/footbot_nn_controller.cpp -o CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.s
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.o.requires:
 
@@ -156,15 +156,15 @@ controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_controller.cpp.o.pro
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.o: controllers/footbot_nn/CMakeFiles/footbot_nn.dir/flags.make
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.o: controllers/footbot_nn/footbot_nn_autogen/mocs_compilation.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/footbot_nn_autogen/mocs_compilation.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/footbot_nn_autogen/mocs_compilation.cpp
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/footbot_nn_autogen/mocs_compilation.cpp > CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/footbot_nn_autogen/mocs_compilation.cpp > CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.i
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/footbot_nn_autogen/mocs_compilation.cpp -o CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/footbot_nn_autogen/mocs_compilation.cpp -o CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.s
 
 controllers/footbot_nn/CMakeFiles/footbot_nn.dir/footbot_nn_autogen/mocs_compilation.cpp.o.requires:
 

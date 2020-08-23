@@ -60,15 +60,15 @@ include embedding/galib/CMakeFiles/galib_phototaxis.dir/flags.make
 embedding/galib/CMakeFiles/galib_phototaxis.dir/main.cpp.o: embedding/galib/CMakeFiles/galib_phototaxis.dir/flags.make
 embedding/galib/CMakeFiles/galib_phototaxis.dir/main.cpp.o: ../embedding/galib/main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object embedding/galib/CMakeFiles/galib_phototaxis.dir/main.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/galib_phototaxis.dir/main.cpp.o -c /home/dev/swarm-cooperative-navigation/embedding/galib/main.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/galib_phototaxis.dir/main.cpp.o -c /home/dev/swarm-cooperative-navigation/embedding/galib/main.cpp
 
 embedding/galib/CMakeFiles/galib_phototaxis.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/galib_phototaxis.dir/main.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/embedding/galib/main.cpp > CMakeFiles/galib_phototaxis.dir/main.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/embedding/galib/main.cpp > CMakeFiles/galib_phototaxis.dir/main.cpp.i
 
 embedding/galib/CMakeFiles/galib_phototaxis.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/galib_phototaxis.dir/main.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/embedding/galib/main.cpp -o CMakeFiles/galib_phototaxis.dir/main.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/embedding/galib/main.cpp -o CMakeFiles/galib_phototaxis.dir/main.cpp.s
 
 embedding/galib/CMakeFiles/galib_phototaxis.dir/main.cpp.o.requires:
 
@@ -84,15 +84,15 @@ embedding/galib/CMakeFiles/galib_phototaxis.dir/main.cpp.o.provides.build: embed
 embedding/galib/CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.o: embedding/galib/CMakeFiles/galib_phototaxis.dir/flags.make
 embedding/galib/CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.o: embedding/galib/galib_phototaxis_autogen/mocs_compilation.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object embedding/galib/CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/embedding/galib/galib_phototaxis_autogen/mocs_compilation.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/embedding/galib/galib_phototaxis_autogen/mocs_compilation.cpp
 
 embedding/galib/CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/embedding/galib/galib_phototaxis_autogen/mocs_compilation.cpp > CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/embedding/galib/galib_phototaxis_autogen/mocs_compilation.cpp > CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.i
 
 embedding/galib/CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/embedding/galib/galib_phototaxis_autogen/mocs_compilation.cpp -o CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/embedding/galib && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/embedding/galib/galib_phototaxis_autogen/mocs_compilation.cpp -o CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.s
 
 embedding/galib/CMakeFiles/galib_phototaxis.dir/galib_phototaxis_autogen/mocs_compilation.cpp.o.requires:
 

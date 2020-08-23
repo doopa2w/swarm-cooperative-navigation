@@ -55,7 +55,7 @@ include controllers/footbot_nn/CMakeFiles/footbot_nn_autogen.dir/progress.make
 
 controllers/footbot_nn/CMakeFiles/footbot_nn_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target footbot_nn"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/CMakeFiles/footbot_nn_autogen.dir Debug
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_nn/CMakeFiles/footbot_nn_autogen.dir ""
 
 footbot_nn_autogen: controllers/footbot_nn/CMakeFiles/footbot_nn_autogen
 footbot_nn_autogen: controllers/footbot_nn/CMakeFiles/footbot_nn_autogen.dir/build.make

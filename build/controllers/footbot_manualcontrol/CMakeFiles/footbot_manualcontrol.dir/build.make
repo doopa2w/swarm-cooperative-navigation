@@ -60,15 +60,15 @@ include controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/f
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.o: controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/flags.make
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.o: ../controllers/footbot_manualcontrol/footbot_manualcontrol.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_manualcontrol/footbot_manualcontrol.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_manualcontrol/footbot_manualcontrol.cpp
 
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_manualcontrol/footbot_manualcontrol.cpp > CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_manualcontrol/footbot_manualcontrol.cpp > CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.i
 
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_manualcontrol/footbot_manualcontrol.cpp -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_manualcontrol/footbot_manualcontrol.cpp -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.s
 
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol.cpp.o.requires:
 
@@ -84,15 +84,15 @@ controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_m
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.o: controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/flags.make
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.o: controllers/footbot_manualcontrol/footbot_manualcontrol_autogen/mocs_compilation.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.o"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol/footbot_manualcontrol_autogen/mocs_compilation.cpp
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol/footbot_manualcontrol_autogen/mocs_compilation.cpp
 
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.i"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol/footbot_manualcontrol_autogen/mocs_compilation.cpp > CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.i
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol/footbot_manualcontrol_autogen/mocs_compilation.cpp > CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.i
 
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.s"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol/footbot_manualcontrol_autogen/mocs_compilation.cpp -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.s
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/build/controllers/footbot_manualcontrol/footbot_manualcontrol_autogen/mocs_compilation.cpp -o CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.s
 
 controllers/footbot_manualcontrol/CMakeFiles/footbot_manualcontrol.dir/footbot_manualcontrol_autogen/mocs_compilation.cpp.o.requires:
 

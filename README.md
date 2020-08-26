@@ -16,4 +16,26 @@ Dependency
 5. UTF-8 to Byte and Vice versa Formatter
 6. Navigational Table
 
+##  IDEA ##
+
+### Message Payload Format/ Structure ###
+* 4 bytes per char -> Have not decide on the size of message
+* \0 terminating char for every collumn
+* Message Structure: goalID \0 horizontal bearing \0 vertical bearing \0 relative distance \0
+    * goalID             = range(1,4) -> 4 bytes
+    * horizontal bearing =  idk       -> 24 bbytes
+    * vertical bearing   =  idk       -> 24 bytes (4 d.p.)
+    * relative distance  =  in cm     -> 28 bytes (up to 2000.00 cm) since we only doing the max 20mx20m arena
+* ~ 77 bytes per goal/ row (Up to 4x77 = 308 bytes (3MB)) -> probably fine for simulation
+
+### - EvaluateMessage(CByteArray MessagePayload, int GoalID) ###
+Called right after getting readings from range and bearing.
+
+* Should call formatter to translateCByteArray to UTF-8 string then to matrix
+    * since its only used once, called the formatter inside this function
+* 
+
+### - EvaluateNavigationalTable() ###
+* Navigational table format should now be a fixed size of array (fixed 4 rows for now)
+* 
 

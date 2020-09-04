@@ -55,7 +55,7 @@ include loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loo
 
 loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target manualcontrol_loop_functions"
-	cd /home/dev/swarm-cooperative-navigation/build/loop_functions/manualcontrol_loop_functions && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir ""
+	cd /home/dev/swarm-cooperative-navigation/build/loop_functions/manualcontrol_loop_functions && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir Debug
 
 manualcontrol_loop_functions_autogen: loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen
 manualcontrol_loop_functions_autogen: loop_functions/manualcontrol_loop_functions/CMakeFiles/manualcontrol_loop_functions_autogen.dir/build.make

@@ -7,8 +7,8 @@ set(AM_CMAKE_CURRENT_SOURCE_DIR "/home/dev/swarm-cooperative-navigation/controll
 set(AM_CMAKE_CURRENT_BINARY_DIR "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer/")
 set(AM_CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE "")
 set(AM_BUILD_DIR "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion_autogen")
-set(AM_SOURCES "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion.cpp")
-set(AM_HEADERS "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion.h")
+set(AM_SOURCES "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion.cpp;/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/trace_message.cpp")
+set(AM_HEADERS "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion.h;/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/trace_message.h")
 # Qt environment
 set(AM_QT_VERSION_MAJOR "5")
 set(AM_QT_VERSION_MINOR "9")
@@ -36,4 +36,4 @@ set(AM_RCC_BUILDS )
 set(AM_RCC_OPTIONS )
 set(AM_RCC_INPUTS )
 # Configurations options
-set(AM_CONFIG_SUFFIX_ "_")
+set(AM_CONFIG_SUFFIX_Debug "_Debug")

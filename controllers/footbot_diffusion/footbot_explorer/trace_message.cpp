@@ -37,6 +37,11 @@ CAggressiveExplorationTrace::CAggressiveExplorationTrace(UInt32 robotId) :
 
 EState CAggressiveExplorationTrace::GetMessageType() { return AGGRESSIVE_EXPLORATION; }
 
+CFoundGoalTrace::CFoundGoalTrace(UInt32 robotId) :
+    CTraceMessage(robotId) {}
+
+EState CFoundGoalTrace::GetMessageType() { return FOUND_GOAL; }
+
 CMoveToGoalTrace::CMoveToGoalTrace(UInt32 robotId) :
     CTraceMessage(robotId) {}
 

@@ -81,9 +81,33 @@ controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/
 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o.provides.build: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o
 
 
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/flags.make
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o: ../controllers/footbot_diffusion/footbot_explorer/trace_message.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o"
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o -c /home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/trace_message.cpp
+
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/footbot_diffusion.dir/trace_message.cpp.i"
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/trace_message.cpp > CMakeFiles/footbot_diffusion.dir/trace_message.cpp.i
+
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/footbot_diffusion.dir/trace_message.cpp.s"
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer && /usr/bin/g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/trace_message.cpp -o CMakeFiles/footbot_diffusion.dir/trace_message.cpp.s
+
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.requires:
+
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.requires
+
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.provides: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.requires
+	$(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.provides.build
+.PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.provides
+
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.provides.build: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o
+
+
 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/flags.make
 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o: controllers/footbot_diffusion/footbot_explorer/footbot_diffusion_autogen/mocs_compilation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o"
 	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer && /usr/bin/g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o -c /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion_autogen/mocs_compilation.cpp
 
 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.i: cmake_force
@@ -108,16 +132,18 @@ controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/
 # Object files for target footbot_diffusion
 footbot_diffusion_OBJECTS = \
 "CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o" \
+"CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o" \
 "CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o"
 
 # External object files for target footbot_diffusion
 footbot_diffusion_EXTERNAL_OBJECTS =
 
 controllers/footbot_diffusion/footbot_explorer/libfootbot_diffusion.so: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o
+controllers/footbot_diffusion/footbot_explorer/libfootbot_diffusion.so: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o
 controllers/footbot_diffusion/footbot_explorer/libfootbot_diffusion.so: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o
 controllers/footbot_diffusion/footbot_explorer/libfootbot_diffusion.so: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make
 controllers/footbot_diffusion/footbot_explorer/libfootbot_diffusion.so: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX shared module libfootbot_diffusion.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX shared module libfootbot_diffusion.so"
 	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/footbot_diffusion.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -126,6 +152,7 @@ controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/
 .PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build
 
 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/requires: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o.requires
+controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/requires: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o.requires
 controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/requires: controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o.requires
 
 .PHONY : controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/requires

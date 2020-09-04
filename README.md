@@ -37,5 +37,8 @@ Called right after getting readings from range and bearing.
 
 ### - EvaluateNavigationalTable() ###
 * Navigational table format should now be a fixed size of array (fixed 4 rows for now)
-* 
+
+### Things to look at the API
+* CVector2(1.0f, cAccumulator.Angle()) from footbot_diffusion.cpp -> calculateVectorToLight
+* DiffusionVector function (DiffusionParams); WithinMinBoundIncludedMaxBoundIncluded(diffVector)
 

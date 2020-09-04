@@ -55,7 +55,7 @@ include controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir/pro
 
 controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target footbot_foraging"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_foraging && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir ""
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_foraging && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir Debug
 
 footbot_foraging_autogen: controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen
 footbot_foraging_autogen: controllers/footbot_foraging/CMakeFiles/footbot_foraging_autogen.dir/build.make

@@ -194,6 +194,33 @@ footbot_diffusion_autogen/mocs_compilation.cpp.s:
 	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.s
 .PHONY : footbot_diffusion_autogen/mocs_compilation.cpp.s
 
+trace_message.o: trace_message.cpp.o
+
+.PHONY : trace_message.o
+
+# target to build an object file
+trace_message.cpp.o:
+	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o
+.PHONY : trace_message.cpp.o
+
+trace_message.i: trace_message.cpp.i
+
+.PHONY : trace_message.i
+
+# target to preprocess a source file
+trace_message.cpp.i:
+	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.i
+.PHONY : trace_message.cpp.i
+
+trace_message.s: trace_message.cpp.s
+
+.PHONY : trace_message.s
+
+# target to generate assembly for a file
+trace_message.cpp.s:
+	cd /home/dev/swarm-cooperative-navigation/build && $(MAKE) -f controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/build.make controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.s
+.PHONY : trace_message.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -210,6 +237,9 @@ help:
 	@echo "... footbot_diffusion_autogen/mocs_compilation.o"
 	@echo "... footbot_diffusion_autogen/mocs_compilation.i"
 	@echo "... footbot_diffusion_autogen/mocs_compilation.s"
+	@echo "... trace_message.o"
+	@echo "... trace_message.i"
+	@echo "... trace_message.s"
 .PHONY : help
 
 

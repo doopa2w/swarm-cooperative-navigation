@@ -55,7 +55,7 @@ include controllers/footbot_gripping/CMakeFiles/footbot_gripping_autogen.dir/pro
 
 controllers/footbot_gripping/CMakeFiles/footbot_gripping_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target footbot_gripping"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_gripping && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_gripping/CMakeFiles/footbot_gripping_autogen.dir ""
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_gripping && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_gripping/CMakeFiles/footbot_gripping_autogen.dir Debug
 
 footbot_gripping_autogen: controllers/footbot_gripping/CMakeFiles/footbot_gripping_autogen
 footbot_gripping_autogen: controllers/footbot_gripping/CMakeFiles/footbot_gripping_autogen.dir/build.make

@@ -17,9 +17,10 @@
 enum EState {
     RANDOM_EXPLORATION = 0,
     AGGRESSIVE_EXPLORATION = 1,
-    MOVE_TO_GOAL = 2,
-    RESTING = 3,
-    AVOIDING_COLLISION = 4,
+    FOUND_GOAL = 2,
+    MOVE_TO_GOAL = 3,
+    RESTING = 4,
+    AVOIDING_COLLISION = 5,
     // The size for an array indexed by message types
     STATE_SIZE,
     CONTROL_LOOP_START = -1,

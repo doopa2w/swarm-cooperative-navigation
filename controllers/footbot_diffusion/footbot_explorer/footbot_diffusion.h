@@ -120,6 +120,13 @@ class CFootBotDiffusion : public CCI_Controller {
          EState PreviousState;
 
          // TODO: Include params for switching from random exploration to aggressive exploration
+         // Used as a range for uniform number generator
+         CRange<Real> ProbRange;
+
+         // the number of time steps in resting state
+         size_t TimeRested;
+         
+         // TODO: #7 Possible implemntation from the IDEA section in README
 
          SStateData();
          void Init(TConfigurationNode& t_node);
@@ -175,6 +182,8 @@ class CFootBotDiffusion : public CCI_Controller {
       inline bool isAggressiveExploring() const { return StateData.State == AGGRESSIVE_EXPLORATION; }
 
       inline bool isResting() const { return StateData.State == RESTING; }
+
+      inline bool isFoundGoal() const { return StateData.State == FOUND_GOAL; }
       
       inline bool isMovingToGoal() const { return StateData.State == MOVE_TO_GOAL; }
 
@@ -218,6 +227,8 @@ class CFootBotDiffusion : public CCI_Controller {
       // Starts the following states
       void StartRandomExploring();
 
+      void StartFoundGoal();
+
       void StartAggressiveExploring();
 
       void StartResting();
@@ -232,6 +243,8 @@ class CFootBotDiffusion : public CCI_Controller {
       virtual void MoveToGoal();
 
       virtual void Rest();
+
+   protected:
 
       /* Pointer to the differential steering actuator */
       CCI_DifferentialSteeringActuator* m_pcWheels;

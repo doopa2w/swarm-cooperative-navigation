@@ -50,6 +50,12 @@ class CAggressiveExplorationTrace : public CTraceMessage {
         CAggressiveExplorationTrace(UInt32 robotId);
 };
 
+class CFoundGoalTrace : public CTraceMessage {
+    public:
+        EState GetMessageType();
+        CFoundGoalTrace(UInt32 robotId);
+};
+
 class CMoveToGoalTrace : public CTraceMessage {
     public:
         EState GetMessageType();

@@ -55,7 +55,7 @@ include controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_a
 
 controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target epuck_obstacleavoidance"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_autogen.dir ""
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_autogen.dir Debug
 
 epuck_obstacleavoidance_autogen: controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_autogen
 epuck_obstacleavoidance_autogen: controllers/epuck_obstacleavoidance/CMakeFiles/epuck_obstacleavoidance_autogen.dir/build.make

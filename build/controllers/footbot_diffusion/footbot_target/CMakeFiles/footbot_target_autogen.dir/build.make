@@ -55,7 +55,7 @@ include controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_a
 
 controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dev/swarm-cooperative-navigation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target footbot_target"
-	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_target && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir ""
+	cd /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_target && /usr/bin/cmake -E cmake_autogen /home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir Debug
 
 footbot_target_autogen: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen
 footbot_target_autogen: controllers/footbot_diffusion/footbot_target/CMakeFiles/footbot_target_autogen.dir/build.make

@@ -36,4 +36,4 @@ set(AM_RCC_BUILDS )
 set(AM_RCC_OPTIONS )
 set(AM_RCC_INPUTS )
 # Configurations options
-set(AM_CONFIG_SUFFIX_ "_")
+set(AM_CONFIG_SUFFIX_Debug "_Debug")

@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion.cpp" "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion.cpp.o"
   "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer/footbot_diffusion_autogen/mocs_compilation.cpp" "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/footbot_diffusion_autogen/mocs_compilation.cpp.o"
+  "/home/dev/swarm-cooperative-navigation/controllers/footbot_diffusion/footbot_explorer/trace_message.cpp" "/home/dev/swarm-cooperative-navigation/build/controllers/footbot_diffusion/footbot_explorer/CMakeFiles/footbot_diffusion.dir/trace_message.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -85,6 +85,10 @@ public:
 
 private:
 
+   // Methods
+   CVector2 CalculateVectorToGoal();
+   
+
    /* Pointer to the differential steering actuator */
    CCI_DifferentialSteeringActuator* m_pcWheels;
    /* Pointer to the foot-bot proximity sensor */
@@ -117,6 +121,9 @@ private:
    /* Angle tolerance range to go straight.
     * It is set to [-alpha,alpha]. */
    CRange<CRadians> m_cGoStraightAngleRange;
+
+   // Configuration for XML file
+   int MessageSize;
 
 };
 

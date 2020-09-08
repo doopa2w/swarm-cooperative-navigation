@@ -11,4 +11,5 @@ add_subdirectory(footbot_nn)
 add_subdirectory(eyebot_circle)
 add_subdirectory(eyebot_flocking)
 add_subdirectory(epuck_obstacleavoidance)
+add_subdirectory(footbot_goal)
 

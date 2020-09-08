@@ -282,7 +282,7 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
    //       << "cm" << std::endl;
    // }
 
-}
+
 
 /****************************************/
 /****************************************/

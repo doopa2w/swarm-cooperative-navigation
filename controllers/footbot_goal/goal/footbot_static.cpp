@@ -43,7 +43,6 @@ void CFootBotTarget::ControlStep() {
     // broadcase message
     // GoalID
     m_pcRABA->SetData(0, Id);
-    m_pcRABA->SetData(1, 96);
 
 }
 

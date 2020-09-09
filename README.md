@@ -42,3 +42,8 @@ Called right after getting readings from range and bearing.
 * CVector2(1.0f, cAccumulator.Angle()) from footbot_diffusion.cpp -> calculateVectorToLight
 * DiffusionVector function (DiffusionParams); WithinMinBoundIncludedMaxBoundIncluded(diffVector)
 
+# BIGGEST HEADACHE #
+
+Should i set the vector<vector<Real>> with fixed size (configured inside XML) or not?
+
+if fixed, no need to sort anymore; vector<vector<Real> > table (3); {{0, 0, 0, 0}, {1, 0, 0, 0}, {2, 0, 0, 0}};

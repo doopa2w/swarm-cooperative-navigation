@@ -85,32 +85,32 @@ void CFootBotDiffusion::ControlStep() {
       }
    }
 
-   /* Get readings from proximity sensor */
-   const CCI_FootBotProximitySensor::TReadings& tProxReads = m_pcProximity->GetReadings();
-   /* Sum them together */
-   CVector2 cAccumulator;
-   for(size_t i = 0; i < tProxReads.size(); ++i) {
-      cAccumulator += CVector2(tProxReads[i].Value, tProxReads[i].Angle);
-   }
-   cAccumulator /= tProxReads.size();
-   /* If the angle of the vector is small enough and the closest obstacle
-    * is far enough, continue going straight, otherwise curve a little
-    */
-   CRadians cAngle = cAccumulator.Angle();
-   if(m_cGoStraightAngleRange.WithinMinBoundIncludedMaxBoundIncluded(cAngle) &&
-      cAccumulator.Length() < m_fDelta ) {
-      /* Go straight */
-      m_pcWheels->SetLinearVelocity(m_fWheelVelocity, m_fWheelVelocity);
-   }
-   else {
-      /* Turn, depending on the sign of the angle */
-      if(cAngle.GetValue() > 0.0f) {
-         m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
-      }
-      else {
-         m_pcWheels->SetLinearVelocity(0.0f, m_fWheelVelocity);
-      }
-   }
+   // /* Get readings from proximity sensor */
+   // const CCI_FootBotProximitySensor::TReadings& tProxReads = m_pcProximity->GetReadings();
+   // /* Sum them together */
+   // CVector2 cAccumulator;
+   // for(size_t i = 0; i < tProxReads.size(); ++i) {
+   //    cAccumulator += CVector2(tProxReads[i].Value, tProxReads[i].Angle);
+   // }
+   // cAccumulator /= tProxReads.size();
+   // /* If the angle of the vector is small enough and the closest obstacle
+   //  * is far enough, continue going straight, otherwise curve a little
+   //  */
+   // CRadians cAngle = cAccumulator.Angle();
+   // if(m_cGoStraightAngleRange.WithinMinBoundIncludedMaxBoundIncluded(cAngle) &&
+   //    cAccumulator.Length() < m_fDelta ) {
+   //    /* Go straight */
+   //    m_pcWheels->SetLinearVelocity(m_fWheelVelocity, m_fWheelVelocity);
+   // }
+   // else {
+   //    /* Turn, depending on the sign of the angle */
+   //    if(cAngle.GetValue() > 0.0f) {
+   //       m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
+   //    }
+   //    else {
+   //       m_pcWheels->SetLinearVelocity(0.0f, m_fWheelVelocity);
+   //    }
+   // }
 
    // broadcast and receive message
    /*
@@ -150,7 +150,6 @@ CVector2 CFootBotDiffusion::CalculateVectorToGoal() {
          cAccumulator += CVector2(tPackets[i].Range, tPackets[i].HorizontalBearing);
       }
    }
-   LOG << "Vector2: " << cAccumulator << std::endl;
    return cAccumulator;
 }
 

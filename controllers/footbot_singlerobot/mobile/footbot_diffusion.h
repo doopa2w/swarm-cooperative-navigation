@@ -18,8 +18,9 @@
 #include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_actuator.h>
 /* Definition of the range and bearing sensor */
 #include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
-/* Definition of the foot-bot light sensor */
-#include <argos3/plugins/robots/foot-bot/control_interface/ci_footbot_light_sensor.h>
+// Definition of the foot-bot LEDs actuator 
+#include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
+/* Definitions for random number generator in ARGoS */
 #include <argos3/core/utility/math/rng.h>
 #include <vector>
 
@@ -95,7 +96,7 @@ class CFootBotDiffusion : public CCI_Controller {
             /*
              * The navigational information regarding the designated goal or other non-designated goal(s)
              *  Format:
-             *       0: GoalID
+             *       0: GoalID (Based on index)
              *       1: Sequence Number (age of info based on time step)
              *          - Reset to 0 as long a new navigational info is append into it
              *          - Increases when there is no new update
@@ -114,10 +115,22 @@ class CFootBotDiffusion : public CCI_Controller {
              */
             std::vector<Real> GoalNavigationalInfo;
             /*
-             * The navigational table that may contain all the goal(s) info
+             * The navigational table may contain all the goal(s) info 
              * Format: {NavigationalInfo, NavigationalInfo, ...}
              */
+            UInt8 NumberOfGoals;
+
             std::vector<std::vector<Real>> NavigationalTable;
+
+            // format from real to byte of navigational info
+            CByteArray RealToByte(std::vector<Real>& v_info);
+            // vice versa
+            std::vector<Real> ByteToReal(CByteArray& b_array);
+            // bool SortGoalId(const std::vector<Real>& v_a, const std::vector<Real>& v_b);
+            
+            // compare a goal info with another goal info
+            std::vector<Real> CompareGoalInfos(std::vector<Real>& v_info1, std::vector<Real>& v_info2);
+
             // Use to switch from AGGRESSIVE_EXPLORATION -> MOVE_TO_GOAL
             bool FoundDesignatedGoal;
             /*
@@ -130,21 +143,7 @@ class CFootBotDiffusion : public CCI_Controller {
             void Init(TConfigurationNode& t_node);
             void Reset();
             void SaveState();
-
-            // format from real to byte of navigational info
-            CByteArray RealToByte(std::vector<Real>& v_info);
-            // vice versa
-            std::vector<Real> ByteToReal(CByteArray& b_array);
-            // A sort function to sort the info inside a table
-            // Only run this everytime push_back(new info)
-            // TODO: found an issue whereby the table rows may not be 
-            // equivalent for every robot; hence, we might need to
-            // actually set a fixed size for vector2 at run time based on 
-            // number of goals (configured inside XML)
-
-            bool SortGoalId(const std::vector<Real>& v_a, const std::vector<Real>& v_b);
-
-        };
+    };
 
     public:
         CFootBotDiffusion();
@@ -181,6 +180,8 @@ class CFootBotDiffusion : public CCI_Controller {
         /*
          * Updates the state information accordinly based on the availability of 
          * designate goal's navigational info inside the robot's navigational table
+         * 
+         *  
          */
         void UpdateState();
         
@@ -215,10 +216,26 @@ class CFootBotDiffusion : public CCI_Controller {
          * else -> compare own table and received table from sender 
          * everytime an info is update -> reset SeqNum to 0 else ++SeqNum for the last info's iteration
          * 
-         * Also, everytime you append info of a newly discovered goal -> push_back(info) then 
-         * sort(table.begin(), table.end(), own_comparator_function)
+         * Despite the navigational table init with a fixed size, allow option for robot to append
+         * a newly introduced goal into the environment by push_back()
+         * 
+         * 
+         * TODO: #20 UpdateNavigationalTable should be void since we are updating the state's table inside
+         * the method anyway
          */
-        std::vector<std::vector<Real>> UpdateNavigationalTable(const CCI_RangeAndBearingSensor::TReadings& t_packets);
+        void UpdateNavigationalTable(const CCI_RangeAndBearingSensor::TReadings& t_packets);
+        
+        // This method is used for broadcasting navigational table through range and bearing actuator
+        void BroadcastNavigationalTable();
+
+        /*
+         * Evaluates the newly updated navigational table right after UpdateNavigationalTable
+         * This method checks the new table and seek info for designated goal then initialize
+         * the info if found with StateData.GoalNavigationalInfo
+         * 
+         * Also determines which state a robot should be in every time step
+         */
+        void EvaluateNavigationalTable();
 
         // Starts the following states as the name implies
         void StartRandomExploration();
@@ -247,12 +264,15 @@ class CFootBotDiffusion : public CCI_Controller {
         CCI_RangeAndBearingActuator*  m_pcRABA;
         /* Pointer to the range and bearing sensor */
         CCI_RangeAndBearingSensor* m_pcRABS;
+        /* Pointer to the LEDs actuator */
+        CCI_LEDsActuator* m_pcLEDs;
         // The Random Number Generator for ARGos
         CRandom::CRNG* m_RNG;
 
         // robotId determined based on order of creation
         static UInt32 s_unIdCounter;
         UInt32 Id;
+
 
         // The controller state information
         SStateData StateData;

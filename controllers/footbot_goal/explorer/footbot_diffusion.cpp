@@ -6,6 +6,7 @@
 #include <argos3/core/utility/math/vector2.h>
 /* Logging */
 #include <argos3/core/utility/logging/argos_log.h>
+#include <string>
 
 /****************************************/
 /****************************************/
@@ -18,7 +19,6 @@ CFootBotDiffusion::CFootBotDiffusion() :
    m_cAlpha(10.0f),
    m_fDelta(0.5f),
    m_fWheelVelocity(2.5f),
-   MessageSize(320),
    m_cGoStraightAngleRange(-ToRadians(m_cAlpha),
                            ToRadians(m_cAlpha)) {}
 
@@ -63,7 +63,7 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
    m_cGoStraightAngleRange.Set(-ToRadians(m_cAlpha), ToRadians(m_cAlpha));
    GetNodeAttributeOrDefault(t_node, "delta", m_fDelta, m_fDelta);
    GetNodeAttributeOrDefault(t_node, "velocity", m_fWheelVelocity, m_fWheelVelocity);
-   GetNodeAttributeOrDefault(t_node, "message_size", MessageSize, MessageSize);
+   GetNodeAttribute(t_node, "message_size", MessageSize);
 }
 
 /****************************************/
@@ -71,13 +71,31 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
 
 void CFootBotDiffusion::ControlStep() {
 
-   CVector2 cAcc = CalculateVectorToGoal();
-   CRadians cAng = cAcc.Angle();
-   if(m_cGoStraightAngleRange.WithinMinBoundIncludedMaxBoundIncluded(cAng) && cAcc.Length() < m_fDelta) {
+   std::string identifier;
+   CByteArray cBuf;
+
+
+
+   /* Get readings from proximity sensor */
+   const CCI_FootBotProximitySensor::TReadings& tProxReads = m_pcProximity->GetReadings();
+   /* Sum them together */
+   CVector2 cAccumulator;
+   for(size_t i = 0; i < tProxReads.size(); ++i) {
+      cAccumulator += CVector2(tProxReads[i].Value, tProxReads[i].Angle);
+   }
+   cAccumulator /= tProxReads.size();
+   /* If the angle of the vector is small enough and the closest obstacle
+    * is far enough, continue going straight, otherwise curve a little
+    */
+   CRadians cAngle = cAccumulator.Angle();
+   if(m_cGoStraightAngleRange.WithinMinBoundIncludedMaxBoundIncluded(cAngle) &&
+      cAccumulator.Length() < m_fDelta ) {
+      /* Go straight */
       m_pcWheels->SetLinearVelocity(m_fWheelVelocity, m_fWheelVelocity);
    }
    else {
-      if (cAng.GetValue() > 0.0f) {
+      /* Turn, depending on the sign of the angle */
+      if(cAngle.GetValue() > 0.0f) {
          m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
       }
       else {
@@ -85,33 +103,23 @@ void CFootBotDiffusion::ControlStep() {
       }
    }
 
-   // /* Get readings from proximity sensor */
-   // const CCI_FootBotProximitySensor::TReadings& tProxReads = m_pcProximity->GetReadings();
-   // /* Sum them together */
-   // CVector2 cAccumulator;
-   // for(size_t i = 0; i < tProxReads.size(); ++i) {
-   //    cAccumulator += CVector2(tProxReads[i].Value, tProxReads[i].Angle);
-   // }
-   // cAccumulator /= tProxReads.size();
-   // /* If the angle of the vector is small enough and the closest obstacle
-   //  * is far enough, continue going straight, otherwise curve a little
-   //  */
-   // CRadians cAngle = cAccumulator.Angle();
-   // if(m_cGoStraightAngleRange.WithinMinBoundIncludedMaxBoundIncluded(cAngle) &&
-   //    cAccumulator.Length() < m_fDelta ) {
-   //    /* Go straight */
-   //    m_pcWheels->SetLinearVelocity(m_fWheelVelocity, m_fWheelVelocity);
-   // }
-   // else {
-   //    /* Turn, depending on the sign of the angle */
-   //    if(cAngle.GetValue() > 0.0f) {
-   //       m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
-   //    }
-   //    else {
-   //       m_pcWheels->SetLinearVelocity(0.0f, m_fWheelVelocity);
-   //    }
-   // }
+   const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
 
+   for (size_t i = 0; i < tPackets.size(); i++) {
+      // a temporary solution to goal verification
+      if (tPackets[i].Data[0] == 71) {
+         // LOG << tPackets[i].Data << std::endl;
+         cBuf = tPackets[i].Data;
+         cBuf >> identifier;
+         LOG << identifier << std::endl;
+         
+         
+      }
+      
+
+      // sum them together
+   }
+}
    // broadcast and receive message
    /*
     *
@@ -128,30 +136,6 @@ void CFootBotDiffusion::ControlStep() {
    while (cBuf.size() < SIZE) cBuf << '\0';
    // now cBuf is ready
     */
-   
-
-   
-  
-   
-
-}
-
-CVector2 CFootBotDiffusion::CalculateVectorToGoal() {
-   // variables
-   const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
-   CVector2 cAccumulator;
-
-   for (size_t i = 0; i < tPackets.size(); i++) {
-      // a temporary solution to goal verification
-      if (tPackets[i].Data[0] >= 0 and tPackets[i].Data[0] < 10) {
-         LOG << tPackets[i].Data << " at Vertical Bearing: " << tPackets[i].VerticalBearing << " Horizontal Bearing"
-                  << tPackets[i].HorizontalBearing << " apart from " << tPackets[i].Range << "cm" << std::endl;
-         // sum them together
-         cAccumulator += CVector2(tPackets[i].Range, tPackets[i].HorizontalBearing);
-      }
-   }
-   return cAccumulator;
-}
 
 
 /****************************************/

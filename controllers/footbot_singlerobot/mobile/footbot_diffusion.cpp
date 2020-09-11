@@ -10,6 +10,83 @@
 /**************************************************************************/
 /**************************************************************************/
 
+CFootBotDiffusion::SDiffusionParams::SDiffusionParams() :
+    GoStraightAngleRange(CRadians(-1.0f), CRadians(1.0f)) {}
+
+void CFootBotDiffusion::SDiffusionParams::Init(TConfigurationNode& t_node) {
+    CRange<CDegrees> cGoStraightAngleRangeDegrees(CDegrees(-10.0f), CDegrees(10.0f));
+    GetNodeAttribute(t_node, "go_straight_angle_range", cGoStraightAngleRangeDegrees);
+    // Set the threshold range for determining if the robot should proceed straight forward
+    // based on relative distance between the robot and the closest obstacle detected
+    GoStraightAngleRange.Set(ToRadians(cGoStraightAngleRangeDegrees.GetMin()),
+                             ToRadians(cGoStraightAngleRangeDegrees.GetMax()));
+    // parse it as delta in XML file
+    GetNodeAttribute(t_node, "delta", Delta);
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::SWheelTurningParams::Init(TConfigurationNode& t_node) {
+    CDegrees cAngle;
+    // Init and parse all relevant params into XML file for the wheel manipulation
+    GetNodeAttribute(t_node, "no_turn_angle_threshold", cAngle);
+    NoTurnAngleThreshold = ToRadians(cAngle);
+    GetNodeAttribute(t_node, "soft_turn_angle_threshold", cAngle);
+    SoftTurnOnAngleThreshold = ToRadians(cAngle);
+    GetNodeAttribute(t_node, "hard_turn_angle_threshold", cAngle);
+    HardTurnOnAngleThreshold = ToRadians(cAngle);
+    GetNodeAttribute(t_node, "max_speed", MaxSpeed);
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+CFootBotDiffusion::SStateData::SStateData() :
+    ProbRange(0.0f, 1.0f),
+    IdRange(0, NumberOfGoals-1) {}
+
+void CFootBotDiffusion::SStateData::Init(TConfigurationNode& t_node) {
+    // TODO: possible new implementation for usng random factor to swtich from RE to AE as well
+    GetNodeAttribute(t_node, "max_time_in_random_epxloration", MaximumTimeInRandomExploration);
+    GetNodeAttribute(t_node, "number_of_goals", NumberOfGoals);
+    // TODO: Experimental feature
+    RNG = CRandom::CreateRNG("argos");
+    GoalId = RNG->Uniform(IdRange);
+}
+
+void CFootBotDiffusion::SStateData::Reset() {
+    // Always start with RESTING
+    State = RESTING;
+    TimeRandomExplore = 0;
+    // Let's reset the goalID as well
+    GoalId = RNG->Uniform(IdRange);
+    // TODO: For now we are doing the scuffed way of init table!
+    for (size_t i = 0; i < NumberOfGoals; i++) {
+        NavigationalTable.push_back({0,0,0});
+    }
+    GoalNavigationalInfo = {0,0,0};
+    FoundDesignatedGoal = false;
+    ReachedDesignatedGoal = false;
+}
+
+void CFootBotDiffusion::SStateData::SaveState() {
+    PreviousState = State;
+}
+
+std::vector<std::vector<Real>> CFootBotDiffusion::SStateData::ByteToReal(CByteArray& b_array) {
+    /*
+     * Format from CByteArray sent by either a robot or goal
+     * The first four byte will determined if its from a robot or a goal
+     * Based on that, format accordingly
+     * 
+     */
+
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
 CFootBotDiffusion::CFootBotDiffusion() :
     m_pcWheels(NULL),
     m_pcProximity(NULL),
@@ -111,6 +188,8 @@ void CFootBotDiffusion::ControlStep() {
 void CFootBotDiffusion::Reset() {
     // Reset robot state data
     StateData.Reset();
+    // Empty the buffer
+    m_pcRABA->ClearData();
     // Set LED Color
     m_pcLEDs->SetAllColors(CColor::BLACK);
 }

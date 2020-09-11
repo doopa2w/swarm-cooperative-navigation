@@ -34,6 +34,8 @@ class CFootBotTarget : public CCI_Controller {
 
         static UInt32 s_unIdCounter;
         UInt32 Id;
+        UInt32 seqNum;
+        UInt32 messageSize;
 
 };
 

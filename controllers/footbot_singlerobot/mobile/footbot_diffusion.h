@@ -91,6 +91,11 @@ class CFootBotDiffusion : public CCI_Controller {
             CRange<Real> ProbRange;
             // Number of time steps that a robot is in the RANDOM_EXPLORATION state
             size_t TimeRandomExplore;
+            // Threshold value for switching from RANDOM_EXPLORATION to AGGRESSIVE_EXPLORATION
+            size_t MaximumTimeInRandomExploration;
+            // RNG
+            CRange<UInt32> IdRange;
+            CRandom::CRNG* RNG;
             // Designated goal for the robot -> represented by static robot's Id
             UInt32 GoalId;
             /*
@@ -118,14 +123,24 @@ class CFootBotDiffusion : public CCI_Controller {
              * The navigational table may contain all the goal(s) info 
              * Format: {NavigationalInfo, NavigationalInfo, ...}
              */
-            UInt8 NumberOfGoals;
+            UInt32 NumberOfGoals;
 
             std::vector<std::vector<Real>> NavigationalTable;
-
+            /*
+             * Size of the packet/ message; To be parsed into XML
+             * By right, the size of message should be kept 10 bytes for realistic purposes
+             * But since, this revolves around purely simulation; I decided to cheat my way
+             * by exceeding the size limit ;)
+             * 
+             * A much better approach is to keep piece of message (packet) into a buffer
+             * every time step until the whole messge is received (can be determined by starting and ending byte)
+             * 
+             */
+            UInt32 SizeOfMessage;
             // format from real to byte of navigational info
             CByteArray RealToByte(std::vector<Real>& v_info);
             // vice versa
-            std::vector<Real> ByteToReal(CByteArray& b_array);
+            std::vector<std::vector<Real>> ByteToReal(CByteArray& b_array);
             // bool SortGoalId(const std::vector<Real>& v_a, const std::vector<Real>& v_b);
             
             // compare a goal info with another goal info

@@ -74,6 +74,7 @@ void CFootBotDiffusion::SStateData::SaveState() {
     PreviousState = State;
 }
 
+// TODO: Might Need to Name Change the two following methods
 std::vector<std::vector<Real>> CFootBotDiffusion::SStateData::ByteToReal(CByteArray& b_array) {
     /*
      * Format from CByteArray sent by either a robot or goal
@@ -82,6 +83,21 @@ std::vector<std::vector<Real>> CFootBotDiffusion::SStateData::ByteToReal(CByteAr
      * 
      */
 
+}
+
+CByteArray CFootBotDiffusion::SStateData::RealToByte(std::vector<std::vector<Real>>& v_info) {
+    // TODO: #24 Attempt this first before doing ByteToReal
+    CByteArray cBuf;
+    for (std::vector<Real> v : v_info) {
+        /*
+         * For each row/ goal info, do
+         * 
+         * 0-1 GoalID?
+         * 
+         * 
+         */
+
+    }
 }
 
 /**************************************************************************/

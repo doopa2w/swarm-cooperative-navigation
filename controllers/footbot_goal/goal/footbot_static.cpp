@@ -59,16 +59,17 @@ void CFootBotTarget::ControlStep() {
     // m_pcRABA->SetData(cBuf);
     seqNum++;
     CByteArray cBuf;
-    std::string identifier = "G";
+    UInt8 identifier = 1; // 1 for Goal; 0 for Mobile robots
     cBuf << identifier;
-    cBuf << '\0';   // terminating character
-    cBuf << seqNum;
+    cBuf << '\0';   // terminating character 4 bytes
+    cBuf << seqNum; // int  4 bytes
+    cBuf << '\0';
     // range
-    Real distance = 201.59;
+    Real distance = 999.99; // long double 12 bytes
     cBuf << distance;
     cBuf << '\0';
     // angle in CRadians
-    Real angle = 2.23123;
+    Real angle = -2.2312;  // long double 12 bytes
     cBuf << angle;
     cBuf << '\0';
     // LOG << "Before filling in " << cBuf.Size() << std::endl;

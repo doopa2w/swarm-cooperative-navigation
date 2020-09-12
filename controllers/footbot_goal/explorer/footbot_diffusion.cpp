@@ -105,19 +105,79 @@ void CFootBotDiffusion::ControlStep() {
 
    const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
 
-   for (size_t i = 0; i < tPackets.size(); i++) {
-      // a temporary solution to goal verification
-      if (tPackets[i].Data[0] == 71) {
-         // LOG << tPackets[i].Data << std::endl;
-         cBuf = tPackets[i].Data;
-         cBuf >> identifier;
-         LOG << identifier << std::endl;
-         
-         
-      }
-      
+   for (CCI_RangeAndBearingSensor::SPacket tPacket : tPackets) {
+      // Deep copy the const tPacket into a tmp buffer
+      CByteArray cBuf = tPacket.Data;
+      // LOG << cBuf << std::endl;
+      /*
+       * Different execution depending on the first byte (Identifier)
+       * 1 -> Sent by Target robot(s)
+       * 2 -> Sent by Mobile Robot(s)
+       */
+      // LOG << "Initial size: " << cBuf.Size() << std::endl;
+      // LOG << cBuf << std::endl;
 
-      // sum them together
+
+      UInt8 Identifier;
+      UInt32 SequenceNumber;
+      Real Range;
+      Real Angle;
+
+
+      cBuf >> Identifier;
+      
+      if (Identifier == 1) {
+         // Recevied a packet from Target Robot
+         //  LOG << "After size: " << cBuf.Size() << std::endl;
+         // LOG << cBuf << std::endl;
+
+         if (tPacket.Data == cBuf) {
+            LOG << "Still the same brother!" << std::endl;
+         }
+         else {
+            LOG << "Success!" << std::endl;
+         }
+         // Proceed to extract the info accordingly
+         /*
+          * 0 -3     t
+          * 4 -7     Seq
+          * 8 - 11   t
+          * 12 - 23  Range(Real)
+          * 24 - 27  t
+          * 28 - 39  Horizontal(CRadians)
+          * 40 - 43  t
+          * 45 bytes per row (44 + 1 for the Identifier)
+          */
+         *cBuf(4,8) >> SequenceNumber;
+         *cBuf(12,24) >> Range;
+         *cBuf(28, 40) >> Angle;
+
+         CRadians cAngle = CRadians(Angle);
+
+         // LOG << "TESTING : " << SequenceNumber << ", " << Range << ", " << Angle << ", " << std::endl;
+         std::vector<Real> info;
+         info.push_back(SequenceNumber);
+         info.push_back(Range);
+         info.push_back(Angle);
+         for (size_t i = 0; i < info.size(); i++) {
+            LOG << info[i] << ", ";
+         }
+         
+
+         // TODO: Convert Real to CRadians for the angle part
+
+
+
+
+      }
+      else if (Identifier == 2) {
+         // Received a packet from Mobile Robot
+         LOG << "Received from a mobile robot!" << std::endl;
+      }
+      else {
+         LOG << "Error brother!" << std::endl;
+      }
+
    }
 }
    // broadcast and receive message

@@ -138,7 +138,7 @@ class CFootBotDiffusion : public CCI_Controller {
              */
             UInt32 SizeOfMessage;
             // format from real to byte of navigational info
-            CByteArray RealToByte(std::vector<Real>& v_info);
+            CByteArray RealToByte(std::vector<std::vector<Real>>& v_info);
             // vice versa
             std::vector<std::vector<Real>> ByteToReal(CByteArray& b_array);
             // bool SortGoalId(const std::vector<Real>& v_a, const std::vector<Real>& v_b);

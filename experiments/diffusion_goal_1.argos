@@ -26,7 +26,7 @@
         <footbot_proximity implementation="default" show_rays="true" />
         <range_and_bearing implementation="medium" medium="rab" show_rays="true" />
       </sensors>
-      <params alpha="7.5" delta="0.1" velocity="5" message_size="50"/>
+      <params alpha="7.5" delta="0.1" velocity="5" message_size="45"/>
     </footbot_diffusion_controller>
 
     <footbot_static_controller id="fpc"
@@ -38,7 +38,7 @@
       <sensors>
         <range_and_bearing implementation="medium" medium="rab" />
       </sensors>
-      <params colorid="4" message_size="50"/> <!-- RED -->
+      <params colorid="4" message_size="45"/> <!-- RED -->
     </footbot_static_controller>
 
   </controllers>
@@ -77,7 +77,7 @@
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
       <entity quantity="1" max_trials="100">
-        <foot-bot id="fdc" rab_data_size="50">
+        <foot-bot id="fdc" rab_data_size="45">
           <controller config="fdc" />
         </foot-bot>
       </entity>
@@ -88,7 +88,7 @@
       <position method="uniform" min="-2, -2, 0" max="2, 2, 0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
       <entity quantity="1" max_trials="100">
-        <foot-bot id="target" rab_data_size="50">
+        <foot-bot id="target" rab_data_size="45">
           <controller config="fpc"/>
         </foot-bot>
       </entity>

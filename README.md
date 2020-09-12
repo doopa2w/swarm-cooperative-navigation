@@ -47,3 +47,19 @@ Called right after getting readings from range and bearing.
 Should i set the vector<vector<Real>> with fixed size (configured inside XML) or not?
 
 if fixed, no need to sort anymore; vector<vector<Real> > table (3); {{0, 0, 0, 0}, {1, 0, 0, 0}, {2, 0, 0, 0}};
+
+![one_row_length](/home/dev/swarm-cooperative-navigation/one_row_length.png)
+
+* Identifier for Which Type of Robot sent the message: 1 for Target/ 2 for Mobile (1 Byte long)
+* A terminating char '\0': (4 Bytes long)
+* Sequence Number: Age of info (4 bytes long)
+* A terminating char '\0'': (4 bytes long)
+* Range: Distance in Real (12 bytes long/ long  double)
+* A terminating char '\0' (4 bytes long)
+* Angle: Horizontal Bearing (CRadians) (12 bytes long)
+* A terminating char '\0' for going next row (4 bytes long)
+
+TOTAL FOR A ROW OF NAVIGATIONAL INFO: 1 + 4 + 4 + 4 + 12 +4 + 12 = 41 + A separator for next row (4 bytes) = 45 bytes long 
+
+
+

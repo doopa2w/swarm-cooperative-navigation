@@ -1,6 +1,7 @@
 include_directories(${CMAKE_SOURCE_DIR}/controllers)
 
 add_subdirectory(footbot_diffusion)
+add_subdirectory(footbot_singlerobot)
 add_subdirectory(footbot_flocking)
 add_subdirectory(footbot_gripping)
 add_subdirectory(footbot_foraging)
@@ -8,4 +9,3 @@ add_subdirectory(footbot_dg)
 add_subdirectory(footbot_goal)
 add_subdirectory(footbot_nn)
 add_subdirectory(footbot_manualcontrol)
-add_subdirectory(footbot_singlerobot)

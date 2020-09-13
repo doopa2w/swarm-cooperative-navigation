@@ -22,7 +22,8 @@
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
 /* Definitions for random number generator in ARGoS */
 #include <argos3/core/utility/math/rng.h>
-#include <vector>
+#include <map>
+#include <string>
 
 using namespace argos;
 
@@ -118,14 +119,14 @@ class CFootBotDiffusion : public CCI_Controller {
              *          -  Similar to Range
              * 
              */
-            std::vector<Real> GoalNavigationalInfo;
+            std::map<std::string, Real> GoalNavigationalInfo;
             /*
              * The navigational table may contain all the goal(s) info 
              * Format: {NavigationalInfo, NavigationalInfo, ...}
              */
             UInt32 NumberOfGoals;
 
-            std::vector<std::vector<Real>> NavigationalTable;
+            std::map<UInt32, std::map<std::string, Real>> NavigationalTable;
             /*
              * Size of the packet/ message; To be parsed into XML
              * By right, the size of message should be kept 10 bytes for realistic purposes
@@ -137,14 +138,17 @@ class CFootBotDiffusion : public CCI_Controller {
              * 
              */
             UInt32 SizeOfMessage;
+            // NavigationalInfo of the robot that sent the message containing the designated goal info
+            std::map<std::string, Real> NeighboursNavigationalInfo;
+
             // format from real to byte of navigational info
-            CByteArray RealToByte(std::vector<std::vector<Real>>& v_info);
+            CByteArray RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info);
             // vice versa
-            std::vector<std::vector<Real>> ByteToReal(CByteArray& b_array);
+            std::map<UInt32, std::map<std::string, Real>> ByteToReal(CByteArray& b_array);
             // bool SortGoalId(const std::vector<Real>& v_a, const std::vector<Real>& v_b);
             
             // compare a goal info with another goal info
-            std::vector<Real> CompareGoalInfos(std::vector<Real>& v_info1, std::vector<Real>& v_info2);
+            std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2);
 
             // Use to switch from AGGRESSIVE_EXPLORATION -> MOVE_TO_GOAL
             bool FoundDesignatedGoal;

@@ -61,11 +61,15 @@ void CFootBotDiffusion::SStateData::Reset() {
     TimeRandomExplore = 0;
     // Let's reset the goalID as well
     GoalId = RNG->Uniform(IdRange);
-    // TODO: For now we are doing the scuffed way of init table!
+    GoalNavigationalInfo = {
+        {"SequenceNumber", 0}, {"EstimateDistance", 0}, {"Angle", 0}
+    };
     for (size_t i = 0; i < NumberOfGoals; i++) {
-        NavigationalTable.push_back({0,0,0});
+        NavigationalTable[i] = GoalNavigationalInfo;
     }
-    GoalNavigationalInfo = {0,0,0};
+    NeighboursNavigationalInfo = {
+         {"EstimateDistance", 0}, {"Angle", 0}
+    };
     FoundDesignatedGoal = false;
     ReachedDesignatedGoal = false;
 }
@@ -74,29 +78,114 @@ void CFootBotDiffusion::SStateData::SaveState() {
     PreviousState = State;
 }
 
-// TODO: Might Need to Name Change the two following methods
-std::vector<std::vector<Real>> CFootBotDiffusion::SStateData::ByteToReal(CByteArray& b_array) {
-    /*
-     * Format from CByteArray sent by either a robot or goal
-     * The first four byte will determined if its from a robot or a goal
-     * Based on that, format accordingly
-     * 
-     */
+/**************************************************************************/
+/**************************************************************************/
 
+// TODO: Might Need to Name Change the two following methods
+std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::ByteToReal(CByteArray& b_array) {
+    std::map<UInt32, std::map<std::string, Real>> NeighboursTable;
+    CByteArray cBuf = b_array;
+    // Pop first byte out
+    UInt32 goalID;
+    cBuf >> goalID;
+
+    for (size_t i = 0; i < NumberOfGoals; i++) {
+        UInt32 SeqNum;
+        Real Range, Angle;
+        // TODO: Experimental feature: a step size of 45
+        UInt16 factor = i * 45;
+        // Extracting goalId might be redundant since the byte message contains the goal info in order anyway
+        // *cBuf(0 + factor,1 + factor) >> GoalId;
+        /*
+        * Proceed to extract the info accordinly
+        * 0        GoalID
+        * 1-4      0
+        * 5-8      Seq
+        * 9-12     0
+        * 13-24    EstimateDistance
+        * 25-28    0
+        * 29-40    Angle
+        * 41-44    0
+        * 
+        * Size for a navigational info = 45 bytes (0 to 44)   
+        */
+        *cBuf(5 + factor, 9 + factor) >> SeqNum;
+        *cBuf(13 + factor, 25 + factor) >> Range;
+        *cBuf(29 + factor, 41 + factor) >> Angle;
+        // Finally insert into the respective goal/ row
+        NeighboursTable[i] = {
+            {
+                {"SequenceNumber", SeqNum},
+                {"EstimateDistance", Range},
+                {"Angle", Angle}        
+            }
+        };
+    }
+    return NeighboursTable;
 }
 
-CByteArray CFootBotDiffusion::SStateData::RealToByte(std::vector<std::vector<Real>>& v_info) {
+/**************************************************************************/
+/**************************************************************************/
+
+CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info) {
     // TODO: #24 Attempt this first before doing ByteToReal
     CByteArray cBuf;
-    for (std::vector<Real> v : v_info) {
+    // For mobile robots, append 0 else append 1 + GoalId that the target robot represents for target/goal robots
+    cBuf << 0;
+    cBuf << '\0';
+    for (auto & outer_pair : m_info) {
         /*
-         * For each row/ goal info, do
-         * 
-         * 0-1 GoalID?
-         * 
-         * 
+         * For every row/ goal, do:
+         * Append the goalId first followed by four 0's
          */
+        cBuf << outer_pair.first;
+        cBuf << '\0';
+        for (auto & inner_pair : outer_pair.second) {
+            /*
+             * For every goal's info, do:
+             * Append the Seq followed by four 0's
+             * Repeat this for distance and angle as well
+             */
+            cBuf << inner_pair.second;
+            cBuf << '\0';
+        }
+        /*
+         * Before going to the next row/goal, do:
+         * Append a '\0' to separate the current and the next goal
+         */
+        cBuf << '\0';
+    }
+    return cBuf;
+}
 
+/**************************************************************************/
+/**************************************************************************/
+
+std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2) {
+    //std::map<std::string, Real> BetterInfo;
+    /*
+     * Scoring function to calculate quality of info based on
+     * Sequence Number (Relative age of the info) & EstimateDistance (Relative Distance)
+     * The lower the score, the better the info.
+     * 
+     * TODO: #26 Might add Angle as another factor as well?
+     * 
+     * AScore, BScore > AScore 
+     */
+    UInt32 AScore, BScore;
+    AScore = m_info1["SequenceNumber"] * m_info1["EstimateDistance"] + m_info1["EstimateDistance"];
+    BScore = m_info2["SequenceNumber"] * m_info2["EstimateDistance"] + m_info2["EstimateDistance"];
+
+    if (AScore > BScore) {
+        return m_info2;
+    }
+        
+    else if (AScore < BScore){
+        return m_info1;
+    }
+    // if both equal, return either one 
+    else {
+        return m_info1;
     }
 }
 
@@ -171,8 +260,8 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
  */
 
 void CFootBotDiffusion::ControlStep() {
-    BroadcastNavigationalTable();
     UpdateState();
+    BroadcastNavigationalTable();
 
     switch (StateData.State) {
         case RESTING: {
@@ -217,7 +306,7 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     // Read from Navigational table
     // can just access the goal straight by index since the table is initialize/ sorted
     // according to goalId ++
-    std::vector<Real> NewGoalInfo = StateData.NavigationalTable[StateData.GoalId];
+    std::map<std::string, Real> NewGoalInfo = StateData.NavigationalTable[StateData.GoalId];
     /*
      * Check if the goal info is valid or not
      * if {0,0,0} -> No goal info hence there is no goal info for this time step
@@ -225,10 +314,14 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
      * Then, update relevant flags and also checked if the goal info's range < 20cm
      * to determined that the robot had reached its goal and can switch to RESTING
      * 
-     * GoalInfo = {Sequence Number, Range, Horizontal Bearing}
+     * GoalInfo = {Sequence Number, EstimateDistance, Angle}
      */
-    // a hardcoded vector to check if the goal info is valid or not
-    std::vector<Real> Checker = {0,0,0};
+    // a hardcoded map to check if the goal info is valid or not
+    std::map<std::string, Real> Checker = {
+        {"SequenceNumber", 0},
+        {"EstimateDistance", 0},
+        {"Angle", 0}
+    };
     // TODO: #18 Possible issue where the robot might spawned right on the same spot with the target robot
     if (NewGoalInfo == Checker) {
         // goal info not valid so terminate this method straight
@@ -239,11 +332,15 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     StateData.FoundDesignatedGoal = true;
     // Now compare both goal info from the table and the current goal info
     // Might be useless
-    std::vector<Real> OldGoalInfo = StateData.GoalNavigationalInfo;
+    std::map<std::string, Real> OldGoalInfo = StateData.GoalNavigationalInfo;
     // Update the GoalInfo with the better one among those two infos
-    StateData.GoalNavigationalInfo = StateData.CompareGoalInfos(NewGoalInfo, OldGoalInfo);
-
-
+    // Ensured that OldGoalInfo which is {0, 0, 0} is ignored instead
+    if (OldGoalInfo["EstimateDistance"] == 0 && OldGoalInfo["Angle"] == 0) {
+        StateData.GoalNavigationalInfo = NewGoalInfo;
+    }
+    else {
+        StateData.GoalNavigationalInfo = StateData.CompareGoalInfos(NewGoalInfo, OldGoalInfo);
+    }
     //TODO: #17 This component can be moved into the State = MOVE_TO_GOAL
     // if (GoalInfo[1] < 20) {
     //     // update relevant flags
@@ -253,6 +350,65 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     // else {
     //     StateData.ReachedDesignatedGoal = false;
     // }
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor::TReadings& t_packets) {
+    /*
+     * This is where own table is updated accordinly based on the local neihgbours tables
+     * 
+     * 
+     * TOOD: Issue: Target Robot appending relative distance/ angle into the table's info
+     *              Might cause an issue since we are moving first based on the NeighboursNavigationalInfo
+     *              before proceeding towards the goal using info from the updated table.
+     * 
+     */
+    std::map<UInt32, std::map<std::string, Real>> NeighboursTable;
+
+    for (CCI_RangeAndBearingSensor::SPacket t_packet : t_packets) {
+        // StateData.NeighboursNavigationalInfo["EstimateDistance"] = t_packet.Range;
+        // StateData.NeighboursNavigationalInfo["Angle"] = t_packet.HorizontalBearing;
+        if (t_packet.Data[0] == 0) {
+            // This is mobile robot
+            NeighboursTable = StateData.ByteToReal(t_packet.Data);
+        }
+        else {
+            // This is target robot
+            NeighboursTable = StateData.ByteToReal(t_packet.Data);
+            /*
+             * Update the target robot's goal info with its navigational info
+             */
+            NeighboursTable[t_packet.Data[0]-1]["EstimateDistance"] = t_packet.Range;
+            NeighboursTable[t_packet.Data[0]-1]["Angle"] = t_packet.HorizontalBearing.GetValue();
+        }
+
+        // Iterate two maps per row since we know the keys are identical and in order with one another
+        for (auto it1 = StateData.NavigationalTable.begin(), it2 = NeighboursTable.begin();
+             it1 != StateData.NavigationalTable.end();
+             ++it1, ++it2) {
+            // Get the better info and update the info
+            it1->second = CompareGoalInfos(it1->second, it2->second);
+            // TODO: Scuffed way of getting the better info's sender's relative position
+            if (it1->second == it2->second) {
+                StateData.NeighboursNavigationalInfo = {{"EstimateDistance", t_packet.Range},{"Angle", t_packet.HorizontalBearing.GetValue()}};
+            } // otherwise, retain the current NeighboursNavigationalInfo
+        
+        }
+        
+    }
+
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::BroadcastNavigationalTable() {
+    CByteArray cBuf;
+    cBuf = StateData.RealToByte(StateData.NavigationalTable);
+    while (cBuf.Size() < StateData.SizeOfMessage) cBuf << '\0';
+    m_pcRABA->SetData(cBuf);
 }
 
 /**************************************************************************/
@@ -280,7 +436,8 @@ CVector2 CFootBotDiffusion::CalculateVectorToGoal() {
     // TODO: #22 Experimental feature
     // variable name might not reflect the value or how it was obtained
     // 
-    CVector2 cAccumulator = CVector2(StateData.GoalNavigationalInfo[1], StateData.GoalNavigationalInfo[2]);
+    CVector2 cAccumulator = CVector2(StateData.GoalNavigationalInfo["EstimateDistance"], 
+                                CRadians(StateData.GoalNavigationalInfo["Angle"]));
     // if the range is > 0.0f then return the vector
     if (cAccumulator.Length() > 0.0f) {
         return CVector2(1.0f, cAccumulator.Angle());
@@ -323,6 +480,11 @@ CVector2 CFootBotDiffusion::DiffusionVector(bool& collision) {
     diffusionVector.Normalize();
     return -diffusionVector;
 }
+
+/**************************************************************************/
+/**************************************************************************/
+
+
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////

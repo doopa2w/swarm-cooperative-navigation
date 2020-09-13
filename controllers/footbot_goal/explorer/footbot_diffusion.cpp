@@ -162,6 +162,7 @@ void CFootBotDiffusion::ControlStep() {
          for (size_t i = 0; i < info.size(); i++) {
             LOG << info[i] << ", ";
          }
+         LOG << "Remnants of cBuf: " << cBuf << std::endl;
          
 
          // TODO: Convert Real to CRadians for the angle part

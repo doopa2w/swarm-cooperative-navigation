@@ -145,7 +145,6 @@ class CFootBotDiffusion : public CCI_Controller {
             CByteArray RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info);
             // vice versa
             std::map<UInt32, std::map<std::string, Real>> ByteToReal(CByteArray& b_array);
-            // bool SortGoalId(const std::vector<Real>& v_a, const std::vector<Real>& v_b);
             
             // compare a goal info with another goal info
             std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2);

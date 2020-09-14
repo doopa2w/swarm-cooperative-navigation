@@ -41,15 +41,16 @@ void CFootBotDiffusion::SWheelTurningParams::Init(TConfigurationNode& t_node) {
 
 /**************************************************************************/
 /**************************************************************************/
-
+// Possible error on the IdRange(min, max)
 CFootBotDiffusion::SStateData::SStateData() :
     ProbRange(0.0f, 1.0f),
-    IdRange(0, NumberOfGoals-1) {}
+    IdRange(0, NumberOfGoals) {}
 
 void CFootBotDiffusion::SStateData::Init(TConfigurationNode& t_node) {
     // TODO: possible new implementation for usng random factor to swtich from RE to AE as well
-    GetNodeAttribute(t_node, "max_time_in_random_epxloration", MaximumTimeInRandomExploration);
+    GetNodeAttribute(t_node, "max_time_in_random_exploration", MaximumTimeInRandomExploration);
     GetNodeAttribute(t_node, "number_of_goals", NumberOfGoals);
+    GetNodeAttribute(t_node, "size_of_message", SizeOfMessage);
     // TODO: Experimental feature
     RNG = CRandom::CreateRNG("argos");
     GoalId = RNG->Uniform(IdRange);
@@ -64,7 +65,7 @@ void CFootBotDiffusion::SStateData::Reset() {
     GoalNavigationalInfo = {
         {"SequenceNumber", 0}, {"EstimateDistance", 0}, {"Angle", 0}
     };
-    for (size_t i = 0; i < NumberOfGoals; i++) {
+    for (size_t i = 0; i < NumberOfGoals; ++i) {
         NavigationalTable[i] = GoalNavigationalInfo;
     }
     NeighboursNavigationalInfo = {
@@ -85,20 +86,17 @@ void CFootBotDiffusion::SStateData::SaveState() {
 std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::ByteToReal(CByteArray& b_array) {
     std::map<UInt32, std::map<std::string, Real>> NeighboursTable;
     CByteArray cBuf = b_array;
-    // Pop first byte out
-    UInt32 goalID;
-    cBuf >> goalID;
+    // Get first byte 
+    UInt32 identifer = cBuf[0];
 
-    for (size_t i = 0; i < NumberOfGoals; i++) {
+    for (size_t i = 0; i < NumberOfGoals; ++i) {
         UInt32 SeqNum;
         Real Range, Angle;
         // TODO: Experimental feature: a step size of 45
         UInt16 factor = i * 45;
-        // Extracting goalId might be redundant since the byte message contains the goal info in order anyway
-        // *cBuf(0 + factor,1 + factor) >> GoalId;
         /*
         * Proceed to extract the info accordinly
-        * 0        GoalID
+        * 0        Identifier (Mobile = 0; Static = GoalID)
         * 1-4      0
         * 5-8      Seq
         * 9-12     0
@@ -106,6 +104,15 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
         * 25-28    0
         * 29-40    Angle
         * 41-44    0
+        * 
+        * 45       Placeholder
+        * 46-49    0
+        * 50-53    Seq
+        * 54-57    0
+        * 58-69    EstimateDistance
+        * 70-73    0
+        * 74-85    Angle
+        * 86-89    0
         * 
         * Size for a navigational info = 45 bytes (0 to 44)   
         */
@@ -128,17 +135,18 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
 /**************************************************************************/
 
 CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info) {
-    // TODO: #24 Attempt this first before doing ByteToReal
     CByteArray cBuf;
     // For mobile robots, append 0 else append 1 + GoalId that the target robot represents for target/goal robots
-    cBuf << 0;
+    UInt32 placeHolder = 0;
+    cBuf << placeHolder;
     cBuf << '\0';
+    
     for (auto & outer_pair : m_info) {
         /*
          * For every row/ goal, do:
          * Append the goalId first followed by four 0's
          */
-        cBuf << outer_pair.first;
+        cBuf << placeHolder;
         cBuf << '\0';
         for (auto & inner_pair : outer_pair.second) {
             /*
@@ -161,8 +169,7 @@ CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<s
 /**************************************************************************/
 /**************************************************************************/
 
-std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2) {
-    //std::map<std::string, Real> BetterInfo;
+std::map<std::string, Real> CFootBotDiffusion::SStateData::CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2) {
     /*
      * Scoring function to calculate quality of info based on
      * Sequence Number (Relative age of the info) & EstimateDistance (Relative Distance)
@@ -327,7 +334,6 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
         // goal info not valid so terminate this method straight
         return;
     }
-
     // goal info is valid, update relevant flag
     StateData.FoundDesignatedGoal = true;
     // Now compare both goal info from the table and the current goal info
@@ -341,15 +347,11 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     else {
         StateData.GoalNavigationalInfo = StateData.CompareGoalInfos(NewGoalInfo, OldGoalInfo);
     }
-    //TODO: #17 This component can be moved into the State = MOVE_TO_GOAL
-    // if (GoalInfo[1] < 20) {
-    //     // update relevant flags
-    //     StateData.ReachedDesignatedGoal = true;
-    // }
-    // // TODO: Might be useless
-    // else {
-    //     StateData.ReachedDesignatedGoal = false;
-    // }
+
+    // Check whether the robot reached the goal (within 20cm proximity) based on the new info
+    if (StateData.GoalNavigationalInfo["EstimateDistance"] <= 20.0f) {
+        StateData.ReachedDesignatedGoal = true; // switch to true
+    } // otherwise, don't change since default = false
 }
 
 /**************************************************************************/
@@ -389,7 +391,7 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
              it1 != StateData.NavigationalTable.end();
              ++it1, ++it2) {
             // Get the better info and update the info
-            it1->second = CompareGoalInfos(it1->second, it2->second);
+            it1->second = StateData.CompareGoalInfos(it1->second, it2->second);
             // TODO: Scuffed way of getting the better info's sender's relative position
             if (it1->second == it2->second) {
                 StateData.NeighboursNavigationalInfo = {{"EstimateDistance", t_packet.Range},{"Angle", t_packet.HorizontalBearing.GetValue()}};
@@ -405,9 +407,9 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
 /**************************************************************************/
 
 void CFootBotDiffusion::BroadcastNavigationalTable() {
-    CByteArray cBuf;
-    cBuf = StateData.RealToByte(StateData.NavigationalTable);
-    while (cBuf.Size() < StateData.SizeOfMessage) cBuf << '\0';
+    CByteArray cBuf = StateData.RealToByte(StateData.NavigationalTable);
+    // TODO: Might be pointless in filling up the byte array
+    // while (cBuf.Size() < StateData.SizeOfMessage) cBuf << '\0';
     m_pcRABA->SetData(cBuf);
 }
 
@@ -421,6 +423,7 @@ void CFootBotDiffusion::UpdateState() {
      * 3) TODO: #21 Unsure if i should just : Now do some if else to switch to states
      *                                          or do it inside the states
      */
+    
     const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
     // update the table with the new tables/ info sent by the robots/ target if any
     UpdateNavigationalTable(tPackets);
@@ -484,7 +487,225 @@ CVector2 CFootBotDiffusion::DiffusionVector(bool& collision) {
 /**************************************************************************/
 /**************************************************************************/
 
+void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
+    // Get the heading angle and normalized it in the range of [-pi, pi]
+    CRadians cHeadingAngle = heading.Angle().SignedNormalize();
+    // Get the length of the heading vector
+    Real fHeadingLength = heading.Length();
+    // Clamp the speed so that it does not go beyond MaxSpeed
+    Real fBaseAngularWheelSpeed = Min<Real>(fHeadingLength, WheelTurningParams.MaxSpeed);
+    // Get the previous Turning Mechanism
+    SWheelTurningParams::ETurningMechanism oldTurningMechanism = WheelTurningParams.TurningMechanism;
 
+    // Turning State Switching Conditions
+    if (Abs(cHeadingAngle) <= WheelTurningParams.NoTurnAngleThreshold) {
+        // No Turn + vecry small heading angle
+        WheelTurningParams.TurningMechanism = SWheelTurningParams::NO_TURN;
+    }
+    else if (Abs(cHeadingAngle) > WheelTurningParams.HardTurnOnAngleThreshold) {
+        // Hard Turn + very large heading angle
+        WheelTurningParams.TurningMechanism = SWheelTurningParams::HARD_TURN;
+    }
+    else if (Abs(cHeadingAngle) > WheelTurningParams.SoftTurnOnAngleThreshold &&
+         WheelTurningParams.TurningMechanism == SWheelTurningParams::NO_TURN) {
+        // Soft Turn + heading angle is in between the NO_TURN and HARD_TURN
+        WheelTurningParams.TurningMechanism = SWheelTurningParams::SOFT_TURN;
+    }
+    /*
+     * An if block for collision
+     * 
+     * Since the current state of robot is forced to do either SOFT_TURN or HARD_TURN and 
+     * that the previous state was different from current state.
+     * It is assumed that the robot  is facing possible collision; hence LOG it only at the start.
+     * 
+     * As for the proceeding steps, ignore due to previous state == current state as long the 
+     * robot is forced to do either SOFT_TURN or HARD_TURN.
+     *
+     */
+    if (WheelTurningParams.TurningMechanism != SWheelTurningParams::NO_TURN &&
+         oldTurningMechanism != WheelTurningParams.TurningMechanism) {
+        CollisionMessages.push_back(new CCollisionTrace(Id));
+    }
+    /*
+     * Update Wheel Speeds to executes turning mechanism
+     * 1) Switch case for all turning mechanisms.
+     * 2) Apply the new wheel speeds to the appropriate wheels
+     * 
+     */
+    Real fSpeed1, fSpeed2;
+    switch (WheelTurningParams.TurningMechanism) {
+        case SWheelTurningParams::NO_TURN: {
+            // Just go straight with no speed differences between the left and right wheels
+            fSpeed1 = fBaseAngularWheelSpeed;
+            fSpeed1 = fBaseAngularWheelSpeed;
+            break;
+        }
+        case SWheelTurningParams::SOFT_TURN: {
+            // Both wheels still go straight but one of the wheels is faster than the other
+            Real fSpeedFactor = (WheelTurningParams.HardTurnOnAngleThreshold - Abs(cHeadingAngle)) /
+                WheelTurningParams.HardTurnOnAngleThreshold;
+            fSpeed1 = fBaseAngularWheelSpeed - fBaseAngularWheelSpeed * (1.0 - fSpeedFactor);   // Slower
+            fSpeed2 = fBaseAngularWheelSpeed + fBaseAngularWheelSpeed * (1.0 - fSpeedFactor);   // Faster
+            break;
+        }
+        case SWheelTurningParams::HARD_TURN: {
+            // Both wheels have opposite speeds
+            fSpeed1 = -WheelTurningParams.MaxSpeed;
+            fSpeed2 = WheelTurningParams.MaxSpeed;
+            break;
+        }
+    }
+    // Apply the new fSpeed1, fSpeed2 to the wheels
+    Real fLeftWheelSpeed, fRightWheelSpeed;
+    if (cHeadingAngle > CRadians::ZERO) {
+        // TUrn Left
+        fLeftWheelSpeed = fSpeed1;
+        fRightWheelSpeed = fSpeed2;
+    }
+    else {
+        // Turn Right
+        fLeftWheelSpeed = fSpeed2;
+        fRightWheelSpeed = fSpeed1;
+    }
+    // Set the wheel speeds to the handlers
+    m_pcWheels->SetLinearVelocity(fLeftWheelSpeed, fRightWheelSpeed);
+}
 
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::StartRandomExploration() {
+    if (StateData.State == RANDOM_EXPLORATION) {
+        LOGERR << "Already in RANDOM_EXPLORATION!" << std::endl;
+    }
+    StateData.SaveState();
+    StateData.State = RANDOM_EXPLORATION;
+    TraceMessages.push_back(new CRandomExplorationTrace(Id));
+}
+
+void CFootBotDiffusion::StartAggressiveExploration() {
+    if (StateData.State == AGGRESSIVE_EXPLORATION) {
+        LOGERR << "Already in AGGRESSIVE_EXPLORATION!" << std::endl;
+    }
+    StateData.SaveState();
+    StateData.State = AGGRESSIVE_EXPLORATION;
+    TraceMessages.push_back(new CAggressiveExplorationTrace(Id));
+}
+
+void CFootBotDiffusion::StartMoveToGoal() {
+    if (StateData.State == MOVE_TO_GOAL) {
+        LOGERR << "Already in MOVE_TO_GOAL!" << std::endl;
+    }
+    StateData.SaveState();
+    StateData.State = MOVE_TO_GOAL;
+    TraceMessages.push_back(new CMoveToGoalTrace(Id));
+}
+
+void CFootBotDiffusion::StartResting() {
+    if (StateData.State == RESTING) {
+        LOGERR << "Already in RESTING!" << std::endl;
+    }
+    StateData.SaveState();
+    StateData.State = RESTING;
+    TraceMessages.push_back(new CRestingTrace(Id));
+    m_pcWheels->SetLinearVelocity(0.0f, 0.0f);
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::RandomExplore() {
+    // Check if we found the designated goal info?
+    if (StateData.FoundDesignatedGoal == true) {
+        StartMoveToGoal();
+        return;
+    }
+    // if robot spent too long in random explore, start aggressive epxlore
+    if (StateData.TimeRandomExplore > StateData.MaximumTimeInRandomExploration) {
+        StartAggressiveExploration();
+        return;
+    }
+    else {
+        // Get the diffusion vector to perform the obstacle avoidance
+        bool collision;
+        CVector2 diffusion = DiffusionVector(collision);
+        // control the speed by MaxSpeed * 0.5
+        SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * diffusion);
+        ++StateData.TimeRandomExplore;
+    }
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::AggressiveExplore() {
+    // Check if we found the designated goal info yet?
+    if (StateData.FoundDesignatedGoal == true) {
+        StartMoveToGoal();
+        return;
+    }
+    else {
+        // Get the diffusion vector to perform the obstacle avoidance
+        bool collision;
+        CVector2 diffusion = DiffusionVector(collision);
+        // use MaxSpeed (twice the speed of Random Explore)
+        SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * diffusion);
+    }
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::MoveToGoal() {
+    // Check if we are close to the goal?
+    if (StateData.ReachedDesignatedGoal == true) {
+        StartResting();
+        return;
+    }
+    else {
+        bool collision;
+        CVector2 diffusion = DiffusionVector(collision);
+        // if faced possible collision
+        if (collision) {
+            CRange<Real> range(0.2f, 0.7f);
+            double r = m_RNG->Uniform(range);
+            SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * (r * diffusion + (1.0 - r) * CalculateVectorToGoal()));
+        }
+        else {
+            CRange<Real> range(0.0f, 0.2f);
+            double r = m_RNG->Uniform(range);
+            SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * (r * diffusion + (1.0 - r) * CalculateVectorToGoal()));
+        }
+    }
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+// TODO: #27 Pointless Rest() but might add some implementation later on
+void CFootBotDiffusion::Rest() {
+    if (StateData.ReachedDesignatedGoal == false) {
+        StartRandomExploration();
+    }
+    else {
+
+        LOG << Id << ": Done tasks!\n The goal was: " << StateData.GoalId << std::endl;
+    }
+
+}
+
+/**************************************************************************/
+/**************************************************************************/
+
+/*
+ * This statement notifies ARGoS of the existence of the controller.
+ * It binds the class passed as first argument to the string passed as
+ * second argument.
+ * The string is then usable in the configuration file to refer to this
+ * controller.
+ * When ARGoS reads that string in the configuration file, it knows which
+ * controller class to instantiate.
+ * See also the configuration files for an example of how this is used.
+ */
+
+REGISTER_CONTROLLER(CFootBotDiffusion, "footbot_diffusion_controller")

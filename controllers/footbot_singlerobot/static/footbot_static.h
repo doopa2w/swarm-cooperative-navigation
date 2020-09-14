@@ -7,6 +7,10 @@
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
 /* Definition of the range and bearing actuator */
 #include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_actuator.h>
+/* Definition of the range and bearing sensor */
+#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
+#include <map>
+#include <string>
 
 using namespace argos;
 
@@ -14,27 +18,52 @@ class CFootBotTarget : public CCI_Controller {
 
     public:
 
+        struct SNavigationData {
+            // TODO: Low effort for keeping track of the number of goals
+            UInt32 NumberOfGoals;
+            // Own Navigational Table
+            std::map<UInt32, std::map<std::string, Real>> NavigationalTable;
+            // Size of message
+            UInt32 SizeOfMessage;
+            // Formatter for byte to real and vice versa
+            CByteArray RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info, UInt32 GoalId);
+            std::map<UInt32, std::map<std::string, Real>> ByteToReal(CByteArray& b_array);
+            // Compare goal infos
+            std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2);
+
+            SNavigationData();
+            void Init(TConfigurationNode& t_node);
+            void Reset();
+        };
+
         CFootBotTarget();
         virtual ~CFootBotTarget() {}
-
 
         // Returns the Id
         inline UInt32 GetId() { return Id; }
 
         virtual void Init(TConfigurationNode& t_node);
         virtual void Destroy() {}
+        virtual void Reset();
         virtual void ControlStep();
 
-    private:
+    protected:
+        // Update NavigationalTable
+        void UpdateNavigationalTable(const CCI_RangeAndBearingSensor::TReadings& t_packets);
+        // Broadcast the table
+        void BroadcastNavigationalTable();
 
         // Pointer to the LEDs actuator
         CCI_LEDsActuator* m_pcLEDS;
         /* Pointer to the range and bearing actuator */
         CCI_RangeAndBearingActuator*  m_pcRABA;
+        /* Pointer to the range and bearing sensor */
+        CCI_RangeAndBearingSensor* m_pcRABS;
 
         static UInt32 s_unIdCounter;
         UInt32 Id;
 
+        SNavigationData NavigationData;
 };
 
 #endif

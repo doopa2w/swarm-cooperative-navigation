@@ -20,16 +20,16 @@ class CFootBotTarget : public CCI_Controller {
 
         struct SNavigationData {
             // TODO: Low effort for keeping track of the number of goals
-            UInt32 NumberOfGoals;
+            UInt8 NumberOfGoals;
             // Own Navigational Table
             std::map<UInt32, std::map<std::string, Real>> NavigationalTable;
             // Size of message
             UInt32 SizeOfMessage;
             // Formatter for byte to real and vice versa
-            CByteArray RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info, UInt32 GoalId);
-            std::map<UInt32, std::map<std::string, Real>> ByteToReal(CByteArray& b_array);
+            CByteArray RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info, UInt8 GoalId);
+            // std::map<UInt32, std::map<std::string, Real>> ByteToReal(CByteArray& b_array);
             // Compare goal infos
-            std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2);
+            // std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2);
 
             SNavigationData();
             void Init(TConfigurationNode& t_node);
@@ -49,7 +49,7 @@ class CFootBotTarget : public CCI_Controller {
 
     protected:
         // Update NavigationalTable
-        void UpdateNavigationalTable(const CCI_RangeAndBearingSensor::TReadings& t_packets);
+        // void UpdateNavigationalTable(const CCI_RangeAndBearingSensor::TReadings& t_packets);
         // Broadcast the table
         void BroadcastNavigationalTable();
 
@@ -60,8 +60,8 @@ class CFootBotTarget : public CCI_Controller {
         /* Pointer to the range and bearing sensor */
         CCI_RangeAndBearingSensor* m_pcRABS;
 
-        static UInt32 s_unIdCounter;
-        UInt32 Id;
+        static UInt8 s_unIdCounter;
+        UInt8 Id;
 
         SNavigationData NavigationData;
 };

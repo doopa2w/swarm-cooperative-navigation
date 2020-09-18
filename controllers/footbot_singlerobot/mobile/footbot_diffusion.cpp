@@ -53,7 +53,13 @@ void CFootBotDiffusion::SStateData::Init(TConfigurationNode& t_node) {
     GetNodeAttribute(t_node, "size_of_message", SizeOfMessage);
     // TODO: Experimental feature
     RNG = CRandom::CreateRNG("argos");
+    // TODO: This is not working since it kept generating 0
     GoalId = RNG->Uniform(IdRange);
+    // LOG << "Goal Generated: " << GoalId << std::endl;
+
+    // Debug
+    UInt32 fakeGoal = 22;
+    GoalId = fakeGoal;
 }
 
 void CFootBotDiffusion::SStateData::Reset() {
@@ -73,6 +79,11 @@ void CFootBotDiffusion::SStateData::Reset() {
     };
     FoundDesignatedGoal = false;
     ReachedDesignatedGoal = false;
+
+    // Debug
+    for (auto it1 = NavigationalTable.begin(); it1 != NavigationalTable.end(); ++it1) {
+        LOG << it1->first << " ";
+    }
 }
 
 void CFootBotDiffusion::SStateData::SaveState() {
@@ -87,39 +98,43 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
     std::map<UInt32, std::map<std::string, Real>> NeighboursTable;
     CByteArray cBuf = b_array;
     // Get first byte 
-    UInt32 identifer = cBuf[0];
+    UInt8 identifier;
+    cBuf >> identifier;
 
     for (size_t i = 0; i < NumberOfGoals; ++i) {
-        UInt32 SeqNum;
-        Real Range, Angle;
-        // TODO: Experimental feature: a step size of 45
-        UInt16 factor = i * 45;
+        Real SeqNum, Range, Angle;
+        UInt16 factor = i * 48;
         /*
-        * Proceed to extract the info accordinly
-        * 0        Identifier (Mobile = 0; Static = GoalID)
-        * 1-4      0
-        * 5-8      Seq
-        * 9-12     0
-        * 13-24    EstimateDistance
-        * 25-28    0
-        * 29-40    Angle
-        * 41-44    0
-        * 
-        * 45       Placeholder
-        * 46-49    0
-        * 50-53    Seq
-        * 54-57    0
-        * 58-69    EstimateDistance
-        * 70-73    0
-        * 74-85    Angle
-        * 86-89    0
-        * 
-        * Size for a navigational info = 45 bytes (0 to 44)   
-        */
-        *cBuf(5 + factor, 9 + factor) >> SeqNum;
-        *cBuf(13 + factor, 25 + factor) >> Range;
-        *cBuf(29 + factor, 41 + factor) >> Angle;
-        // Finally insert into the respective goal/ row
+         * Proceed to extract the info accordinly
+         * 0-3      Identifier (Mobile = 0; Static = GoalID) ~ Extracted out!
+         * 
+         * 0-3      0
+         * 4-15      Seq
+         * 16-19     0
+         * 20-31    EstimateDistance
+         * 32-35    0
+         * 36-47    Angle
+         * 48-51    0
+         * 
+         * 52-63    Seq
+         * 64-67    0
+         * 68-79    EstimateDistance
+         * 80-83    0
+         * 84-95    Angle
+         * 96-99    0
+         * 
+         * 100-111    Seq
+         * 112-115    0
+         * 116-127   Estimate
+         * 128-131  0
+         * 132-143  Angle
+         * 144-147  0
+         * Size for a navigational info = 45 bytes (0 to 44)   
+         */
+        *cBuf(4 + factor, 16 + factor) >> SeqNum;
+        *cBuf(20 + factor, 32 + factor) >> Range;
+        *cBuf(36 + factor, 48 + factor) >> Angle;
+        // finally insert into the goal
         NeighboursTable[i] = {
             {
                 {"SequenceNumber", SeqNum},
@@ -127,6 +142,7 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
                 {"Angle", Angle}        
             }
         };
+
     }
     return NeighboursTable;
 }
@@ -136,18 +152,15 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
 
 CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info) {
     CByteArray cBuf;
+
+    // TODO: For now a temp fix
+    UInt8 identifier = 98;
     // For mobile robots, append 0 else append 1 + GoalId that the target robot represents for target/goal robots
-    UInt32 placeHolder = 0;
-    cBuf << placeHolder;
+    cBuf << identifier + 1 ;
     cBuf << '\0';
     
     for (auto & outer_pair : m_info) {
-        /*
-         * For every row/ goal, do:
-         * Append the goalId first followed by four 0's
-         */
-        cBuf << placeHolder;
-        cBuf << '\0';
+        
         for (auto & inner_pair : outer_pair.second) {
             /*
              * For every goal's info, do:
@@ -161,7 +174,7 @@ CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<s
          * Before going to the next row/goal, do:
          * Append a '\0' to separate the current and the next goal
          */
-        cBuf << '\0';
+        // cBuf << '\0';
     }
     return cBuf;
 }
@@ -370,34 +383,45 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
     std::map<UInt32, std::map<std::string, Real>> NeighboursTable;
 
     for (CCI_RangeAndBearingSensor::SPacket t_packet : t_packets) {
-        // StateData.NeighboursNavigationalInfo["EstimateDistance"] = t_packet.Range;
-        // StateData.NeighboursNavigationalInfo["Angle"] = t_packet.HorizontalBearing;
-        if (t_packet.Data[0] == 0) {
+
+        
+        // TODO: Quick fix 
+        CByteArray cBuf = t_packet.Data;
+        UInt8 identifier;
+        cBuf >> identifier;
+        if (identifier == 99) {
             // This is mobile robot
             NeighboursTable = StateData.ByteToReal(t_packet.Data);
+
+            // Iterate two maps per row since we know the keys are identical and in order with one another
+            for (auto it1 = StateData.NavigationalTable.begin(), it2 = NeighboursTable.begin();
+                it1 != StateData.NavigationalTable.end();
+                ++it1, ++it2) {
+                // Get the better info and update the info
+                it1->second = StateData.CompareGoalInfos(it1->second, it2->second);
+                // TODO: Scuffed way of getting the better info's sender's relative position
+                if (it1->second == it2->second) {
+                    StateData.NeighboursNavigationalInfo = {{"EstimateDistance", t_packet.Range},{"Angle", t_packet.HorizontalBearing.GetValue()}};
+                } // otherwise, retain the current NeighboursNavigationalInfo
+            
+            }
         }
         else {
             // This is target robot
             NeighboursTable = StateData.ByteToReal(t_packet.Data);
             /*
              * Update the target robot's goal info with its navigational info
+             * 
+             * Just update that only, ignore the rest
              */
-            NeighboursTable[t_packet.Data[0]-1]["EstimateDistance"] = t_packet.Range;
-            NeighboursTable[t_packet.Data[0]-1]["Angle"] = t_packet.HorizontalBearing.GetValue();
+            LOG << "Extracted out " << identifier << std::endl;
+            StateData.NavigationalTable[identifier]["EstimateDistance"] = t_packet.Range;
+            StateData.NavigationalTable[identifier]["Angle"] = t_packet.HorizontalBearing.GetValue();
+
+            
         }
 
-        // Iterate two maps per row since we know the keys are identical and in order with one another
-        for (auto it1 = StateData.NavigationalTable.begin(), it2 = NeighboursTable.begin();
-             it1 != StateData.NavigationalTable.end();
-             ++it1, ++it2) {
-            // Get the better info and update the info
-            it1->second = StateData.CompareGoalInfos(it1->second, it2->second);
-            // TODO: Scuffed way of getting the better info's sender's relative position
-            if (it1->second == it2->second) {
-                StateData.NeighboursNavigationalInfo = {{"EstimateDistance", t_packet.Range},{"Angle", t_packet.HorizontalBearing.GetValue()}};
-            } // otherwise, retain the current NeighboursNavigationalInfo
         
-        }
         
     }
 
@@ -410,6 +434,8 @@ void CFootBotDiffusion::BroadcastNavigationalTable() {
     CByteArray cBuf = StateData.RealToByte(StateData.NavigationalTable);
     // TODO: Might be pointless in filling up the byte array
     // while (cBuf.Size() < StateData.SizeOfMessage) cBuf << '\0';
+    // Debug
+    LOG << "From " << Id << ": " << cBuf << std::endl;
     m_pcRABA->SetData(cBuf);
 }
 

@@ -52,12 +52,12 @@ void CFootBotDiffusion::SStateData::Init(TConfigurationNode& t_node) {
     GetNodeAttribute(t_node, "number_of_goals", NumberOfGoals);
     GetNodeAttribute(t_node, "size_of_message", SizeOfMessage);
     // TODO: Experimental feature
-    RNG = CRandom::CreateRNG("argos");
+    // RNG = CRandom::CreateRNG("argos");
     // TODO: This is not working since it kept generating 0
-    GoalId = RNG->Uniform(IdRange);
+    // GoalId = RNG->Uniform(IdRange);
     // LOG << "Goal Generated: " << GoalId << std::endl;
 
-    // Debug
+    // Debug = pass
     UInt32 fakeGoal = 22;
     GoalId = fakeGoal;
 }
@@ -66,8 +66,14 @@ void CFootBotDiffusion::SStateData::Reset() {
     // Always start with RESTING
     State = RESTING;
     TimeRandomExplore = 0;
-    // Let's reset the goalID as well
-    GoalId = RNG->Uniform(IdRange);
+
+    // TODO: Not working! Let's reset the goalID as well
+    // GoalId = RNG->Uniform(IdRange);
+    UInt32 fake = 22;
+    GoalId = fake;
+
+
+    // Tmp fix: If init with 0, the Robot will always REST
     GoalNavigationalInfo = {
         {"SequenceNumber", 0}, {"EstimateDistance", 0}, {"Angle", 0}
     };
@@ -80,10 +86,15 @@ void CFootBotDiffusion::SStateData::Reset() {
     FoundDesignatedGoal = false;
     ReachedDesignatedGoal = false;
 
-    // Debug
-    for (auto it1 = NavigationalTable.begin(); it1 != NavigationalTable.end(); ++it1) {
-        LOG << it1->first << " ";
-    }
+
+    // Debug = Pass
+    LOG << " initializing with state as follows: " << "FoundDesignatedGoal = " << FoundDesignatedGoal
+        << " ReachedDesignatedGoal = " <<  ReachedDesignatedGoal << std::endl;
+
+    // // Debug = Pass
+    // for (auto it1 = NavigationalTable.begin(); it1 != NavigationalTable.end(); ++it1) {
+    //     LOG << it1->first << " ";
+    // }
 }
 
 void CFootBotDiffusion::SStateData::SaveState() {
@@ -152,10 +163,10 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
 
 CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info) {
     CByteArray cBuf;
-
+    // For mobile robots, append 0 else append 1 + GoalId that the target robot represents for target/goal robots
     // TODO: For now a temp fix
     UInt8 identifier = 98;
-    // For mobile robots, append 0 else append 1 + GoalId that the target robot represents for target/goal robots
+
     cBuf << identifier + 1 ;
     cBuf << '\0';
     
@@ -253,35 +264,13 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
 /*
  * The control step is called every time step and contains all the actions
  * that will be executed by the robot itself.
- * 
- * Pseudo
- *      1) Broadcast Navigational Table
- *      2) Update State
- *          2.1) Update Navigational Table 
- *              2.1.1) Take packets from every local neighbour in comm. range
- *              2.1.2) For every packet, format it from byte array to float/Real
- *              2.1.3) Compare goal by goal (row by row) based on a defined scoring system
- *                      TODO: #19 Possible ideas for determining the appeal of a navigational info
- *                      Scoring System = Sequence Number (Old is worse) + Range 
- *                      For now, angle is not a factor; But might have to include if the robot
- *                      turning takes too long (Smaller Angle -> Less Turning -> Better)
- *              2.1.4) Lack of goal info {0,0,0} will be updated with newly discovered info
- *                      from other local neighbours
- *              2.1.5) If at any chance, that the info required to reach the designated goal
- *                      is given by the designated goal (target robot); Terminate immediately - > Preference of 
- *                      original (target robot) info over third-party (other mobile robots) info
- *                      TODO: Might be an issue if a goal can be represented with two target robots
- *          2.2) Evaluate Navigational Table and find out if the designated goal info exists inside the table
- *              2.2.1) If found, update the goalNavigationalInfo
- *                  2.2.1.1) StartMoveToGoal(); State.FoundDesignatedGoal = true flag
- *              2.2.2) Else, check if TimeRandomExplore < 120 then StartRandomExplore(); else StartAggressiveExplore()
- *              2.2.3) If GoalNavigationalInfo.Range < Certain Threshold value to indicate if robot reached goal
- *                  2.2.3.1) bool ReachedDesignatedGoal = true
+ *
  */
 
 void CFootBotDiffusion::ControlStep() {
+    
     UpdateState();
-    BroadcastNavigationalTable();
+    
 
     switch (StateData.State) {
         case RESTING: {
@@ -305,18 +294,28 @@ void CFootBotDiffusion::ControlStep() {
         }
     }
 
+    //Debug = Pass
+    LOG << Id << " is broadcasting its table!" << std::endl;
+
+    BroadcastNavigationalTable();
+
 }
 
 /**************************************************************************/
 /**************************************************************************/
 
 void CFootBotDiffusion::Reset() {
+
     // Reset robot state data
     StateData.Reset();
+
     // Empty the buffer
     m_pcRABA->ClearData();
     // Set LED Color
     m_pcLEDs->SetAllColors(CColor::BLACK);
+    
+    // Debug = Pass
+    LOG << Id << " successfully reseted! " << std::endl;
 }
 
 /**************************************************************************/
@@ -343,10 +342,12 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
         {"Angle", 0}
     };
     // TODO: #18 Possible issue where the robot might spawned right on the same spot with the target robot
-    if (NewGoalInfo == Checker) {
+    // Also ensured that the initial GoalInfo is not valid since we init with 0, 0, 0 (Might chg it later?)
+    if (NewGoalInfo == Checker or StateData.GoalNavigationalInfo == Checker) {
         // goal info not valid so terminate this method straight
         return;
     }
+
     // goal info is valid, update relevant flag
     StateData.FoundDesignatedGoal = true;
     // Now compare both goal info from the table and the current goal info
@@ -362,7 +363,14 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     }
 
     // Check whether the robot reached the goal (within 20cm proximity) based on the new info
-    if (StateData.GoalNavigationalInfo["EstimateDistance"] <= 20.0f) {
+    // Also need to check whether FoundDesignatedGoal = true else the robot will immediately be in RESTING
+    // state since the GoalInfo is init with placehold of 0!
+    if (StateData.GoalNavigationalInfo["EstimateDistance"] <= 20.0f && StateData.FoundDesignatedGoal == true) {
+        
+        // Debug = Not yet tested
+        LOG << Id << " has reached its designated goal with distance apart of " << StateData.GoalNavigationalInfo["EstimateDistance"]
+                << "cm\n";
+
         StateData.ReachedDesignatedGoal = true; // switch to true
     } // otherwise, don't change since default = false
 }
@@ -382,14 +390,28 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
      */
     std::map<UInt32, std::map<std::string, Real>> NeighboursTable;
 
-    for (CCI_RangeAndBearingSensor::SPacket t_packet : t_packets) {
+    // Debug 
+    int counter = 0;
 
+
+    for (CCI_RangeAndBearingSensor::SPacket t_packet : t_packets) {
         
+        // Debug = Pass (But its not adding the second message for some reason)
+        LOG << Id << " receiving message from " << t_packet.Range << " at " << t_packet.HorizontalBearing.GetValue() << ".\n";
+
         // TODO: Quick fix 
         CByteArray cBuf = t_packet.Data;
         UInt8 identifier;
         cBuf >> identifier;
+
+        // Debug
+        ++counter;
+        LOG << Id << " Iterating " << counter << " and got identifier " << identifier << std::endl;
+
         if (identifier == 99) {
+
+            // Debug = Not yet tested
+
             // This is mobile robot
             NeighboursTable = StateData.ByteToReal(t_packet.Data);
 
@@ -407,21 +429,25 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
             }
         }
         else {
+
+            // Debug
+
+
             // This is target robot
-            NeighboursTable = StateData.ByteToReal(t_packet.Data);
+            // TODO: #28 Temp removal of formatting the useless message from target robots
+            // NeighboursTable = StateData.ByteToReal(t_packet.Data);
             /*
              * Update the target robot's goal info with its navigational info
              * 
              * Just update that only, ignore the rest
              */
-            LOG << "Extracted out " << identifier << std::endl;
+            // Debug = pass
+            // LOG << "Extracted out " << identifier << std::endl;
+
             StateData.NavigationalTable[identifier]["EstimateDistance"] = t_packet.Range;
             StateData.NavigationalTable[identifier]["Angle"] = t_packet.HorizontalBearing.GetValue();
 
-            
         }
-
-        
         
     }
 
@@ -434,7 +460,7 @@ void CFootBotDiffusion::BroadcastNavigationalTable() {
     CByteArray cBuf = StateData.RealToByte(StateData.NavigationalTable);
     // TODO: Might be pointless in filling up the byte array
     // while (cBuf.Size() < StateData.SizeOfMessage) cBuf << '\0';
-    // Debug
+    // Debug = pass
     LOG << "From " << Id << ": " << cBuf << std::endl;
     m_pcRABA->SetData(cBuf);
 }
@@ -449,7 +475,6 @@ void CFootBotDiffusion::UpdateState() {
      * 3) TODO: #21 Unsure if i should just : Now do some if else to switch to states
      *                                          or do it inside the states
      */
-    
     const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
     // update the table with the new tables/ info sent by the robots/ target if any
     UpdateNavigationalTable(tPackets);
@@ -563,7 +588,11 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
         case SWheelTurningParams::NO_TURN: {
             // Just go straight with no speed differences between the left and right wheels
             fSpeed1 = fBaseAngularWheelSpeed;
-            fSpeed1 = fBaseAngularWheelSpeed;
+            fSpeed2 = fBaseAngularWheelSpeed;
+            
+            // Debug = pass
+            LOG << Id << " employing NO_TURN! "<< std::endl;
+
             break;
         }
         case SWheelTurningParams::SOFT_TURN: {
@@ -572,12 +601,20 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
                 WheelTurningParams.HardTurnOnAngleThreshold;
             fSpeed1 = fBaseAngularWheelSpeed - fBaseAngularWheelSpeed * (1.0 - fSpeedFactor);   // Slower
             fSpeed2 = fBaseAngularWheelSpeed + fBaseAngularWheelSpeed * (1.0 - fSpeedFactor);   // Faster
+
+            // Debug = pass
+            LOG << Id << " employing SOFT_TURN! "<< std::endl;
+
             break;
         }
         case SWheelTurningParams::HARD_TURN: {
             // Both wheels have opposite speeds
             fSpeed1 = -WheelTurningParams.MaxSpeed;
             fSpeed2 = WheelTurningParams.MaxSpeed;
+
+            // Debug = pass
+            LOG << Id << " employing HARD_TURN! "<< std::endl;
+
             break;
         }
     }
@@ -594,6 +631,7 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
         fRightWheelSpeed = fSpeed1;
     }
     // Set the wheel speeds to the handlers
+    LOG << Id << " applied wheel speed with L, R " << fLeftWheelSpeed << " " << fRightWheelSpeed << std::endl;
     m_pcWheels->SetLinearVelocity(fLeftWheelSpeed, fRightWheelSpeed);
 }
 
@@ -655,9 +693,9 @@ void CFootBotDiffusion::RandomExplore() {
         // Get the diffusion vector to perform the obstacle avoidance
         bool collision;
         CVector2 diffusion = DiffusionVector(collision);
+        ++StateData.TimeRandomExplore;
         // control the speed by MaxSpeed * 0.5
         SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * diffusion);
-        ++StateData.TimeRandomExplore;
     }
 }
 
@@ -711,10 +749,13 @@ void CFootBotDiffusion::MoveToGoal() {
 // TODO: #27 Pointless Rest() but might add some implementation later on
 void CFootBotDiffusion::Rest() {
     if (StateData.ReachedDesignatedGoal == false) {
+        // Debug = pass
+        LOG << Id << " Starting Random Exploration!" << std::endl;
         StartRandomExploration();
     }
     else {
-
+        
+        // Debug = Pass
         LOG << Id << ": Done tasks!\n The goal was: " << StateData.GoalId << std::endl;
     }
 

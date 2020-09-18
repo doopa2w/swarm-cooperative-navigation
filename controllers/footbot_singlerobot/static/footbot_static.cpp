@@ -86,6 +86,9 @@ CByteArray CFootBotTarget::SNavigationData::RealToByte(std::map<UInt32, std::map
     cBuf << GoalId + 1;
     cBuf << '\0';
 
+    // Debug
+    LOG << "Got GoalID of " << GoalId + 1 << std::endl; 
+
     for (auto & outer_pair : m_info) {
         for (auto & inner_pair : outer_pair.second) {
             /*
@@ -250,6 +253,10 @@ void CFootBotTarget::Reset() {
 void CFootBotTarget::BroadcastNavigationalTable() {
     CByteArray cBuf = NavigationData.RealToByte(NavigationData.NavigationalTable, Id);
     m_pcRABA->SetData(cBuf);
+
+
+    // Debug 
+    LOG << "Target Robot " << Id << " sending " << cBuf << std::endl;
 }
 
 void CFootBotTarget::ControlStep() {

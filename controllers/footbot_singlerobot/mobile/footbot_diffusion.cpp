@@ -75,13 +75,13 @@ void CFootBotDiffusion::SStateData::Reset() {
 
     // Tmp fix: If init with 0, the Robot will always REST
     GoalNavigationalInfo = {
-        {"SequenceNumber", 0}, {"EstimateDistance", 0}, {"Angle", 0}
+        {"Angle", 0}, {"EstimateDistance", 0}, {"SequenceNumber", 0} 
     };
     for (size_t i = 0; i < NumberOfGoals; ++i) {
         NavigationalTable[i] = GoalNavigationalInfo;
     }
     NeighboursNavigationalInfo = {
-         {"EstimateDistance", 0}, {"Angle", 0}
+        {"Angle", 0}, {"EstimateDistance", 0}, 
     };
     FoundDesignatedGoal = false;
     ReachedDesignatedGoal = false;
@@ -117,40 +117,40 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
         UInt16 factor = i * 48;
         /*
          * Proceed to extract the info accordinly
-         * 0-3      Identifier (Mobile = 0; Static = GoalID) ~ Extracted out!
+         * 0      Identifier (Mobile = 0; Static = GoalID) ~ Extracted out!
          * 
          * 0-3      0
-         * 4-15      Seq
+         * 4-15     Angle
          * 16-19     0
          * 20-31    EstimateDistance
          * 32-35    0
-         * 36-47    Angle
+         * 36-47    Seq
          * 48-51    0
          * 
-         * 52-63    Seq
+         * 52-63    Angle
          * 64-67    0
          * 68-79    EstimateDistance
          * 80-83    0
-         * 84-95    Angle
+         * 84-95    Seq
          * 96-99    0
          * 
-         * 100-111    Seq
+         * 100-111  Angle
          * 112-115    0
          * 116-127   Estimate
          * 128-131  0
-         * 132-143  Angle
+         * 132-143  Seq
          * 144-147  0
          * Size for a navigational info = 45 bytes (0 to 44)   
          */
-        *cBuf(4 + factor, 16 + factor) >> SeqNum;
+        *cBuf(4 + factor, 16 + factor) >> Angle;
         *cBuf(20 + factor, 32 + factor) >> Range;
-        *cBuf(36 + factor, 48 + factor) >> Angle;
+        *cBuf(36 + factor, 48 + factor) >> SeqNum;
         // finally insert into the goal
         NeighboursTable[i] = {
             {
-                {"SequenceNumber", SeqNum},
+                {"Angle", Angle},
                 {"EstimateDistance", Range},
-                {"Angle", Angle}        
+                {"SequenceNumber", SeqNum}       
             }
         };
 
@@ -165,12 +165,17 @@ CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<s
     CByteArray cBuf;
     // For mobile robots, append 0 else append 1 + GoalId that the target robot represents for target/goal robots
     // TODO: For now a temp fix
-    UInt8 identifier = 98;
+    UInt8 identifier = 99;
 
-    cBuf << identifier + 1 ;
+    cBuf << identifier ;
     cBuf << '\0';
+
+
+    // Debug = Pass
     
     for (auto & outer_pair : m_info) {
+
+        LOG << "Sending GoalID: " << outer_pair.first;
         
         for (auto & inner_pair : outer_pair.second) {
             /*
@@ -178,9 +183,14 @@ CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<s
              * Append the Seq followed by four 0's
              * Repeat this for distance and angle as well
              */
+
+            LOG << " " << inner_pair.first << ":  " << inner_pair.second;
+
             cBuf << inner_pair.second;
             cBuf << '\0';
         }
+
+        LOG << "\n";
         /*
          * Before going to the next row/goal, do:
          * Append a '\0' to separate the current and the next goal
@@ -333,13 +343,14 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
      * Then, update relevant flags and also checked if the goal info's range < 20cm
      * to determined that the robot had reached its goal and can switch to RESTING
      * 
-     * GoalInfo = {Sequence Number, EstimateDistance, Angle}
+     * GoalInfo = {Angle, EstimateDistance, SequenceNumber}
      */
     // a hardcoded map to check if the goal info is valid or not
     std::map<std::string, Real> Checker = {
-        {"SequenceNumber", 0},
+        {"Angle", 0},
         {"EstimateDistance", 0},
-        {"Angle", 0}
+        {"SequenceNumber", 0}
+        
     };
     // TODO: #18 Possible issue where the robot might spawned right on the same spot with the target robot
     // Also ensured that the initial GoalInfo is not valid since we init with 0, 0, 0 (Might chg it later?)
@@ -396,17 +407,18 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
 
     for (CCI_RangeAndBearingSensor::SPacket t_packet : t_packets) {
         
-        // Debug = Pass (But its not adding the second message for some reason)
-        LOG << Id << " receiving message from " << t_packet.Range << " at " << t_packet.HorizontalBearing.GetValue() << ".\n";
+        // Debug = Pass 
+        // LOG << Id << " receiving message from " << t_packet.Range << " at " << t_packet.HorizontalBearing.GetValue() << ".\n";
 
-        // TODO: Quick fix 
         CByteArray cBuf = t_packet.Data;
         UInt8 identifier;
         cBuf >> identifier;
 
-        // Debug
-        ++counter;
-        LOG << Id << " Iterating " << counter << " and got identifier " << identifier << std::endl;
+
+        // Debug = Pass 
+        //++counter;
+        //LOG << Id << " Iterating " << counter << " and got identifier " << identifier << " By right suppose to get "
+        //    << t_packet.Data[3] << std::endl;
 
         if (identifier == 99) {
 
@@ -423,7 +435,7 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
                 it1->second = StateData.CompareGoalInfos(it1->second, it2->second);
                 // TODO: Scuffed way of getting the better info's sender's relative position
                 if (it1->second == it2->second) {
-                    StateData.NeighboursNavigationalInfo = {{"EstimateDistance", t_packet.Range},{"Angle", t_packet.HorizontalBearing.GetValue()}};
+                    StateData.NeighboursNavigationalInfo = {{"Angle", t_packet.HorizontalBearing.GetValue()}, {"EstimateDistance", t_packet.Range}};
                 } // otherwise, retain the current NeighboursNavigationalInfo
             
             }
@@ -443,9 +455,9 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
              */
             // Debug = pass
             // LOG << "Extracted out " << identifier << std::endl;
-
-            StateData.NavigationalTable[identifier]["EstimateDistance"] = t_packet.Range;
             StateData.NavigationalTable[identifier]["Angle"] = t_packet.HorizontalBearing.GetValue();
+            StateData.NavigationalTable[identifier]["EstimateDistance"] = t_packet.Range;
+            
 
         }
         

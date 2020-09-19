@@ -5,9 +5,9 @@
   <!-- * General configuration * -->
   <!-- ************************* -->
   <framework>
-    <system threads="0" />
+    <system threads="5" />
     <experiment length="0"
-                ticks_per_second="5"
+                ticks_per_second="1"
                 random_seed="124" />
   </framework>
 
@@ -35,8 +35,8 @@
                        no_turn_angle_threshold="10"
                        max_speed="10" />
         <state max_time_in_random_exploration="240"
-               number_of_goals="3"
-               size_of_message="152" />       <!---Number of goals * 45 = 4 * 45 = 180-->
+               number_of_goals="4"
+               size_of_message="197" />       <!---Number of goals * 45 = 4 * 45 = 180-->
       </params>
     </footbot_diffusion_controller>
 
@@ -50,8 +50,8 @@
         <range_and_bearing implementation="medium" medium="rab" show_rays="false" />
       </sensors>
       <params>
-        <navigation_info number_of_goals="3"
-                         size_of_message="152" />
+        <navigation_info number_of_goals="4"
+                         size_of_message="197" />
       </params>
     </footbot_static_controller>
 
@@ -90,8 +90,8 @@
     <distribute>
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="1" max_trials="100">
-        <foot-bot id="fdc" rab_data_size="152">
+      <entity quantity="2" max_trials="100">
+        <foot-bot id="fdc" rab_data_size="197">
           <controller config="fdc" />
         </foot-bot>
       </entity>
@@ -101,8 +101,8 @@
     <distribute>
       <position method="uniform" min="-2, -2, 0" max="2, 2, 0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="3" max_trials="100">
-        <foot-bot id="target" rab_data_size="152">
+      <entity quantity="4" max_trials="100">
+        <foot-bot id="target" rab_data_size="197">
           <controller config="fpc"/>
         </foot-bot>
       </entity>

@@ -147,7 +147,7 @@ class CFootBotDiffusion : public CCI_Controller {
             std::map<UInt32, std::map<std::string, Real>> ByteToReal(CByteArray& b_array);
             
             // compare a goal info with another goal info
-            std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2);
+            std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real> m_info1, std::map<std::string, Real> m_info2);
 
             // Use to switch from AGGRESSIVE_EXPLORATION -> MOVE_TO_GOAL
             bool FoundDesignatedGoal;

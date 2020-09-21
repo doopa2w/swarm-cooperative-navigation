@@ -61,8 +61,7 @@ void CFootBotDiffusion::SStateData::Init(TConfigurationNode& t_node) {
     // LOG << "Goal Generated: " << GoalId << std::endl;
 
     // Debug = pass
-    UInt32 fakeGoal = 22;
-    GoalId = fakeGoal;
+    GoalId = 2;
 }
 
 void CFootBotDiffusion::SStateData::Reset() {
@@ -72,16 +71,17 @@ void CFootBotDiffusion::SStateData::Reset() {
 
     // TODO: Not working! Let's reset the goalID as well
     // GoalId = RNG->Uniform(IdRange);
-    UInt32 fake = 22;
-    GoalId = fake;
+    GoalId = 2;
 
 
-    // Tmp fix: If init with 0, the Robot will always REST
+    // Tmp fix: Init with either upper or lower to ensure that robot doesn't go straight to REST
     GoalNavigationalInfo = {
-        {"Angle", 0}, {"EstimateDistance", 0}, {"SequenceNumber", 0} 
+        {"Angle", 0 }, {"EstimateDistance", -999}, {"SequenceNumber", 999} 
     };
     for (size_t i = 0; i < NumberOfGoals; ++i) {
-        NavigationalTable[i] = GoalNavigationalInfo;
+        NavigationalTable[i] = {
+            {"Angle", 0}, {"EstimateDistance", 0}, {"SequenceNumber", 0} 
+        };
     }
     NeighboursNavigationalInfo = {
         {"Angle", 0}, {"EstimateDistance", 0}, 
@@ -177,8 +177,8 @@ CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<s
     // Debug = Pass
     
     for (auto & outer_pair : m_info) {
-
-        LOG << "Sending GoalID: " << outer_pair.first;
+    
+        // LOG << "Sending GoalID: " << outer_pair.first;
         
         for (auto & inner_pair : outer_pair.second) {
             /*
@@ -187,18 +187,13 @@ CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<s
              * Repeat this for distance and angle as well
              */
 
-            LOG << " " << inner_pair.first << ":  " << inner_pair.second;
+            // LOG << " " << inner_pair.first << ":  " << inner_pair.second;
 
             cBuf << inner_pair.second;
             cBuf << '\0';
         }
 
-        LOG << "\n";
-        /*
-         * Before going to the next row/goal, do:
-         * Append a '\0' to separate the current and the next goal
-         */
-        // cBuf << '\0';
+        // LOG << "\n";
     }
     return cBuf;
 }
@@ -206,7 +201,7 @@ CByteArray CFootBotDiffusion::SStateData::RealToByte(std::map<UInt32, std::map<s
 /**************************************************************************/
 /**************************************************************************/
 
-std::map<std::string, Real> CFootBotDiffusion::SStateData::CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2) {
+std::map<std::string, Real> CFootBotDiffusion::SStateData::CompareGoalInfos(std::map<std::string, Real> m_info1, std::map<std::string, Real> m_info2) {
     /*
      * Scoring function to calculate quality of info based on
      * Sequence Number (Relative age of the info) & EstimateDistance (Relative Distance)
@@ -216,6 +211,8 @@ std::map<std::string, Real> CFootBotDiffusion::SStateData::CompareGoalInfos(std:
      * 
      * AScore, BScore > AScore 
      */
+
+    // Tmp Fix: Might reevaluate the scoring function
     UInt32 AScore, BScore;
     AScore = m_info1["SequenceNumber"] * m_info1["EstimateDistance"] + m_info1["EstimateDistance"];
     BScore = m_info2["SequenceNumber"] * m_info2["EstimateDistance"] + m_info2["EstimateDistance"];
@@ -283,6 +280,16 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
 void CFootBotDiffusion::ControlStep() {
     
     UpdateState();
+
+
+    // Debug
+    LOG << "\nMobile Robot Status: \n";
+    LOG << "Current State: " << StateData.State << "; ";
+    LOG << "FoundDesignatedGoalInfo: " << StateData.FoundDesignatedGoal << "; ";
+    LOG << "DesignatedGoalInfo " << StateData.GoalNavigationalInfo["Angle"] << " " 
+        << StateData.GoalNavigationalInfo["EstimateDistance"] <<  "; ";
+    LOG << "TimeRandomExplore: " << StateData.TimeRandomExplore <<"; ";
+    LOG << "ReachedDesignatedGoal: " << StateData.ReachedDesignatedGoal << std::endl;
     
 
     switch (StateData.State) {
@@ -308,7 +315,7 @@ void CFootBotDiffusion::ControlStep() {
     }
 
     //Debug = Pass
-    LOG << Id << " is broadcasting its table!" << std::endl;
+    LOG << "Mobile Robot " << Id << " is broadcasting its table!" << std::endl;
 
     BroadcastNavigationalTable();
 
@@ -328,7 +335,7 @@ void CFootBotDiffusion::Reset() {
     m_pcLEDs->SetAllColors(CColor::BLACK);
     
     // Debug = Pass
-    LOG << Id << " successfully reseted! " << std::endl;
+    LOG << "Mobile Robot " << Id << " successfully reseted! " << std::endl;
 }
 
 /**************************************************************************/
@@ -338,6 +345,8 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     // Read from Navigational table
     // can just access the goal straight by index since the table is initialize/ sorted
     // according to goalId ++
+
+    // if goal id is out of the range, this statement would create a new map inside the 2d map
     std::map<std::string, Real> NewGoalInfo = StateData.NavigationalTable[StateData.GoalId];
     /*
      * Check if the goal info is valid or not
@@ -355,9 +364,8 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
         {"SequenceNumber", 0}
         
     };
-    // TODO: #18 Possible issue where the robot might spawned right on the same spot with the target robot
-    // Also ensured that the initial GoalInfo is not valid since we init with 0, 0, 0 (Might chg it later?)
-    if (NewGoalInfo == Checker or StateData.GoalNavigationalInfo == Checker) {
+
+    if (NewGoalInfo == Checker) {
         // goal info not valid so terminate this method straight
         return;
     }
@@ -382,7 +390,7 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     if (StateData.GoalNavigationalInfo["EstimateDistance"] <= 20.0f && StateData.FoundDesignatedGoal == true) {
         
         // Debug = Not yet tested
-        LOG << Id << " has reached its designated goal with distance apart of " << StateData.GoalNavigationalInfo["EstimateDistance"]
+        LOG << "Mobile Robot " << Id << " has reached its designated goal with distance apart of " << StateData.GoalNavigationalInfo["EstimateDistance"]
                 << "cm\n";
 
         StateData.ReachedDesignatedGoal = true; // switch to true
@@ -439,7 +447,10 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
                 // TODO: Scuffed way of getting the better info's sender's relative position
                 if (it1->second == it2->second) {
                     StateData.NeighboursNavigationalInfo = {{"Angle", t_packet.HorizontalBearing.GetValue()}, {"EstimateDistance", t_packet.Range}};
-                } // otherwise, retain the current NeighboursNavigationalInfo
+                } // otherwise, retain the current NeighboursNavigationalInfo and increase sequence number
+                else {
+                    ++it1->second["SequenceNumber"];
+                }
             
             }
         }
@@ -460,6 +471,7 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
             // LOG << "Extracted out " << identifier << std::endl;
             StateData.NavigationalTable[identifier]["Angle"] = t_packet.HorizontalBearing.GetValue();
             StateData.NavigationalTable[identifier]["EstimateDistance"] = t_packet.Range;
+            StateData.NavigationalTable[identifier]["SequenceNumber"] = 0;
             
 
         }
@@ -473,10 +485,21 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
 
 void CFootBotDiffusion::BroadcastNavigationalTable() {
     CByteArray cBuf = StateData.RealToByte(StateData.NavigationalTable);
-    // TODO: Might be pointless in filling up the byte array
-    // while (cBuf.Size() < StateData.SizeOfMessage) cBuf << '\0';
+
     // Debug = pass
-    LOG << "From " << Id << ": " << cBuf << std::endl;
+    // LOG << "From Mobile Robot " << Id << ": " << cBuf << std::endl;
+
+    // Debug
+    // Log the table
+    LOG << "Mobile Robot " << Id << " sending the table: \n";
+    for (auto & it : StateData.NavigationalTable) {
+        LOG << "Goal ID: " << it.first << " ";
+        for (auto & ot : it.second) {
+            LOG << "[" << ot.first << ": " << ot.second << "]"; 
+        }
+        LOG << std::endl;
+    }
+
     m_pcRABA->SetData(cBuf);
 }
 
@@ -507,9 +530,15 @@ CVector2 CFootBotDiffusion::CalculateVectorToGoal() {
     // 
     CVector2 cAccumulator = CVector2(StateData.GoalNavigationalInfo["EstimateDistance"], 
                                 CRadians(StateData.GoalNavigationalInfo["Angle"]));
+
+
+
+    LOG << "Mobile Robot " << Id << " Calculated the vector: " << cAccumulator.Length() << ", "
+        << cAccumulator.Angle() << std::endl;
     // if the range is > 0.0f then return the vector
     if (cAccumulator.Length() > 0.0f) {
-        return CVector2(1.0f, cAccumulator.Angle());
+        return cAccumulator;
+
     }
     // Otherwise, returns zero
     // TODO: Might be redundant since less than 20 we would have ReachedGoal = true and State = RESTING
@@ -606,7 +635,7 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
             fSpeed2 = fBaseAngularWheelSpeed;
             
             // Debug = pass
-            LOG << Id << " employing NO_TURN! "<< std::endl;
+            LOG << "Mobile Robot " << Id << " employing NO_TURN! "<< std::endl;
 
             break;
         }
@@ -618,7 +647,7 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
             fSpeed2 = fBaseAngularWheelSpeed + fBaseAngularWheelSpeed * (1.0 - fSpeedFactor);   // Faster
 
             // Debug = pass
-            LOG << Id << " employing SOFT_TURN! "<< std::endl;
+            LOG << "Mobile Robot " << Id << " employing SOFT_TURN! "<< std::endl;
 
             break;
         }
@@ -628,7 +657,7 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
             fSpeed2 = WheelTurningParams.MaxSpeed;
 
             // Debug = pass
-            LOG << Id << " employing HARD_TURN! "<< std::endl;
+            LOG << "Mobile Robot " << Id << " employing HARD_TURN! "<< std::endl;
 
             break;
         }
@@ -646,7 +675,8 @@ void CFootBotDiffusion::SetWheelSpeedsFromVector(const CVector2& heading) {
         fRightWheelSpeed = fSpeed1;
     }
     // Set the wheel speeds to the handlers
-    LOG << Id << " applied wheel speed with L, R " << fLeftWheelSpeed << " " << fRightWheelSpeed << std::endl;
+    // Debug
+    // LOG << "Mobile Robot " << Id << " applied wheel speed with L, R " << fLeftWheelSpeed << " " << fRightWheelSpeed << std::endl;
     m_pcWheels->SetLinearVelocity(fLeftWheelSpeed, fRightWheelSpeed);
 }
 
@@ -694,6 +724,9 @@ void CFootBotDiffusion::StartResting() {
 /**************************************************************************/
 
 void CFootBotDiffusion::RandomExplore() {
+
+
+
     // Check if we found the designated goal info?
     if (StateData.FoundDesignatedGoal == true) {
         StartMoveToGoal();
@@ -765,13 +798,13 @@ void CFootBotDiffusion::MoveToGoal() {
 void CFootBotDiffusion::Rest() {
     if (StateData.ReachedDesignatedGoal == false) {
         // Debug = pass
-        LOG << Id << " Starting Random Exploration!" << std::endl;
+        LOG << "Mobile Robot " << Id << " Starting Random Exploration!" << std::endl;
         StartRandomExploration();
     }
     else {
         
         // Debug = Pass
-        LOG << Id << ": Done tasks!\n The goal was: " << StateData.GoalId << std::endl;
+        LOG << "Mobile Robot " << Id << ": Done tasks!\n The goal was: " << StateData.GoalId << std::endl;
     }
 
 }

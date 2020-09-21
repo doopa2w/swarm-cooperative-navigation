@@ -7,51 +7,22 @@
 /**************************************************************************/
 
 CFootBotTarget::SNavigationData::SNavigationData() :
-    NumberOfGoals(2) {}
+    NumberOfGoals(4) {}
 
 void CFootBotTarget::SNavigationData::Init(TConfigurationNode& t_node) {
-    GetNodeAttributeOrDefault(t_node, "number_of_goals", NumberOfGoals, NumberOfGoals);
+    GetNodeAttribute(t_node, "number_of_goals", NumberOfGoals);
     GetNodeAttribute(t_node, "size_of_message", SizeOfMessage);
 }
 
 void CFootBotTarget::SNavigationData::Reset() {
     for (size_t i = 0; i < NumberOfGoals; ++i) {
         NavigationalTable[i] = {
-            {"SequenceNumber", 0}, {"EstimateDistance", 0}, {"Angle", 0}
+            {"Angle", 0}, {"EstimateDistance", 0}, {"SequenceNumber", 0}
         };
     }
 
 }
 
-
-/**************************************************************************/
-/**************************************************************************/
-
-CByteArray CFootBotTarget::SNavigationData::RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info, UInt8 GoalID) {
-    CByteArray cBuf;
-
-
-    cBuf << GoalID;
-    cBuf << '\0';
-
-    for (auto & outer_pair : m_info) {
-        for (auto & inner_pair : outer_pair.second) {
-            /*
-             * For every goal's info, do:
-             * Append the Seq followed by four 0's
-             * Repeat this for distance and angle as well
-             */
-            cBuf << inner_pair.second;
-            cBuf << '\0';
-        }
-        /*
-         * Before going to the next row/goal, do:
-         * Append a '\0' to separate the current and the next goal
-         */
-        // cBuf << '\0';
-    }
-    return cBuf;
-}
 
 /**************************************************************************/
 /**************************************************************************/
@@ -108,11 +79,15 @@ void CFootBotTarget::Reset() {
 
 
 void CFootBotTarget::BroadcastNavigationalTable() {
-    CByteArray cBuf = NavigationData.RealToByte(NavigationData.NavigationalTable, GetId());
+    CByteArray cBuf;
+    cBuf << Id;
+    while (cBuf.Size() < NavigationData.SizeOfMessage) cBuf << '\0';
+    // Debug = Pass
+    // LOG << "Target Robot " << Id << " sending message of size " << cBuf.Size() << std::endl;
     m_pcRABA->SetData(cBuf);
 
-    // Debug 
-    LOG << "Target Robot " << GetId() << " sending " << cBuf << std::endl;
+    // Debug = Pass
+    // LOG << "Target Robot " << GetId() << " sending " << cBuf << std::endl;
 }
 
 void CFootBotTarget::ControlStep() {

@@ -25,12 +25,6 @@ class CFootBotTarget : public CCI_Controller {
             std::map<UInt32, std::map<std::string, Real>> NavigationalTable;
             // Size of message
             UInt32 SizeOfMessage;
-            // Formatter for byte to real and vice versa
-            CByteArray RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info, UInt8 GoalID);
-            // std::map<UInt32, std::map<std::string, Real>> ByteToReal(CByteArray& b_array);
-            // Compare goal infos
-            // std::map<std::string, Real> CompareGoalInfos(std::map<std::string, Real>& m_info1, std::map<std::string, Real>& m_info2);
-
             SNavigationData();
             void Init(TConfigurationNode& t_node);
             void Reset();

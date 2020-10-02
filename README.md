@@ -14,10 +14,10 @@ Dependency
 1. ~~Range and Bearing Communication for both mobile and target robots~~
 2. ~~Movement Pattern (Hard Turn, Soft Turn, No Turn)~~
 3. ~~Robot's States -> Random Exploration, Goal Reaching Behaviour ...~~
-4. Odometry Information (Horizontal Bearing + Vertical Bearing + Distance Apart = Vector2 heading)
+4. ~~Odometry Information (Horizontal Bearing + Vertical Bearing + Distance Apart = Vector2 heading)~~
 5. ~~Real to Byte and Vice versa Formatter~~
 6. ~~Navigational Table~~
-7. Increment for SequenceNumber on outdated messages
+7. ~~Increment for SequenceNumber on outdated messages~~
 
 
 ## UNDECIDED ELEMENT ##

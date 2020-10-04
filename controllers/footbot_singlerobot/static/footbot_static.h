@@ -47,13 +47,13 @@ class CFootBotTarget : public CCI_Controller {
         // Broadcast the table
         void BroadcastNavigationalTable();
 
-        // Pointer to the LEDs actuator
+       // Pointer to the LEDs actuator
         CCI_LEDsActuator* m_pcLEDS;
         /* Pointer to the range and bearing actuator */
         CCI_RangeAndBearingActuator*  m_pcRABA;
         /* Pointer to the range and bearing sensor */
         CCI_RangeAndBearingSensor* m_pcRABS;
-
+ 
         static UInt8 s_unIdCounter;
         UInt8 Id;
 

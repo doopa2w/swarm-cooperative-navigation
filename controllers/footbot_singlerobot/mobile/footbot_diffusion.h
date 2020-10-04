@@ -127,6 +127,7 @@ class CFootBotDiffusion : public CCI_Controller {
             UInt32 NumberOfGoals;
 
             std::map<UInt32, std::map<std::string, Real>> NavigationalTable;
+   
             /*
              * Size of the packet/ message; To be parsed into XML
              * By right, the size of message should be kept 10 bytes for realistic purposes
@@ -140,6 +141,7 @@ class CFootBotDiffusion : public CCI_Controller {
             UInt32 SizeOfMessage;
             // NavigationalInfo of the robot that sent the message containing the designated goal info
             std::map<std::string, Real> NeighboursNavigationalInfo;
+
 
             // format from real to byte of navigational info
             CByteArray RealToByte(std::map<UInt32, std::map<std::string, Real>>& m_info);
@@ -245,6 +247,9 @@ class CFootBotDiffusion : public CCI_Controller {
         
         // This method is used for broadcasting navigational table through range and bearing actuator
         void BroadcastNavigationalTable();
+
+        // Update odometry information
+        void UpdateOdometryInfo(const CVector2& heading);
 
         /*
          * Evaluates the newly updated navigational table right after UpdateNavigationalTable

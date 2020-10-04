@@ -6,7 +6,8 @@
 #include <argos3/core/utility/math/vector2.h>
 /* Logging */
 #include <argos3/core/utility/logging/argos_log.h>
-
+#include <time.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 
@@ -60,18 +61,16 @@ void CFootBotDiffusion::SStateData::Init(TConfigurationNode& t_node) {
     // GoalId = RNG->Uniform(IdRange);
     // LOG << "Goal Generated: " << GoalId << std::endl;
 
-    // Debug = pass
-    GoalId = 2;
+    
 }
 
 void CFootBotDiffusion::SStateData::Reset() {
     // Always start with RESTING
     State = RESTING;
     TimeRandomExplore = 0;
-
-    // TODO: Not working! Let's reset the goalID as well
-    // GoalId = RNG->Uniform(IdRange);
-    GoalId = 2;
+    // Debug = pass
+    srand(time(NULL));
+    GoalId = rand()%((NumberOfGoals+1)-0) + 0;
 
 
     // Tmp fix: Init with either upper or lower to ensure that robot doesn't go straight to REST
@@ -136,14 +135,6 @@ std::map<UInt32, std::map<std::string, Real>> CFootBotDiffusion::SStateData::Byt
          * 80-83    0
          * 84-95    Seq
          * 96-99    0
-         * 
-         * 100-111  Angle
-         * 112-115    0
-         * 116-127   Estimate
-         * 128-131  0
-         * 132-143  Seq
-         * 144-147  0
-         * Size for a navigational info = 45 bytes (0 to 44)   
          */
         *cBuf(4 + factor, 16 + factor) >> Angle;
         *cBuf(20 + factor, 32 + factor) >> Range;
@@ -375,14 +366,18 @@ void CFootBotDiffusion::EvaluateNavigationalTable() {
     // Now compare both goal info from the table and the current goal info
     // Might be useless
     std::map<std::string, Real> OldGoalInfo = StateData.GoalNavigationalInfo;
+
     // Update the GoalInfo with the better one among those two infos
     // Ensured that OldGoalInfo which is {0, 0, 0} is ignored instead
-    if (OldGoalInfo["EstimateDistance"] == 0 && OldGoalInfo["Angle"] == 0) {
-        StateData.GoalNavigationalInfo = NewGoalInfo;
-    }
-    else {
-        StateData.GoalNavigationalInfo = StateData.CompareGoalInfos(NewGoalInfo, OldGoalInfo);
-    }
+    // if (OldGoalInfo["EstimateDistance"] == 0 && OldGoalInfo["Angle"] == 0) {
+    //     StateData.GoalNavigationalInfo = NewGoalInfo;
+    // }
+    
+    // else {
+    //     StateData.GoalNavigationalInfo = StateData.CompareGoalInfos(NewGoalInfo, OldGoalInfo);
+    // }
+    StateData.GoalNavigationalInfo = NewGoalInfo;
+
 
     // Check whether the robot reached the goal (within 20cm proximity) based on the new info
     // Also need to check whether FoundDesignatedGoal = true else the robot will immediately be in RESTING
@@ -411,10 +406,6 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
      * 
      */
     std::map<UInt32, std::map<std::string, Real>> NeighboursTable;
-
-    // Debug 
-    int counter = 0;
-
 
     for (CCI_RangeAndBearingSensor::SPacket t_packet : t_packets) {
         
@@ -472,6 +463,14 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
             StateData.NavigationalTable[identifier]["Angle"] = t_packet.HorizontalBearing.GetValue();
             StateData.NavigationalTable[identifier]["EstimateDistance"] = t_packet.Range;
             StateData.NavigationalTable[identifier]["SequenceNumber"] = 0;
+
+            if (identifier == StateData.GoalId) {
+                // Straight initialize the GoalInfo with the info
+                StateData.FoundDesignatedGoal = true;
+                StateData.GoalNavigationalInfo["Angle"] = t_packet.HorizontalBearing.GetValue();
+                StateData.GoalNavigationalInfo["EstimateDistance"] = t_packet.Range;
+                StateData.GoalNavigationalInfo["SequenceNumber"] = 0;
+            }
             
 
         }
@@ -479,6 +478,30 @@ void CFootBotDiffusion::UpdateNavigationalTable(const CCI_RangeAndBearingSensor:
     }
 
 }
+
+
+/**************************************************************************/
+/**************************************************************************/
+
+void CFootBotDiffusion::UpdateOdometryInfo(const CVector2& heading) {
+    for (auto & goal : StateData.NavigationalTable) {
+        if (goal.second["EstimateDistance"] == 0 && goal.second["Angle"] == 0) {
+            continue;
+        }
+        else {
+            goal.second["Angle"] =  goal.second["Angle"] - heading.Angle().GetValue();
+            goal.second["EstimateDistance"] =  goal.second["EstimateDistance"] - heading.Length();
+        }
+
+        if (goal.first == StateData.GoalId) {
+            StateData.GoalNavigationalInfo["Angle"] = goal.second["Angle"];
+            StateData.GoalNavigationalInfo["EstimateDistance"] = goal.second["EstimateDistance"];
+        }
+    }
+}
+
+
+
 
 /**************************************************************************/
 /**************************************************************************/
@@ -537,6 +560,7 @@ CVector2 CFootBotDiffusion::CalculateVectorToGoal() {
         << cAccumulator.Angle() << std::endl;
     // if the range is > 0.0f then return the vector
     if (cAccumulator.Length() > 0.0f) {
+        cAccumulator.Normalize();
         return cAccumulator;
 
     }
@@ -744,6 +768,8 @@ void CFootBotDiffusion::RandomExplore() {
         ++StateData.TimeRandomExplore;
         // control the speed by MaxSpeed * 0.5
         SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * diffusion);
+        // Update odometry info inside the table
+        UpdateOdometryInfo(diffusion);
     }
 }
 
@@ -762,6 +788,8 @@ void CFootBotDiffusion::AggressiveExplore() {
         CVector2 diffusion = DiffusionVector(collision);
         // use MaxSpeed (twice the speed of Random Explore)
         SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * diffusion);
+        // Update odometry info inside the table
+        UpdateOdometryInfo(diffusion);
     }
 }
 
@@ -781,12 +809,18 @@ void CFootBotDiffusion::MoveToGoal() {
         if (collision) {
             CRange<Real> range(0.2f, 0.7f);
             double r = m_RNG->Uniform(range);
-            SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * (r * diffusion + (1.0 - r) * CalculateVectorToGoal()));
+            CVector2 NewVector = r * diffusion + (1.0 - r) * CalculateVectorToGoal();
+            SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * NewVector);
+            // Upadte odometry info inside the table
+            UpdateOdometryInfo(NewVector);
         }
         else {
             CRange<Real> range(0.0f, 0.2f);
             double r = m_RNG->Uniform(range);
-            SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * (r * diffusion + (1.0 - r) * CalculateVectorToGoal()));
+            CVector2 NewVector = r * diffusion + (1.0 - r) * CalculateVectorToGoal();
+            SetWheelSpeedsFromVector(WheelTurningParams.MaxSpeed * NewVector);
+            // Upadte odometry info inside the table
+            UpdateOdometryInfo(NewVector);
         }
     }
 }

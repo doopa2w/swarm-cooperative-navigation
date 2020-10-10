@@ -24,6 +24,8 @@ class CFootBotStatic : public CCI_Controller {
             bool DuplicateGoal;
             // Duplicated goal
             UInt8 DuplicatedGoalId;
+            // Relative age
+            UInt32 Age;
             // Parse configuraiton in XML
             void Init(TConfigurationNode& t_node);
             void Reset(UInt8 id);

@@ -86,6 +86,9 @@ void CFootBotStatic::BroadcastMessage() {
      */
     CByteArray cBuf;
     cBuf << NavData.GoalId;
+    // Everytime target robot broadcast (every time step), increase age
+    ++NavData.Age;
+    cBuf << NavData.Age;
     while (cBuf.Size() < NavData.SizeOfMessage)
         cBuf << '\0';
     m_pcRABA->SetData(cBuf);

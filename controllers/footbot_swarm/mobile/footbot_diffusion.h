@@ -17,8 +17,6 @@
 #include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
 // Definition of the foot-bot LEDs actuator 
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
-/* Definition of the foot-bot positioning sensor */
-#include <argos3/plugins/robots/generic/control_interface/ci_positioning_sensor.h>
 /* Definitions for random number generator in ARGoS */
 #include <argos3/core/utility/math/rng.h>
 /* Container for navigation info */
@@ -130,10 +128,6 @@ class CFootBotDiffusion : public CCI_Controller {
             UInt32 SizeOfMessage;
             // DesignatedGoalID
             UInt8 GoalId;
-            // Duplicate or not
-            bool DuplicateGoal;
-            // Duplicated GoalID
-            UInt8 DuplicatedGoalId;
             // Number of goals
             UInt8 NumberOfGoals;
 
@@ -144,7 +138,7 @@ class CFootBotDiffusion : public CCI_Controller {
 
             SNavigationData();
             void Init(TConfigurationNode& t_node);
-            void Reset(UInt32 local_id);
+            void Reset(UInt8 local_id);
         };
 
         // Constructor and Deconstructor
@@ -169,7 +163,7 @@ class CFootBotDiffusion : public CCI_Controller {
       
         inline bool isMovingToGoal() const { return StateData.State == MOVE_TO_GOAL; }
 
-        inline bool isMoveingToSender() const { return StateDatat.State == MOVE_TO_SENDER; }
+        inline bool isMoveingToSender() const { return StateData.State == MOVE_TO_SENDER; }
 
         inline EState GetState() { return StateData.State; }
 
@@ -178,7 +172,7 @@ class CFootBotDiffusion : public CCI_Controller {
 
         inline std::vector<CTraceMessage*> *GetCollisionMessages() { return &CollisionMessages; }
 
-        inline UInt32 GetId() { return Id; }
+        inline UInt8 GetId() { return Id; }
 
 
     protected:
@@ -191,9 +185,12 @@ class CFootBotDiffusion : public CCI_Controller {
         /*
          * Calculates the vector towards the goal based on the navigational info.
          * Should return CVector2(Real Range, CRadians Horizontal bearing)
+         * Also calculates the vector towards the sender based on sender info
          * 
+         * Calculate to goal = true
+         * Calculate to sender = false
          */
-        CVector2 CalculateVectorToGoal();
+        CVector2 CalculateVectorToGoal(bool b_goalorsender);
         /*
          * Calculates the diffusion vector.
          * TODO: Might need to re-edit the following line if the info is incorrect
@@ -259,14 +256,12 @@ class CFootBotDiffusion : public CCI_Controller {
         CCI_RangeAndBearingSensor* m_pcRABS;
         /* Pointer to the LEDs actuator */
         CCI_LEDsActuator* m_pcLEDs;
-        /* Pointer to the Positioning sensor */
-        CCI_PositioningSensor* m_pcPositionS;
         // The Random Number Generator for ARGos
         CRandom::CRNG* m_RNG;
 
         // robotId determined based on order of creation
-        static UInt32 s_unIdCounter;
-        UInt32 Id;
+        static UInt8 s_unMobileCounter;
+        UInt8 Id;
 
         // The controller state information
         SStateData StateData;

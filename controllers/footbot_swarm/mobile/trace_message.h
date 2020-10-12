@@ -10,7 +10,7 @@ using namespace argos;
 class CTraceMessage {
     public:
 
-        CTraceMessage(UInt32 robotId);
+        CTraceMessage(UInt8 robotId);
         virtual ~CTraceMessage() {}
 
         // by default, message type is 0 or RANDOM_EXPLORATION
@@ -20,37 +20,43 @@ class CTraceMessage {
 
     protected:
 
-        UInt32 RobotId;
+        UInt8 RobotId;
 };
 
 class CRandomExplorationTrace : public CTraceMessage {
     public:
         EState GetMessageType();
-        CRandomExplorationTrace(UInt32 robotId);
+        CRandomExplorationTrace(UInt8 robotId);
 };
 
 class CAggressiveExplorationTrace : public CTraceMessage {
     public:
         EState GetMessageType();
-        CAggressiveExplorationTrace(UInt32 robotId);
+        CAggressiveExplorationTrace(UInt8 robotId);
+};
+
+class CMoveToSenderTrace : public CTraceMessage {
+    public:
+        EState GetMessageType();
+        CMoveToSenderTrace(UInt8 robotId);
 };
 
 class CMoveToGoalTrace : public CTraceMessage {
     public:
         EState GetMessageType();
-        CMoveToGoalTrace(UInt32 robotId);
+        CMoveToGoalTrace(UInt8 robotId);
 };
 
 class CRestingTrace : public CTraceMessage {
     public:
         EState GetMessageType();
-        CRestingTrace(UInt32 robotId);
+        CRestingTrace(UInt8 robotId);
 };
 
 class CCollisionTrace : public CTraceMessage {
     public:
         EState GetMessageType();
-        CCollisionTrace(UInt32 robotId);
+        CCollisionTrace(UInt8 robotId);
 };
 
 

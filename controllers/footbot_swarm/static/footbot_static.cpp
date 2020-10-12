@@ -8,16 +8,13 @@
 
 void CFootBotStatic::SNavigationData::Init(TConfigurationNode& t_node) {
     GetNodeAttribute(t_node, "size_of_message", SizeOfMessage);
-    GetNodeAttribute(t_node, "duplicate_goal_or_not", DuplicateGoal);
-    GetNodeAttribute(t_node, "duplicated_goal_id", DuplicatedGoalId);
+    GetNodeAttribute(t_node, "goal_id", GoalId);
+
+
 }
 
-void CFootBotStatic::SNavigationData::Reset(UInt8 id) {
-    // If allow duplicated goal, assigned goalId based on local Id - 1
-    if (DuplicateGoal)
-        GoalId = DuplicatedGoalId;
-    else
-        GoalId = id;
+void CFootBotStatic::SNavigationData::Reset() {
+    LOG << "Target Robot initializing with GoalID = " << GoalId << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -28,27 +25,28 @@ CFootBotStatic::CFootBotStatic() :
     m_pcRABA(NULL),
     m_pcRABS(NULL) {}
 
-UInt8 CFootBotStatic::s_unIdCounter = 0;
+UInt8 CFootBotStatic::s_unTargetCounter = 0;
 
 void CFootBotStatic::Init(TConfigurationNode& t_node) {
     // Set Id based on counter
-    Id = s_unIdCounter++;
+    Id = s_unTargetCounter++;
     // Initializes sensors/actuators
     m_pcLEDS = GetActuator<CCI_LEDsActuator>("leds");
     m_pcRABA = GetActuator<CCI_RangeAndBearingActuator>("range_and_bearing");
     m_pcRABS = GetSensor<CCI_RangeAndBearingSensor>("range_and_bearing");
     NavData.Init(GetNode(t_node, "nav_data_static"));
+
     // Resets the controller
-    Reset();
+    Reset();       
 }
 
 void CFootBotStatic::Reset() {
     // Resets the navigation data's setting
-    NavData.Reset(Id);
+    NavData.Reset();
     // Clear buffer
     m_pcRABA->ClearData();
     // LEDs color
-    UInt8 ColorId = NavData.GoalId;
+    UInt8 ColorId = 1;
     // TODO: For now we are only working with at most 4 unique goalID
     switch(ColorId) {
         case 1:
@@ -86,11 +84,13 @@ void CFootBotStatic::BroadcastMessage() {
      */
     CByteArray cBuf;
     cBuf << NavData.GoalId;
+    cBuf << '0';
     // Everytime target robot broadcast (every time step), increase age
     ++NavData.Age;
     cBuf << NavData.Age;
     while (cBuf.Size() < NavData.SizeOfMessage)
         cBuf << '\0';
+    LOG << "Target Robot " << Id << " broadcasting " << cBuf << std::endl;
     m_pcRABA->SetData(cBuf);
 }
 

@@ -20,15 +20,11 @@ class CFootBotStatic : public CCI_Controller {
             UInt16 SizeOfMessage;
             // Assigned GoalId
             UInt8 GoalId;
-            // Setting for duplicating goalId
-            bool DuplicateGoal;
-            // Duplicated goal
-            UInt8 DuplicatedGoalId;
             // Relative age
-            UInt32 Age;
+            Real Age;
             // Parse configuraiton in XML
             void Init(TConfigurationNode& t_node);
-            void Reset(UInt8 id);
+            void Reset();
         };
 
         // Constructor and Desconstructor
@@ -38,7 +34,7 @@ class CFootBotStatic : public CCI_Controller {
         inline UInt8 GetId() { return Id; }
         // Parse configuration in XML
         virtual void Init(TConfigurationNode& t_node);
-        virtual void Destroy();
+        virtual void Destroy() {};
         virtual void Reset();
         virtual void ControlStep();
 
@@ -53,7 +49,7 @@ class CFootBotStatic : public CCI_Controller {
         /* Pointer to the range and bearing sensor */
         CCI_RangeAndBearingSensor* m_pcRABS;
         // static variable for the Id counter
-        static UInt8 s_unIdCounter;
+        static UInt8 s_unTargetCounter;
         // Each robot should have unique Id
         UInt8 Id;
         SNavigationData NavData;

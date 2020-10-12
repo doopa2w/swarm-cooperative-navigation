@@ -4,7 +4,7 @@
 
 using namespace argos;
 
-CTraceMessage::CTraceMessage(UInt32 robotId) : RobotId(robotId) {}
+CTraceMessage::CTraceMessage(UInt8 robotId) : RobotId(robotId) {}
 
 std::string CTraceMessage::Format(UInt32 time) {
     std::stringstream result;
@@ -18,22 +18,26 @@ std::string CTraceMessage::GetRobotId() {
     return result.str();
 }
 
-CRandomExplorationTrace::CRandomExplorationTrace(UInt32 robotId) : CTraceMessage(robotId) {}
+CRandomExplorationTrace::CRandomExplorationTrace(UInt8 robotId) : CTraceMessage(robotId) {}
 
 EState CRandomExplorationTrace::GetMessageType() { return RANDOM_EXPLORATION; }
 
-CAggressiveExplorationTrace::CAggressiveExplorationTrace(UInt32 robotId) : CTraceMessage(robotId) {}
+CAggressiveExplorationTrace::CAggressiveExplorationTrace(UInt8 robotId) : CTraceMessage(robotId) {}
 
 EState CAggressiveExplorationTrace::GetMessageType() { return AGGRESSIVE_EXPLORATION; }
 
-CMoveToGoalTrace::CMoveToGoalTrace(UInt32 robotId) : CTraceMessage(robotId) {}
+CMoveToSenderTrace::CMoveToSenderTrace(UInt8 robotId) : CTraceMessage(robotId) {}
+
+EState CMoveToSenderTrace::GetMessageType() { return MOVE_TO_SENDER; }
+
+CMoveToGoalTrace::CMoveToGoalTrace(UInt8 robotId) : CTraceMessage(robotId) {}
 
 EState CMoveToGoalTrace::GetMessageType() { return MOVE_TO_GOAL; }
 
-CRestingTrace::CRestingTrace(UInt32 robotId) : CTraceMessage(robotId) {}
+CRestingTrace::CRestingTrace(UInt8 robotId) : CTraceMessage(robotId) {}
 
 EState CRestingTrace::GetMessageType() { return RESTING; }
 
-CCollisionTrace::CCollisionTrace(UInt32 robotId) : CTraceMessage(robotId) {}
+CCollisionTrace::CCollisionTrace(UInt8 robotId) : CTraceMessage(robotId) {}
 
 EState CCollisionTrace::GetMessageType() { return AVOIDING_COLLISION; }

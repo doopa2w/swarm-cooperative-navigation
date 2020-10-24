@@ -3,6 +3,8 @@
 #include <argos3/core/utility/configuration/argos_configuration.h>
 /* 2D vector definition */
 #include <argos3/core/utility/math/vector2.h>
+/* 3D vector definition */
+#include <argos3/core/utility/math/vector3.h>
 /* Logging */
 #include <argos3/core/utility/logging/argos_log.h>
 
@@ -86,7 +88,9 @@ void CFootBotDiffusion::SNavigationData::Reset(UInt8 local_id) {
     PreviousMovement = CVector2(0,0);
     SenderInfo = CVector2(0,0); 
     GoalInfo = {{"Age", 0}, {"Angle", 0}, {"Distance", 0}};
-
+    // Starting position is always 0,0,0
+    PreviousPosition = CVector3(0,0,0);
+    CurrentPosition = CVector3(0,0,0);
 
     // Debug
     LOG << "Mobile " << local_id << " initializing with Goal " << GoalId 
@@ -151,21 +155,11 @@ CByteArray CFootBotDiffusion::SNavigationData::ConvertToByte(std::map<UInt8, std
     cBuf << identifier;
     cBuf << '\0';
 
-    LOG << "Mobile Robot is broadcasting this table: \n";
-
     for (auto & outer_pair : m_info) {
-        
-        // Debug
-        LOG << "[Goal " << outer_pair.first << ": ";
         for (auto & inner_pair : outer_pair.second) {
-
-            LOG << "[" << inner_pair.first << ": " << inner_pair.second << "], ";
-
             cBuf << inner_pair.second;
             cBuf << '\0';
         }
-
-        LOG << "\n";
     }
     return cBuf;
 }
@@ -179,6 +173,8 @@ CFootBotDiffusion::CFootBotDiffusion() :
     m_pcRABA(NULL),
     m_pcRABS(NULL),
     m_pcLEDs(NULL),
+    m_pcPOSS(NULL),
+    m_pcEncoder(NULL),
     m_RNG(NULL) {}
 
 UInt8 CFootBotDiffusion::s_unMobileCounter = 0; 
@@ -192,6 +188,8 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
     m_pcRABA = GetActuator<CCI_RangeAndBearingActuator>("range_and_bearing");
     m_pcRABS = GetSensor<CCI_RangeAndBearingSensor>("range_and_bearing");
     m_pcLEDs = GetActuator<CCI_LEDsActuator>("leds");
+    m_pcPOSS = GetSensor<CCI_PositioningSensor>("positioning");
+    m_pcEncoder = GetSensor<CCI_DifferentialSteeringSensor>("differential_steering");
     m_RNG = CRandom::CreateRNG("argos"); 
     /*
     * Parses the configuration file
@@ -214,7 +212,6 @@ void CFootBotDiffusion::Init(TConfigurationNode& t_node) {
  */
 
 void CFootBotDiffusion::ControlStep() {
-
     UpdateState();
 
     switch (StateData.State) {
@@ -274,16 +271,21 @@ void CFootBotDiffusion::Reset() {
 
 void CFootBotDiffusion::UpdateOdometry() {
     // for every row in table, update navigation info regardless of states
-
+    //const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
+    const CCI_DifferentialSteeringSensor::SReading& sEncodes = m_pcEncoder->GetReading();
+    LOG << "Mobile Robot " << Id << " has travelled " << (sEncodes.CoveredDistanceLeftWheel + sEncodes.CoveredDistanceRightWheel)/2 << std::endl;
+    // Debug
+    LOG << "Mobile Robot " << Id << " previous movement was " << NavData.PreviousMovement << std::endl;
+    
     LOG << "Mobile Robot " << Id << " Printing current info in table ....\n";
 
     // If current_state == MOVE_TO_SENDER, update the odometry for SenderInfo as well
     if (StateData.State == MOVE_TO_SENDER) {
-        NavData.SenderInfo+=(NavData.PreviousMovement);
+        NavData.SenderInfo+=(-NavData.PreviousMovement);
     }
     else if (StateData.State == MOVE_TO_GOAL) {
         CVector2 currentGoalInfo = CVector2(NavData.GoalInfo["Distance"], CRadians(NavData.GoalInfo["Angle"]));
-        currentGoalInfo+=(NavData.PreviousMovement);
+        currentGoalInfo+=(-NavData.PreviousMovement);
         NavData.GoalInfo["Angle"] = currentGoalInfo.Angle().GetValue();
         NavData.GoalInfo["Distance"] = currentGoalInfo.Length();
     }
@@ -291,7 +293,7 @@ void CFootBotDiffusion::UpdateOdometry() {
         for (auto & goal : NavData.NavigationTable) {
                 
             // Debug
-            LOG << "Current Goal " << goal.first << ": [Distance]: " << goal.second["Distance"]
+            LOG << "Current Goal " << goal.first << ": [Age]: " << goal.second["Age"] << " [Distance]: " << goal.second["Distance"]
                 << " [Angle]: " << goal.second["Angle"] << "\n";
 
             /*
@@ -301,12 +303,11 @@ void CFootBotDiffusion::UpdateOdometry() {
             * 
             */
             if (goal.second["Age"] == 0) {
-                LOG << "Not Updating Odometry!\n";
                 continue;   
             }
             else {
                 // transform into vector then only sum it with PreviousMovement
-                CVector2 currentInfo = CVector2(goal.second["Distane"], CRadians(goal.second["Angle"]));
+                CVector2 currentInfo = CVector2(goal.second["Distance"], CRadians(goal.second["Angle"]));
                 currentInfo+=(NavData.PreviousMovement);
                 // format it back to Real to be stored inside the table
                 goal.second["Angle"] = currentInfo.Angle().GetValue();
@@ -337,8 +338,8 @@ void CFootBotDiffusion::UpdateNavigationTable(const CCI_RangeAndBearingSensor::T
         // Put the packet content into a byte array container
         CByteArray cBuf = t_packet.Data;
         UInt8 identifier;
-        // Extract the first 8 bytes (Identifier) in the packet
-        cBuf >> identifier;
+        // Extract the first bytes (Identifier) in the packet
+        *cBuf(0,1) >> identifier;
         
         /*
          * Based on the identifier, do the following:
@@ -347,7 +348,7 @@ void CFootBotDiffusion::UpdateNavigationTable(const CCI_RangeAndBearingSensor::T
          *                                      distance and angle between local robot and target robot
          */
         if (identifier == 99) {
-            neighboursTable = NavData.ConvertFromByte(t_packet.Data);
+            neighboursTable = NavData.ConvertFromByte(cBuf);
             // Iterate Both neigboursTable and local table simulataneously
             for (auto it1 = NavData.NavigationTable.begin(), it2 = neighboursTable.begin();
                 it1 != NavData.NavigationTable.end(); ++it1, ++it2)
@@ -416,15 +417,16 @@ void CFootBotDiffusion::UpdateNavigationTable(const CCI_RangeAndBearingSensor::T
                     
                 } // end inner for loop
 
-        } // Otherwise, do accordinly for target robot
+        } // Otherwise, do accordingly for target robot
         else {
             /*
              * No need for comparison since we are receiving goal infos directly from the target robot itself
              * This is to ensure that the local robot will always update the goal info even if it move further 
              * away from the target robot since comparing infos will only take the best info which maybe outdated
              */
-            Real age;
-            *cBuf(4, 16) >> age;
+            UInt64 age;
+            // 1-4 \0 , 5-12 - age(chg to Real)
+            *cBuf(5, 13) >> age;
             NavData.NavigationTable[identifier]["Age"] = age;
             NavData.NavigationTable[identifier]["Angle"] = t_packet.HorizontalBearing.GetValue();
             NavData.NavigationTable[identifier]["Distance"] = t_packet.Range;
@@ -456,6 +458,11 @@ void CFootBotDiffusion::BroadcastNavigationTable() {
 void CFootBotDiffusion::UpdateState() {
     // One of the important methods since this encompases the action of robot each time step
     const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
+    // Get current Position
+    const CCI_PositioningSensor::SReading& sPosition = m_pcPOSS->GetReading();
+    NavData.PreviousPosition = NavData.CurrentPosition;
+    NavData.CurrentPosition = sPosition.Position;
+
     // Update Odometry firstmost for both table, goalInfo, SenderInfo
     if (StateData.State != RESTING) 
         UpdateOdometry();
@@ -463,6 +470,8 @@ void CFootBotDiffusion::UpdateState() {
         return;
     // Update Table
     UpdateNavigationTable(tPackets);
+
+    // Print Table
 
     // Check whether reachedSender based on SenderInfo
     if (StateData.State == MOVE_TO_SENDER && NavData.SenderInfo.Length() < 5.0f) {
@@ -482,6 +491,7 @@ void CFootBotDiffusion::UpdateState() {
 
 CVector2 CFootBotDiffusion::CalculateVectorToGoal(bool b_goalorsender) {
     CVector2 cAccumulator;
+    
     if (b_goalorsender)
         cAccumulator = CVector2(NavData.GoalInfo["Distance"], CRadians(NavData.GoalInfo["Angle"]));
     else
@@ -737,6 +747,9 @@ void CFootBotDiffusion::AggressiveExplore() {
 
 void CFootBotDiffusion::MoveToSender() {
     // Check if we have reached the sender
+
+    // There's issue with the Sender since its not actually moving towards the sender
+    // Maybe should just scrap this state instead
     if (StateData.ReachedSender) {
         StartMoveToGoal();
         return;
@@ -803,6 +816,7 @@ void CFootBotDiffusion::Rest() {
     else {
         // Debug = Pass
         LOG << "Mobile Robot " << Id << ": Done tasks!\n The goal was: " << NavData.GoalId << std::endl;
+        m_pcWheels->SetLinearVelocity(0,0);
     }
 
 }

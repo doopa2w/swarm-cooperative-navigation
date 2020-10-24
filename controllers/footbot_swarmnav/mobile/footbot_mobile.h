@@ -1,5 +1,5 @@
-#ifndef FOOTBOT_DIFFUSION_H
-#define FOOTBOT_DIFFUSION_H
+#ifndef FOOTBOT_MOBILE_H
+#define FOOTBOT_MOBILE_H
 
 // Definition for the robot's state enumeration
 #include "state.h"
@@ -17,10 +17,10 @@
 #include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
 // Definition of the foot-bot LEDs actuator 
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
-/* Definition of the foot-bot positioning sensor */
-#include <argos3/plugins/robots/generic/control_interface/ci_positioning_sensor.h>
 /* Definition of the foot-bot wheel encoders */
 #include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_sensor.h>
+/* Definition of the foot-bot positioning sensor */
+#include <argos3/plugins/robots/generic/control_interface/ci_positioning_sensor.h>
 /* Definitions for random number generator in ARGoS */
 #include <argos3/core/utility/math/rng.h>
 /* Container for navigation info */
@@ -29,7 +29,7 @@
 
 using namespace argos;
 
-class CFootBotDiffusion : public CCI_Controller {
+class CFootBotMobile : public CCI_Controller {
     public:
         /* 
          * This structure contains variables that will be used as params for the diffusion algorithm.
@@ -68,19 +68,18 @@ class CFootBotDiffusion : public CCI_Controller {
                 HARD_TURN = 2
             } TurningMechanism;
 
-            // TODO: later shorten into one line if no issue CRadians val1, val2, val3
             // The angular threshold values for the respective turning mechanisms
-            CRadians NoTurnAngleThreshold;
-            CRadians SoftTurnOnAngleThreshold;
-            CRadians HardTurnOnAngleThreshold;
+            CRadians NoTurnAngleThreshold, SoftTurnOnAngleThreshold, HardTurnOnAngleThreshold;
+
+            // Keep track of previous turning mechanism
+            ETurningMechanism PreviousTurningMechanism;
 
             // the maximum wheel velocity that is configured inside the XML file
             Real MaxSpeed;  // 10.0
-            // the maximum wheel velocity during RANDOM_EXPLORATION
-            Real RESpeed;   // 6.0
             // Parses the params into the XML
             void Init(TConfigurationNode& t_tree);
         };
+
         /*
          * This structure contains params that define the robot's state information
          * Also contains mechanism (params, if else) to switch from one state to another
@@ -92,48 +91,52 @@ class CFootBotDiffusion : public CCI_Controller {
             // Critical for determining the turning mechanism for the robot in
             // the next time step
             EState PreviousState;
-            // Used as a range for uniform number generator
-            CRange<Real> ProbRange;
+
+            // Flag for switching from any state to MOVE_TO_GOAL
+            bool FoundDesignatedGoal;
+            // Flag for switching from MOVE_TO_GOAL to RESTING
+            bool ReachedGoal;
+            // Angle range for switching heading angle randomly for mobility pattern sake
+            CRange<CRadians> ProbRange;
             // Number of time steps that a robot is in the RANDOM_EXPLORATION state
             size_t TimeRandomExplore;
             // Threshold value for switching from RANDOM_EXPLORATION to AGGRESSIVE_EXPLORATION
             size_t MaximumTimeInRandomExploration;
-            // Flag for switching from any state to MOVE_TO_GOAL
-            bool FoundDesignatedGoal;
-            // Flag for switching from any state to ensure robot reached sender's initial position
-            bool ReachedSender;
-            // Flag for switching from MOVE_TO_GOAL to RESTING
-            bool ReachedGoal;
+            // Time steps of robot in RESTING state
+            size_t TimeRested;
 
             SStateData();
             void Init(TConfigurationNode& t_node);
             void Reset();
             void SaveState();
         };
+
         /*
          * This structure contains navigational info used in navigating towards
          * the designated goal
          * 
          */
         struct SNavigationData {
-            /* The goal info with container */
-            // The current goal info for Designated goal
-            std::map<std::string, Real> GoalInfo;
             // The local navigation table containing n rows
             std::map<UInt8, std::map<std::string, Real>> NavigationTable;
-            // The sender's relative location
-            CVector2 SenderInfo;
 
             /* The odometry info to update the table */
-            CVector2 PreviousMovement;
-
-            /* The current and previous position */
-            CVector3 PreviousPosition;
-            CVector3 CurrentPosition;
+            // The info is init to 0 and used only when goal is found (info)
+            // Updated every time step
+            Real DistanceTravelled;
+            // Total Rotation from Orientation (t = n-3) to Orientation (t = n-2)
+            CRadians PreviousOrientation;
+            // Total Rotation from Orientation (t = n-2) to Orientation (t = n-1)
+            CRadians CurrentOrientation;
+            // Used to indicate the amount of rotation done from the time local robot received
+            // the goal info the current time step
+            CRadians TotalRotation;
+            // Flag for storing previous turning direction; true = left; false = right
+            bool LeftTurn;
 
             /*  Settings to be configured inside XML */
             // Size of message packet
-            UInt32 SizeOfMessage;
+            UInt16 SizeOfMessage;
             // DesignatedGoalID
             UInt8 GoalId;
             // Number of goals
@@ -150,8 +153,8 @@ class CFootBotDiffusion : public CCI_Controller {
         };
 
         // Constructor and Deconstructor
-        CFootBotDiffusion();
-        virtual ~CFootBotDiffusion() {}
+        CFootBotMobile();
+        virtual ~CFootBotMobile() {}
         // Initializes the controller and parses into the XML/ ARGOS file
         virtual void Init(TConfigurationNode& t_node);
         // The actions to be executed by the robot every time step is called 
@@ -165,13 +168,9 @@ class CFootBotDiffusion : public CCI_Controller {
         // The following are methods used to check the current robot states and other info
         inline bool IsRandomExploring() const { return StateData.State == RANDOM_EXPLORATION; }
 
-        inline bool isAggressiveExploring() const { return StateData.State == AGGRESSIVE_EXPLORATION; }
-
         inline bool isResting() const { return StateData.State == RESTING; }
       
         inline bool isMovingToGoal() const { return StateData.State == MOVE_TO_GOAL; }
-
-        inline bool isMoveingToSender() const { return StateData.State == MOVE_TO_SENDER; }
 
         inline EState GetState() { return StateData.State; }
 
@@ -181,7 +180,6 @@ class CFootBotDiffusion : public CCI_Controller {
         inline std::vector<CTraceMessage*> *GetCollisionMessages() { return &CollisionMessages; }
 
         inline UInt8 GetId() { return Id; }
-
 
     protected:
         /*
@@ -193,12 +191,9 @@ class CFootBotDiffusion : public CCI_Controller {
         /*
          * Calculates the vector towards the goal based on the navigational info.
          * Should return CVector2(Real Range, CRadians Horizontal bearing)
-         * Also calculates the vector towards the sender based on sender info
          * 
-         * Calculate to goal = true
-         * Calculate to sender = false
          */
-        CVector2 CalculateVectorToGoal(bool b_goalorsender);
+        CVector2 VectorToGoal();
         /*
          * Calculates the diffusion vector.
          * TODO: Might need to re-edit the following line if the info is incorrect
@@ -226,13 +221,16 @@ class CFootBotDiffusion : public CCI_Controller {
          *
          */
         void UpdateNavigationTable(const CCI_RangeAndBearingSensor::TReadings& t_packets);
-        // /*
-        //  * Updates the navigation info for goal and sender info
-        //  * Also contains algorithm to compare info and updates relevant flags
-        //  * for transitioning between states
-        //  * 
-        //  */
-        // void UpdateNavigationBehaviour(std::map<std::string, Real> local_info, std::map<std::string, Real> sender_info );
+        /*
+         * Updates the navigation info for goal and sender info
+         * Also contains algorithm to compare info and updates relevant flags
+         * for transitioning between states
+         * 
+         * Similar function to EvaluateTable() where we use this to update relevant flags and switching to
+         * AppropriateState
+         * 
+         */
+        void UpdateNavigationBehaviour();
         /*
          * Format and broadcast the byte array
          * Runs at the very end of timestep
@@ -242,15 +240,11 @@ class CFootBotDiffusion : public CCI_Controller {
 
         // Starts the following states
         void StartRandomExploration();
-        void StartAggressiveExploration();
-        void StartMoveToSender();
         void StartMoveToGoal();
         void StartResting();
 
         // Executes the following states based on its definition
         virtual void RandomExplore();
-        virtual void AggressiveExplore();
-        virtual void MoveToSender();
         virtual void MoveToGoal();
         virtual void Rest();
 
@@ -265,7 +259,7 @@ class CFootBotDiffusion : public CCI_Controller {
         /* Pointer to the LEDs actuator */
         CCI_LEDsActuator* m_pcLEDs;
         /* Pointer to the positioning sensor */
-        CCI_PositioningSensor* m_pcPOSS;
+        CCI_PositioningSensor* m_pcPosS;
         /* Pointer to wheele encoders */
         CCI_DifferentialSteeringSensor* m_pcEncoder;
         // The Random Number Generator for ARGos
@@ -284,7 +278,9 @@ class CFootBotDiffusion : public CCI_Controller {
         // The diffusion params
         SDiffusionParams DiffusionParams;
         std::vector<CTraceMessage*> TraceMessages;
-        std::vector<CTraceMessage*> CollisionMessages;      
+        std::vector<CTraceMessage*> CollisionMessages;   
+        
 };
 
-#endif // !FOOTBOT_DIFFUSION_H
+
+#endif // !FOOTBOT_MOBILE_H

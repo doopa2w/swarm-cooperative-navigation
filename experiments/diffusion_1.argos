@@ -24,7 +24,7 @@
           message is displayed.
     -->
     <experiment length="0"
-                ticks_per_second="10"
+                ticks_per_second="2"
                 random_seed="124" />
   </framework>
 
@@ -51,49 +51,34 @@
     -->
     <footbot_diffusion_controller id="fdc"
                                   library="build/controllers/footbot_diffusion/libfootbot_diffusion">
-      <!--
-          The <actuators> section contains a list of the actuators used by
-          this controller.
-          If you forget a to mention an actuator here and then request it
-          in the controller, an error occurs.
-          For a list of the possible actuators, type at the command prompt:
-          $ launch_argos -q actuators
 
-          Multiple implementations of an actuator are possible. To
-          identify which one you want to use, pass it in the
-          'implementation' attribute below. When you type the 'argos3 -q'
-          command, the implementation is in the square brackets following
-          the name of the device:
-
-          $ argos3 -q actuators
-          ...
-          footbot_wheels [default]
-          ...
-      -->
       <actuators>
         <differential_steering implementation="default" />
+        <range_and_bearing implementation="default" />
       </actuators>
-      <!--
-          The <sensors> section contains a list of the sensors used by
-          this controller.
-          If you forget a to mention a sensor here and then request it in
-          the controller, an error occurs.
-          For a list of the possible sensors, type at the command prompt:
-          $ argos3 -q sensors
-      -->
+
       <sensors>
-        <footbot_proximity implementation="default" show_rays="true" />
+        <footbot_proximity implementation="default" show_rays="false" />
+        <range_and_bearing implementation="medium" medium="rab" show_rays="true" />
+        <differential_steering implementation="default"/>
+        <positioning implementation="default" />
       </sensors>
-      <!--
-          The <params> section is passed as-is to the controller's Init()
-          function.
-          The user, writing the controller, defines how it is organized.
-          To understand what these parameters are for, check the
-          controller's header file in
-          controllers/footbot_diffusion/footbot_diffusion.h.
-      -->
-      <params alpha="7.5" delta="0.1" velocity="5" />
+
+      <params>
+        <diffusion go_straight_angle_range="-5:5"
+                    delta="0.1" />
+        <wheel_turning hard_turn_angle_threshold="90"
+                       soft_turn_angle_threshold="70"
+                       no_turn_angle_threshold="10"
+                       max_speed="10" />
+        <navigation sender_distance="300"
+                    sender_angle="1.5708"
+                    goal_distance="600"
+                    goal_angle="-1.5708"/>
+      </params>
     </footbot_diffusion_controller>
+
+
 
   </controllers>
 
@@ -115,27 +100,27 @@
 
       $ argos3 -q box
   -->
-  <arena size="3, 3, 1" center="0,0,0.5">
+  <arena size="10, 10, 1" center="0,0,0.5">
 
-    <!-- Place four boxes in a square to delimit the arena -->
-    <box id="wall_north" size="2,0.1,0.5" movable="false">
-      <body position="0,1,0" orientation="0,0,0" />
+    <box id="wall_north" size="10,0.1,0.5" movable="false">
+      <body position="0,5,0" orientation="0,0,0" />
     </box>
-    <box id="wall_south" size="2,0.1,0.5" movable="false">
-      <body position="0,-1,0" orientation="0,0,0" />
+    <box id="wall_south" size="10,0.1,0.5" movable="false">
+      <body position="0,-5,0" orientation="0,0,0" />
     </box>
-    <box id="wall_east" size="0.1,2,0.5" movable="false">
-      <body position="1,0,0" orientation="0,0,0" />
+    <box id="wall_east" size="0.1,10,0.5" movable="false">
+      <body position="5,0,0" orientation="0,0,0" />
     </box>
-    <box id="wall_west" size="0.1,2,0.5" movable="false">
-      <body position="-1,0,0" orientation="0,0,0" />
+    <box id="wall_west" size="0.1,10,0.5" movable="false">
+      <body position="-5,0,0" orientation="0,0,0" />
     </box>
 
     <!-- Place a foot-bot in the origin and bind it to the controller -->
-    <foot-bot id="fb_0">
+    <foot-bot id="fb_0" rab_data_size="12">
       <body position="0,0,0" orientation="0,0,0" />
       <controller config="fdc"/>
     </foot-bot>
+
 
   </arena>
 
@@ -167,7 +152,10 @@
 
       $ argos3 -q media
   -->
-  <media />
+  <media>
+    <range_and_bearing id="rab" />
+    <led id="leds"/>  
+  </media>
 
   <!-- ****************** -->
   <!-- * Visualization * -->

@@ -16,8 +16,8 @@
   <!-- *************** -->
   <controllers>
 
-    <footbot_diffusion_controller id="fdc"
-                                  library="build/controllers/footbot_swarm/mobile/libmobile">
+    <footbot_mobile_controller id="fdc"
+                                  library="build/controllers/footbot_swarmnav/mobile/libmobile">
       <actuators>
         <differential_steering implementation="default" />
         <range_and_bearing implementation="default" />
@@ -35,16 +35,15 @@
         <wheel_turning hard_turn_angle_threshold="90"
                        soft_turn_angle_threshold="70"
                        no_turn_angle_threshold="10"
-                       random_exploration_speed="5"
                        max_speed="10" />
         <state_data max_time_in_random_exploration="240" /> 
         <nav_data size_of_message="101"
                   number_of_goals="2" />
       </params>
-    </footbot_diffusion_controller>
+    </footbot_mobile_controller>
 
     <footbot_static_controller id="fpc_0"
-                              library="build/controllers/footbot_swarm/static/libstatic">
+                              library="build/controllers/footbot_swarmnav/static/libstatic">
       <actuators>
         <leds implementation="default" medium="leds" />
         <range_and_bearing implementation="default" />
@@ -59,7 +58,7 @@
     </footbot_static_controller>
 
     <footbot_static_controller id="fpc_1"
-                              library="build/controllers/footbot_swarm/static/libstatic">
+                              library="build/controllers/footbot_swarmnav/static/libstatic">
       <actuators>
         <leds implementation="default" medium="leds" />
         <range_and_bearing implementation="default" />
@@ -108,7 +107,7 @@
     <distribute>
       <position method="uniform" min="-4,-4,0" max="4,4,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="20" max_trials="100">
+      <entity quantity="10" max_trials="100">
         <foot-bot id="mobile_" rab_data_size="101">
           <controller config="fdc" />
         </foot-bot>
@@ -116,11 +115,11 @@
     </distribute>
 
     <!-- <foot-bot id="mobile_0" rab_data_size="101">
-      <body position="2,2,0" orientation="0,0,0"/>
+      <body position="3,3,0" orientation="0,0,0"/>
       <controller config="fdc" />
-    </foot-bot> -->
+    </foot-bot>
 
-    <!-- <foot-bot id="mobile_1" rab_data_size="101">
+    <foot-bot id="mobile_1" rab_data_size="101">
       <body position="2,2,0" orientation="0,0,0"/>
       <controller config="fdc" />
     </foot-bot> -->

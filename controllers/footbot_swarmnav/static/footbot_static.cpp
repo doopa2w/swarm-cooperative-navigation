@@ -9,8 +9,6 @@
 void CFootBotStatic::SNavigationData::Init(TConfigurationNode& t_node) {
     GetNodeAttribute(t_node, "size_of_message", SizeOfMessage);
     GetNodeAttribute(t_node, "goal_id", GoalId);
-
-
 }
 
 void CFootBotStatic::SNavigationData::Reset() {
@@ -46,24 +44,7 @@ void CFootBotStatic::Reset() {
     // Clear buffer
     m_pcRABA->ClearData();
     // LEDs color
-    UInt8 ColorId = 1;
-    // TODO: For now we are only working with at most 4 unique goalID
-    switch(ColorId) {
-        case 1:
-            m_pcLEDS->SetAllColors(CColor::RED);
-            break;
-        case 2:
-            m_pcLEDS->SetAllColors(CColor::GREEN);
-            break;
-        case 3:
-            m_pcLEDS->SetAllColors(CColor::BLUE);
-            break;
-        case 4:
-            m_pcLEDS->SetAllColors(CColor::YELLOW);
-            break;
-        default:
-            break;
-    }
+    m_pcLEDS->SetAllColors(CColor::RED);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -91,7 +72,6 @@ void CFootBotStatic::BroadcastMessage() {
     cBuf << NavData.Age;
     while (cBuf.Size() < NavData.SizeOfMessage)
         cBuf << '\0';
-    LOG << "Target Robot " << Id << ": " << cBuf << std::endl;
     m_pcRABA->SetData(cBuf);
 }
 

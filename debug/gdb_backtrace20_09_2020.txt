@@ -1,0 +1,38 @@
+#0  __memcmp_avx2_movbe () at ../sysdeps/x86_64/multiarch/memcmp-avx2-movbe.S:244
+#1  0x00007ffff7676ac8 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::compare(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const
+    () from /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+#2  0x00007fffea2ef5a0 in bool std::operator< <char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) () from /usr/local/lib/argos3/libargos3plugin_simulator_buzz.so
+#3  0x00007fffea2f1aa9 in std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::operator()(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const () from /usr/local/lib/argos3/libargos3plugin_simulator_buzz.so
+#4  0x00007fffe9e407c1 in std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > >::_M_get_insert_hint_unique_pos (this=0x7fffffffcb50, __position=
+  {first = "", second = 6.9533558071713753e-310}, __k="SequenceNumber") at /usr/include/c++/7/bits/stl_tree.h:2141
+#5  0x00007fffe9e3dd83 in std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double>, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> >, std::piecewise_construct_t const&, std::tuple<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&>&&, std::tuple<>&&) (this=0x7fffffffcb50, __pos=
+  {first = "", second = 6.9533558071713753e-310}) at /usr/include/c++/7/bits/stl_tree.h:2402
+#6  0x00007fffe9e3a179 in std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > >::operator[] (this=0x7fffffffcb50, __k=...)
+    at /usr/include/c++/7/bits/stl_map.h:512
+#7  0x00007fffe9e32705 in CFootBotDiffusion::SStateData::CompareGoalInfos (this=0x55555580b7f0, m_info1=std::map with 2 elements = {...}, 
+    m_info2=std::map with 93825021134645 elements<error reading variable: Cannot access memory at address 0x1c8021d1c>)
+    at /home/dev/swarm-cooperative-navigation/controllers/footbot_singlerobot/mobile/footbot_diffusion.cpp:218
+#8  0x00007fffe9e33acb in CFootBotDiffusion::UpdateNavigationalTable (this=0x55555580b730, t_packets=std::vector of length 4, capacity 4 = {...})
+    at /home/dev/swarm-cooperative-navigation/controllers/footbot_singlerobot/mobile/footbot_diffusion.cpp:435
+#9  0x00007fffe9e33fd0 in CFootBotDiffusion::UpdateState (this=0x55555580b730) at /home/dev/swarm-cooperative-navigation/controllers/footbot_singlerobot/mobile/footbot_diffusion.cpp:492
+#10 0x00007fffe9e33014 in CFootBotDiffusion::ControlStep (this=0x55555580b730) at /home/dev/swarm-cooperative-navigation/controllers/footbot_singlerobot/mobile/footbot_diffusion.cpp:282
+#11 0x00007ffff7b77ba2 in argos::CControllableEntity::ControlStep() () from /usr/local/lib/argos3/libargos3core_simulator.so
+#12 0x00007ffff7ba5c21 in argos::CSpaceNoThreads::UpdateControllableEntitiesSenseStep() () from /usr/local/lib/argos3/libargos3core_simulator.so
+#13 0x00007ffff7b94f3b in argos::CSpace::Update() () from /usr/local/lib/argos3/libargos3core_simulator.so
+#14 0x00007ffff2c5fd3a in argos::CQTOpenGLWidget::StepExperiment() () from /usr/local/lib/argos3/libargos3plugin_simulator_qtopengl.so
+#15 0x00007ffff12e407b in QObject::event(QEvent*) () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#16 0x00007ffff207175b in QWidget::event(QEvent*) () from /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5
+#17 0x00007ffff203283c in QApplicationPrivate::notify_helper(QObject*, QEvent*) () from /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5
+#18 0x00007ffff203a104 in QApplication::notify(QObject*, QEvent*) () from /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5
+#19 0x00007ffff2c40ac3 in argos::CQTOpenGLApplication::notify(QObject*, QEvent*) () from /usr/local/lib/argos3/libargos3plugin_simulator_qtopengl.so
+#20 0x00007ffff12b48d8 in QCoreApplication::notifyInternal2(QObject*, QEvent*) () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#21 0x00007ffff130cd2e in QTimerInfoList::activateTimers() () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#22 0x00007ffff130d4f1 in ?? () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#23 0x00007fffef4ea417 in g_main_context_dispatch () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#24 0x00007fffef4ea650 in ?? () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#25 0x00007fffef4ea6dc in g_main_context_iteration () from /usr/lib/x86_64-linux-gnu/libglib-2.0.so.0
+#26 0x00007ffff130d88f in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#27 0x00007ffff12b290a in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#28 0x00007ffff12bb9b4 in QCoreApplication::exec() () from /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+#29 0x00007ffff2c5bd90 in argos::CQTOpenGLRender::Execute() () from /usr/local/lib/argos3/libargos3plugin_simulator_qtopengl.so
+#30 0x0000555555557e76 in main ()

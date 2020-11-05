@@ -1,0 +1,7 @@
+build/
+controllers/footbot_betterForgaing/
+controllers/epuck_obstacleavoidance/
+controllers/eyebot_flocking/
+controllers/footbot_foraging/
+experiments/epuck_obstacleavoidance.argos
+experiments/gripping.argos

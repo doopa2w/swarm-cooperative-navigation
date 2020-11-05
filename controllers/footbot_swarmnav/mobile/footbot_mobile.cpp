@@ -195,6 +195,7 @@ void CFootBotMobile::Reset() {
  */
 
 void CFootBotMobile::ControlStep() {
+    StateData.TimeStep++;
     UpdateState();
 
     switch (StateData.State) {
@@ -236,15 +237,29 @@ void CFootBotMobile::UpdateOdometry() {
     // Get the total rotation occur during the previous time step by getting the differences betweem
     // CurrentOrientation and PreviousOrientation
     NavData.TotalRotation = NormalizedDifference(NavData.CurrentOrientation, NavData.PreviousOrientation);
-    // LOG << "\nMobile " << Id << "Current Orientation: " << NavData.CurrentOrientation << std::endl;
-
-    // LOG << "\nMobile " << Id << " Total Rotation: " << NavData.TotalRotation << " and Distance Travelled:  "
-    //     << NavData.DistanceTravelled << std::endl;
     
+    // A fail-safe to ensure that invalid info will be remove since it will impede the 
+    // robot's movement
+    if (WheelTurningParams.PreviousTurningMechanisms.size() == 5) {
+        // Remove duplicates
+        WheelTurningParams.PreviousTurningMechanisms.unique();
+        if (WheelTurningParams.PreviousTurningMechanisms.size() == 1 &&
+            WheelTurningParams.PreviousTurningMechanisms.back() != WheelTurningParams.NO_TURN) {
+            // If left a HARD_TURN or SOFT_TURN, it meant that the robot had been 
+            // doing those turn for 15 time steps which only happens in a loop
+            if (StateData.State == MOVE_TO_GOAL) {
+                // Reset all info in table   
+                for (size_t i = 0; i < NavData.NumberOfGoals; ++i) {
+                    NavData.NavigationTable[i] = {{"Age", 0}, {"Angle", 0}, {"Distance", 0}};
+                }
+                // REset back to Random_explore
+                StateData.State = RANDOM_EXPLORATION;
+            }
+        }
+    }
+
     // Update navigation info for every row in any state unless no info (Age == 0)
     for (auto & goal : NavData.NavigationTable) {
-        // LOG << "Mobile " << Id << " before updating odometry: \nGOAL " << goal.first << " {Distance: " << goal.second["Distance"]
-        //     << "} {Angle: " << goal.second["Angle"] << "} {Age: " << goal.second["Age"] << "}\n";
         if (goal.second["Age"] == 0)  continue; // skip if no info
         // Otherwise, update info based on odometry
         CVector2 NewVector, PreviousVector;
@@ -282,15 +297,9 @@ void CFootBotMobile::UpdateOdometry() {
                 NewVector = CVector2(CurrentVector.Length(), NormalizedDifference(CurrentVector.Angle(), PreviousVector.Angle()));
             }
         }
-        // LOG << "Mobile " << Id << " after updating odometry: \nGOAL " << goal.first << " {Distance: " << goal.second["Distance"]
-        //     << "} {Angle: " << goal.second["Angle"] << "}\n";
-        
         
         goal.second["Angle"] = NewVector.Angle().GetValue();
         goal.second["Distance"] = NewVector.Length();
-
-        // LOG << "New Goal " << goal.first << " -> Age: " << goal.second["Age"] << " | Angle: " << goal.second["Angle"]
-        //     << " | Distance: " << goal.second["Distance"] << std::endl;
     } 
 }
 
@@ -307,30 +316,32 @@ void CFootBotMobile::UpdateNavigationTable(const CCI_RangeAndBearingSensor::TRea
         *cBuf(0,1) >> un_Identifier;
         // Identifier == 99 (mobile) > read the rest else if Identifier != 99 (target) > ignore the rest
         if (un_Identifier != 99) {
-            LOG << "Mobile " << Id << " got info from target\n";
             // Skips comparison and replace the info directly since it comes from the goal robot itself
             UInt64 un_Age;
             *cBuf(5, 13) >> un_Age;
             NavData.NavigationTable[un_Identifier]["Age"] = un_Age;
             NavData.NavigationTable[un_Identifier]["Angle"] = t_packet.HorizontalBearing.GetValue();
             NavData.NavigationTable[un_Identifier]["Distance"] = t_packet.Range;
+
+            // Check to determine whether the robot received any message from target every 5 timestep
+            if (StateData.TimeStep % 5 == 0 and un_Identifier == NavData.GoalId)
+                NavData.NearTarget = true;
         } 
         else {
             std::map<UInt8, std::map<std::string, Real>> OtherTable = NavData.ConvertFromByte(cBuf);
             // Iterates both tables simultaneously
             for (auto local_table = NavData.NavigationTable.begin(), other_table = OtherTable.begin();
                 local_table != NavData.NavigationTable.end(); ++local_table, ++other_table) {
-                if (other_table->second["Age"] == 0) continue; // Skip comparison and move to next row
+                if (other_table->second["Age"] == 0 && other_table->second["Distance"] < 10) continue; // Skip comparison and move to next row
                 // Compute the relative vector between local robot and target by adding other's info
                 // and sender's relative vector from local robot
                 CVector2 OtherInfo = CVector2(other_table->second["Distance"], CRadians(other_table->second["Angle"]));
                 // Addition of Other's To Target + Local to Other
                 CVector2 LocalToOther = CVector2(t_packet.Range, t_packet.HorizontalBearing);
-                CVector2 LocalToTarget = OtherInfo + LocalToOther;
+                CVector2 LocalToTarget = LocalToOther + OtherInfo;
                 // Compare based on age and distance for now
                 // Use neighbour's info if there is no local info
                 if (local_table->second["Age"] == 0) {
-                    LOG << "Mobile " << Id << " got info from others\n";
                     local_table->second["Age"] = other_table->second["Age"];
                     local_table->second["Angle"] = LocalToTarget.Angle().GetValue();
                     local_table->second["Distance"] = LocalToTarget.Length(); 
@@ -339,7 +350,6 @@ void CFootBotMobile::UpdateNavigationTable(const CCI_RangeAndBearingSensor::TRea
                 // Age holds a lot of weightage since outdated info comes hand in hand with accumulated error due to 
                 // odometry
                 if (other_table->second["Age"] > local_table->second["Age"] && LocalToTarget.Length() < local_table->second["Distance"]) {
-                    LOG << "Mobile " << Id << " got info from others\n";
                     // Replaces the local info with neighbour's info instead
                     local_table->second["Age"] = other_table->second["Age"];
                     local_table->second["Angle"] = LocalToTarget.Angle().GetValue();
@@ -359,9 +369,14 @@ void CFootBotMobile::UpdateNavigationBehaviour() {
         // Got goal info
         StateData.FoundDesignatedGoal = true;
 
-        if (NavData.NavigationTable[NavData.GoalId]["Distance"] < 25.0f) {
-            StateData.ReachedGoal = true;
+        // Every 15 timestep, check whether robot received any message from target/ goal to determine
+        // whether the robot truly reached the goal since the estimate distance may not be reliable
+        if (NavData.NearTarget) {
+            if (NavData.NavigationTable[NavData.GoalId]["Distance"] < 40.0f) {
+                StateData.ReachedGoal = true;
+            }
         }
+        
     }
 }
 
@@ -370,6 +385,7 @@ void CFootBotMobile::UpdateNavigationBehaviour() {
 void CFootBotMobile::BroadcastNavigationTable() {
     CByteArray cBuf;
     // If reached goal and resting state
+    // The robot will act as a beacon similar to original target/ goal
     if (StateData.ReachedGoal && StateData.State == RESTING) {
         UInt64 Age = StateData.TimeRested;
         cBuf << NavData.GoalId;
@@ -391,13 +407,8 @@ void CFootBotMobile::UpdateState() {
     // One of the important methods since this encompases the action of robot each time step
     const CCI_RangeAndBearingSensor::TReadings& tPackets = m_pcRABS->GetReadings();
 
-    // Debug before Odometry
-    // LOG << "Mobile Robot " << Id << " Before Odometry: \n";
-    // for (auto & goal : NavData.NavigationTable) {
-    //     LOG << "Goal " << goal.first << ": {Distance: " << goal.second["Distance"] << "}, {Angle: "
-    //         << goal.second["Angle"] << "}, {Age: " << goal.second["Age"] << "}\n";
-    // }
-
+    // Reset flag NearTarget every 5 timestep
+    NavData.NearTarget = false;
 
     // So long it's not resting, update local info with odometry
     if (StateData.State != RESTING) 
@@ -408,12 +419,6 @@ void CFootBotMobile::UpdateState() {
     // Always update navigation table unless RESTING
     UpdateNavigationTable(tPackets);
 
-    LOG << "Mobile Robot " << Id << "After UpdateTable: \n";
-    for (auto & goal : NavData.NavigationTable) {
-        LOG << "Goal " << goal.first << ": {Distance: " << goal.second["Distance"] << "}, {Angle: "
-            << goal.second["Angle"] << "}, {Age: " << goal.second["Age"] << "}\n";
-    }
-
     // Update navigation behaviour based on the updated local table
     UpdateNavigationBehaviour();
 
@@ -421,8 +426,13 @@ void CFootBotMobile::UpdateState() {
     StateData.SaveState();
     if (StateData.FoundDesignatedGoal)
         StateData.State = MOVE_TO_GOAL;
-    else if (StateData.ReachedGoal)
+    else if (StateData.ReachedGoal) {
+        // Only save the timestep for the first time that it reached the goal
+        if (StateData.State == RESTING)
+            StateData.TimeTakenToReachGoal = StateData.TimeStep;
         StateData.State = RESTING;
+    }
+        
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -463,7 +473,15 @@ CVector2 CFootBotMobile::DiffusionVector(bool& collision) {
     if (DiffusionParams.GoStraightAngleRange.WithinMinBoundIncludedMaxBoundIncluded(diffusionVector.Angle()) &&
             diffusionVector.Length() < DiffusionParams.Delta) {
         collision = false;
-        return CVector2::X;
+        // Random chance of turning 
+        if (StateData.State == RANDOM_EXPLORATION && (WheelTurningParams.PreviousTurningMechanisms.front() == WheelTurningParams.NO_TURN
+            && WheelTurningParams.PreviousTurningMechanisms.back() == WheelTurningParams.NO_TURN)) {
+            return CVector2(10.0f, m_RNG->Uniform(CRadians::SIGNED_RANGE));
+        }
+        else {
+            return CVector2::X; 
+        }
+        
     }
     else {
         collision = true;
@@ -489,6 +507,7 @@ void CFootBotMobile::SetWheelSpeedsFromVector(const CVector2& heading) {
     if (Abs(cHeadingAngle) <= WheelTurningParams.NoTurnAngleThreshold) {
         // No Turn + vecry small heading angle
         WheelTurningParams.TurningMechanism = SWheelTurningParams::NO_TURN;
+        
     }
     else if (Abs(cHeadingAngle) > WheelTurningParams.HardTurnOnAngleThreshold) {
         // Hard Turn + very large heading angle
@@ -499,6 +518,14 @@ void CFootBotMobile::SetWheelSpeedsFromVector(const CVector2& heading) {
         // Soft Turn + heading angle is in between the NO_TURN and HARD_TURN
         WheelTurningParams.TurningMechanism = SWheelTurningParams::SOFT_TURN;
     }
+
+    // Assign current turning mechanism into the list
+    if (WheelTurningParams.PreviousTurningMechanisms.size() == 5) {
+        // Pop front to mantain the list of size 6 before adding new one at back
+        WheelTurningParams.PreviousTurningMechanisms.pop_front();
+    } // Otherwise, append at the back
+    WheelTurningParams.PreviousTurningMechanisms.push_back(WheelTurningParams.TurningMechanism);
+
     /*
      * An if block for collision
      * 
@@ -550,13 +577,11 @@ void CFootBotMobile::SetWheelSpeedsFromVector(const CVector2& heading) {
     Real fLeftWheelSpeed, fRightWheelSpeed;
     if (cHeadingAngle > CRadians::ZERO) {
         // TUrn Left
-        NavData.LeftTurn = true;
         fLeftWheelSpeed = fSpeed1;
         fRightWheelSpeed = fSpeed2;
     }
     else {
         // Turn Right
-        NavData.LeftTurn = false;
         fLeftWheelSpeed = fSpeed2;
         fRightWheelSpeed = fSpeed1;
     }

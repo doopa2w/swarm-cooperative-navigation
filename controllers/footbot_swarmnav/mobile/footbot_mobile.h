@@ -26,6 +26,7 @@
 /* Container for navigation info */
 #include <map>
 #include <string>
+#include <list>
 
 using namespace argos;
 
@@ -73,6 +74,8 @@ class CFootBotMobile : public CCI_Controller {
 
             // Keep track of previous turning mechanism
             ETurningMechanism PreviousTurningMechanism;
+            // Keep track of previous turning mechanisms
+            std::list<ETurningMechanism> PreviousTurningMechanisms;
 
             // the maximum wheel velocity that is configured inside the XML file
             Real MaxSpeed;  // 10.0
@@ -104,6 +107,10 @@ class CFootBotMobile : public CCI_Controller {
             size_t MaximumTimeInRandomExploration;
             // Time steps of robot in RESTING state
             size_t TimeRested;
+            // Time step counter
+            size_t TimeStep;
+            // Number of time steps that a robot took to reach goal
+            size_t TimeTakenToReachGoal;
 
             SStateData();
             void Init(TConfigurationNode& t_node);
@@ -131,8 +138,14 @@ class CFootBotMobile : public CCI_Controller {
             // Used to indicate the amount of rotation done from the time local robot received
             // the goal info the current time step
             CRadians TotalRotation;
-            // Flag for storing previous turning direction; true = left; false = right
-            bool LeftTurn;
+            // // Flag for storing previous turning direction; true = left; false = right
+            // bool LeftTurn;
+            // A flag to determine whether the robot truly reached the goal and not
+            // prematurely go RESTING based on the goal's vector distance
+            // If received message from target/goal, then True
+            bool NearTarget;
+            
+
 
             /*  Settings to be configured inside XML */
             // Size of message packet

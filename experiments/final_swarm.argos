@@ -25,7 +25,7 @@
       </actuators>
       <sensors>
         <footbot_proximity implementation="default" show_rays="false" />
-        <range_and_bearing implementation="medium" medium="rab" show_rays="true" />
+        <range_and_bearing implementation="medium" medium="rab"/>
         <positioning implementation="default" />
         <differential_steering implementation="default"/>
       </sensors>
@@ -107,8 +107,8 @@
     <distribute>
       <position method="uniform" min="-4,-4,0" max="4,4,0" />
       <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
-      <entity quantity="10" max_trials="100">
-        <foot-bot id="mobile_" rab_data_size="101">
+      <entity quantity="30" max_trials="100">
+        <foot-bot id="M_" rab_data_size="101" rab_range="6">
           <controller config="fdc" />
         </foot-bot>
       </entity>
@@ -126,12 +126,12 @@
 
 
 
-    <foot-bot id="target_0" rab_data_size="101">
-      <body position="-4,-4,0" orientation="0,0,0" />
+    <foot-bot id="T_0" rab_data_size="101" rab_range="6">
+      <body position="-2,-1,0" orientation="0,0,0" />
       <controller config="fpc_0"/>
     </foot-bot>
-    <foot-bot id="target_1" rab_data_size="101">
-      <body position="0,0,0" orientation="0,0,0" />
+    <foot-bot id="T_1" rab_data_size="101" rab_range="6">
+      <body position="1,2,0" orientation="0,0,0" />
       <controller config="fpc_1"/>
     </foot-bot>
 

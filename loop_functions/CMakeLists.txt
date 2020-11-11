@@ -3,6 +3,8 @@ include_directories(${CMAKE_SOURCE_DIR})
 # Descend into the foraging_loop_functions directory
 add_subdirectory(foraging_loop_functions)
 
+add_subdirectory(navigation_loop_functions)
+
 # Descend into the mpga_phototaxis_loop_functions directory
 add_subdirectory(mpga_loop_functions)
 

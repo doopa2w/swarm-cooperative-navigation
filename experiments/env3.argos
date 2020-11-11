@@ -1,0 +1,187 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+
+  <!-- ************************* -->
+  <!-- * General configuration * -->
+  <!-- ************************* -->
+  <framework>
+    <system threads="3" />
+    <experiment length="0"
+                ticks_per_second="10"
+                random_seed="124" />
+  </framework>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+
+    <footbot_mobile_controller id="fdc"
+                                  library="build/controllers/footbot_swarmnav/mobile/libfootbot_mobile">
+      <actuators>
+        <differential_steering implementation="default" />
+        <range_and_bearing implementation="default" />
+        <leds implementation="default" medium="leds" />
+      </actuators>
+      <sensors>
+        <footbot_proximity implementation="default" show_rays="false" />
+        <range_and_bearing implementation="medium" medium="rab"/>
+        <positioning implementation="default" />
+        <differential_steering implementation="default"/>
+      </sensors>
+      <params>
+        <diffusion go_straight_angle_range="-5:5"
+                    delta="0.1" />
+        <wheel_turning hard_turn_angle_threshold="90"
+                       soft_turn_angle_threshold="70"
+                       no_turn_angle_threshold="10"
+                       max_speed="10" />
+        <state_data act_as_target="false"
+                    goal_id_representative="0" /> 
+        <nav_data size_of_message="53"
+                  number_of_goals="1" />
+      </params>
+    </footbot_mobile_controller>
+
+    <footbot_mobile_controller id="fdc_target1"
+                                  library="build/controllers/footbot_swarmnav/mobile/libfootbot_mobile">
+      <actuators>
+        <differential_steering implementation="default" />
+        <range_and_bearing implementation="default" />
+        <leds implementation="default" medium="leds" />
+      </actuators>
+      <sensors>
+        <footbot_proximity implementation="default" show_rays="false" />
+        <range_and_bearing implementation="medium" medium="rab"/>
+        <positioning implementation="default" />
+        <differential_steering implementation="default"/>
+      </sensors>
+      <params>
+        <diffusion go_straight_angle_range="-5:5"
+                    delta="0.1" />
+        <wheel_turning hard_turn_angle_threshold="90"
+                       soft_turn_angle_threshold="70"
+                       no_turn_angle_threshold="10"
+                       max_speed="10" />
+        <state_data act_as_target="true"
+                    goal_id_representative="0" /> 
+        <nav_data size_of_message="53"
+                  number_of_goals="1" />
+      </params>
+    </footbot_mobile_controller>
+
+
+
+
+  </controllers>
+
+  <!-- ****************** -->
+  <!-- * Loop functions * -->
+  <!-- ****************** -->
+  <loop_functions library="build/loop_functions/navigation_loop_functions/libnavigation_loop_functions"
+                  label="navigation_loop_functions">
+    <navigation trace_output="results/env3/trace.txt"
+                collision_output="results/env3/collisions.txt"
+                id_for_collision_output="1"
+                summary_output="results/env3/summary.csv"
+                number_of_mobile_robots="30" />
+  </loop_functions>
+
+
+  <!-- *********************** -->
+  <!-- * Arena configuration * -->
+  <!-- *********************** -->
+  <arena size="10, 10, 1" center="0,0,0.5">
+
+    <box id="wall_north" size="10,0.1,0.5" movable="false">
+      <body position="0,5,0" orientation="0,0,0" />
+    </box>
+    <box id="wall_south" size="10,0.1,0.5" movable="false">
+      <body position="0,-5,0" orientation="0,0,0" />
+    </box>
+    <box id="wall_east" size="0.1,10,0.5" movable="false">
+      <body position="5,0,0" orientation="0,0,0" />
+    </box>
+    <box id="wall_west" size="0.1,10,0.5" movable="false">
+      <body position="-5,0,0" orientation="0,0,0" />
+    </box>
+    <box id="wall_a" size="4,4,0.5" movable="false">
+      <body position="0,0,0" orientation="0,0,0" />
+    </box>
+    
+
+
+  <!-- size y, x, z-->
+  <!-- orientation -->
+
+    <!--
+        You can distribute entities randomly. Here, we distribute
+        10 foot-bots in this way:
+        - the position is uniformly distributed
+        on the ground, in the square whose corners are (-2,-2) and (2,2)
+        - the orientations are non-zero only when rotating around Z and chosen
+        from a gaussian distribution, whose mean is zero degrees and
+        standard deviation is 360 degrees.
+    -->
+
+    <distribute>
+      <position method="uniform" min="-5,-3,0" max="-2.6,-0,0" />
+      <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+      <entity quantity="90" max_trials="100">
+        <foot-bot id="M_" rab_data_size="53" rab_range="6">
+          <controller config="fdc" />
+        </foot-bot>
+      </entity>
+    </distribute>
+
+
+
+    <foot-bot id="T_0" rab_data_size="53" rab_range="6">
+      <body position="2.7,-2.1,0" orientation="0,0,0"/>
+      <controller config="fdc_target1" />
+    </foot-bot>
+    <foot-bot id="T_1" rab_data_size="53" rab_range="6">
+      <body position="0,-3.6.1,0" orientation="0,0,0"/>
+      <controller config="fdc_target1" />
+    </foot-bot>
+
+
+
+    <!-- <foot-bot id="T_0" rab_data_size="101" rab_range="6">
+      <body position="-2,-1,0" orientation="0,0,0" />
+      <controller config="fpc_0"/>
+    </foot-bot>
+    <foot-bot id="T_1" rab_data_size="101" rab_range="6">
+      <body position="1,2,0" orientation="0,0,0" />
+      <controller config="fpc_1"/>
+    </foot-bot> -->
+
+
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ********* -->
+  <!-- * Media * -->
+  <!-- ********* -->
+  <media>
+    <range_and_bearing id="rab" />
+    <led id="leds" />
+  </media>
+
+  <!-- ****************** -->
+  <!-- * Visualization * -->
+  <!-- ****************** -->
+  <visualization>
+    <qt-opengl>
+      <user_functions library="build/loop_functions/id_loop_functions/libid_loop_functions"
+                      label="id_qtuser_functions" /> 
+    </qt-opengl>
+  </visualization>
+
+</argos-configuration>

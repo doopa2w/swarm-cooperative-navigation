@@ -103,14 +103,16 @@ class CFootBotMobile : public CCI_Controller {
             CRange<CRadians> ProbRange;
             // Number of time steps that a robot is in the RANDOM_EXPLORATION state
             size_t TimeRandomExplore;
-            // Threshold value for switching from RANDOM_EXPLORATION to AGGRESSIVE_EXPLORATION
-            size_t MaximumTimeInRandomExploration;
             // Time steps of robot in RESTING state
             size_t TimeRested;
             // Time step counter
             size_t TimeStep;
             // Number of time steps that a robot took to reach goal
             size_t TimeTakenToReachGoal;
+            // State to determien whether the robot should be target or mobile
+            bool TargetRobot;
+            // assigned goal id if robot is target robot else random in navdata
+            UInt8 GoalIdRepresentative;
 
             SStateData();
             void Init(TConfigurationNode& t_node);
@@ -186,6 +188,8 @@ class CFootBotMobile : public CCI_Controller {
         inline bool isMovingToGoal() const { return StateData.State == MOVE_TO_GOAL; }
 
         inline EState GetState() { return StateData.State; }
+
+        inline SStateData& GetStateData() { return StateData; }
 
         // returns the tracing messages for the robot
         inline std::vector<CTraceMessage*> *GetTraceMessages() { return &TraceMessages; }

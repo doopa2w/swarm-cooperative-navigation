@@ -294,7 +294,6 @@ void CFootBotMobile::UpdateOdometry() {
         if (oldTurningMechanism == SWheelTurningParams::NO_TURN) {
             PreviousVector = CVector2(NavData.DistanceTravelled, CRadians(0));
             NewVector = CurrentVector - PreviousVector;
-            // TODO: May not work as intended; If that's the case, subtract the distance or add directly
         }
         else if (oldTurningMechanism == SWheelTurningParams::SOFT_TURN) {
             PreviousVector = CVector2(NavData.DistanceTravelled, NavData.TotalRotation);

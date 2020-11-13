@@ -1,8 +1,11 @@
-     # swarm-cooperative-navigation
+
+
+# swarm-cooperative-navigation
 
 Cooperative Navigation Algorithm for Swarm Robot in Indoor Environment. The navigation of mobile robots are aided by random exploration, communication to exchange navigation information, collision avoidance and goal reaching behaviour. The algorithm uses the foot-bot robot model which is found within the ARGoS's library.
 
 ## Installation 
+
 Refer to the Dependecy section to install the necessary libraries. Advised to install ARGoS3 firstmost since it required most of the listed dependencies. The installation guide for ARGoS3 can be found on the README on https://github.com/ilpincy/argos3.
 
 ### Dependency
@@ -29,7 +32,7 @@ $ bash build.sh
 
 The compilation mode is BUILD_TYPE=Debug by default.
 
-### Running the simulations
+### Usage
 
 The experiments can be executed by the following commands:
 
@@ -44,30 +47,45 @@ The command above is used to run the first layout of the uncluttered environment
 
 The directories that are relevant to the project would be relevant while those unrelevant directories are ignored and not listed in the tree below.
 
+```
 swarm-cooperative-navigation/
-├── build .............................................................. Contains the compiled libraries so there is no need to recompile.
-├── build.sh ........................................................... A simple bash script to compile the project; No need to run this script
+├── build .............................................. Contains the compiled libraries so	 |												          there is no need to recompile.
+├── build.sh ........................................... A simple bash script to compile the |														  project
 ├── controllers 
 │   ├── CMakeLists.txt
-│   ├── footbot_swarmnav ............................................... The cooperative navigation algorithm is located here
+│   ├── footbot_swarmnav ................................ The cooperative navigation 		 |	 |	 |											   		algorithm is located here
 │   │   ├── CMakeLists.txt
-│   │   ├── mobile ..................................................... This contains the algorithm for mobile robots + target robots
+│   │   ├── mobile ....................................... This contains the algorithm for 	 |	 |	 |	 |												mobile robots + target robots
 │   │   │   ├── CMakeLists.txt
 │   │   │   ├── footbot_mobile.cpp ..................................... The cooperative navigation algorithm for both mobile and target robots
 │   │   │   ├── footbot_mobile.h
-│   │   │   ├── state.h ................................................ enums of the robot's states
-│   │   │   ├── trace_message.cpp ...................................... For debug purpose only
+│   │   │   ├── state.h ................................... enums of the robot's states
+│   │   │   ├── trace_message.cpp ......................... For debug purpose only
 │   │   │   └── trace_message.h
-│   │   └── static ..................................................... This contains the algorithm for target robots
+│   │   └── static ........................................ This contains the algorithm for  |	 |		 |												 target robots
 │   │       ├── CMakeLists.txt
-│   │       ├── footbot_static.cpp ..................................... The cooperative navigation algorithm for target robots
+│   │       ├── footbot_static.cpp ......................... The cooperative navigation 	 |	 |		 |												  algorithm for target robots
 │   │       └── footbot_static.h
 ├── experiments
 │   ├── custom_distributions.argos
-│   ├── env1.argos ..................................................... The first layout of the uncluttered environment in XML
-│   ├── env2.argos ..................................................... The second maze layout of the cluttered environment in XML
-│   ├── env3.argos ..................................................... The third layout of the cluttered environment in XML
-│   ├── env4.argos ..................................................... The second layout of the uncluttered encironment in XML
-│   └── env5.argos ..................................................... The first maze layout of the cluttered environment in XML
+│   ├── env1.argos .........................................  The first layout of the 		 
+|	|														   uncluttered environment in XML
+│   ├── env2.argos .......................................... The second maze layout of the  |	 |															cluttered environment in XML
+│   ├── env3.argos ..........................................  The third layout of the 		 |	 | 															cluttered environment in XML
+│   ├── env4.argos ........................................... The second layout of the 	 |	 |															uncluttered encironment in 	  |	  |															 XML
+│   └── env5.argos ........................................... The first maze layout of the  |																cluttered environment in XML
 ├── README.md
-└── results ............................................................ Contains the spreadsheet of raw data
+└── results .................................................. Contains the spreadsheet of 																	raw data
+
+```
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## Authors and acknowledgment
+
+- Darryl Tan Zhe Liang - The author of this algorithm
+- Dr. Richard Wong Teck Ken - The supervisor for this project.
